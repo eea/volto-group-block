@@ -1,5 +1,5 @@
-# volto-addon-template
-[![Releases](https://img.shields.io/github/v/release/eea/volto-addon-template)](https://github.com/eea/volto-addon-template/releases)
+# volto-meta-block
+[![Releases](https://img.shields.io/github/v/release/eea/volto-meta-block)](https://github.com/eea/volto-meta-block/releases)
 
 [Volto](https://github.com/plone/volto) add-on
 
@@ -21,11 +21,11 @@ Demo GIF
 1. Update `package.json`:
     ``` JSON
     "addons": [
-        "@eeacms/volto-addon-template"
+        "@eeacms/volto-meta-block"
     ],
 
     "dependencies": {
-        "@eeacms/volto-addon-template": "1.0.0"
+        "@eeacms/volto-meta-block": "1.0.0"
     }
     ```
 
@@ -41,14 +41,14 @@ Demo GIF
 
 ## How to contribute
 
-See [DEVELOP.md](https://github.com/eea/volto-addon-template/blob/master/DEVELOP.md2).
+See [DEVELOP.md](https://github.com/eea/volto-meta-block/blob/master/DEVELOP.md2).
 
 ## Copyright and license
 
 The Initial Owner of the Original Code is European Environment Agency (EEA).
 All Rights Reserved.
 
-See [LICENSE.md](https://github.com/eea/volto-addon-template/blob/master/LICENSE.md) for details.
+See [LICENSE.md](https://github.com/eea/volto-meta-block/blob/master/LICENSE.md) for details.
 
 ## Funding
 
