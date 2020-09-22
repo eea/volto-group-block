@@ -1,2 +1,3 @@
-export { EditMetaBlock } from './manage/Blocks/Meta/Edit';
-export { ViewMetaBlock } from './manage/Blocks/Meta/View';
+export { MetaBlockEdit } from './manage/Blocks/Meta/Edit';
+export { MetaBlockView } from './manage/Blocks/Meta/View';
+export { MetaBlockSchema } from './manage/Blocks/Meta/Schema';

@@ -8,6 +8,8 @@
   "homepage": "https://github.com/eea/volto-meta-block",
   "keywords": [
     "volto-addon",
+    "volto-block",
+    "volto-meta",
     "volto",
     "plone",
     "react"

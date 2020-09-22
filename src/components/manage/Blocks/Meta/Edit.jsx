@@ -18,8 +18,8 @@ const emptyBlocksForm = () => {
   };
 };
 
-export const EditMetaBlock = (props) => {
-  const { block, data, onChangeBlock, pathname, selected } = props;
+export const MetaBlockEdit = (props) => {
+  const { block, data, onChangeBlock, pathname, selected, manage } = props;
 
   const properties = data.data || emptyBlocksForm();
   const [selectedBlock, setSelectedBlock] = useState();
@@ -29,7 +29,9 @@ export const EditMetaBlock = (props) => {
     <section className="section-block">
       <BlocksForm
         properties={properties}
+        manage={manage}
         selectedBlock={selected ? selectedBlock : null}
+        allowedBlocks={data.allowedBlocks}
         onSelectBlock={(id) => setSelectedBlock(id)}
         onChangeFormData={(newFormData) => {
           onChangeBlock(block, {

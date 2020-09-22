@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const ViewMetaBlock = (props) => {
+export const MetaBlockView = (props) => {
   return 'View meta block';
 };
