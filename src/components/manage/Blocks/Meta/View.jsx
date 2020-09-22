@@ -1,5 +1,7 @@
 import React from 'react';
+import { RenderBlocks } from '@eeacms/volto-blocks-form/components';
 
 export const MetaBlockView = (props) => {
-  return 'View meta block';
+  const { data } = props;
+  return <RenderBlocks {...props} content={data?.data || {}} />;
 };

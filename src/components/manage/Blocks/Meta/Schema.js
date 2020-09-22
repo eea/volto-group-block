@@ -6,15 +6,23 @@ export const MetaBlockSchema = {
       title: 'Default',
       fields: [
         'placeholder',
+        'allowedBlocks',
         'required',
         'fixed',
         'disableNewBlocks',
         'readOnly',
-        'allowedBlocks',
       ],
     },
   ],
   properties: {
+    allowedBlocks: {
+      title: 'Allowed blocks',
+      description: 'Allow only the following blocks types',
+      type: 'array',
+      items: {
+        choices: [],
+      },
+    },
     placeholder: {
       title: 'Helper text',
       description:
@@ -40,14 +48,6 @@ export const MetaBlockSchema = {
       title: 'Read-only',
       description: 'Disable editing on this block',
       type: 'boolean',
-    },
-    allowedBlocks: {
-      title: 'Allowed blocks',
-      description: 'Allow only the following blocks types',
-      type: 'array',
-      items: {
-        choices: [],
-      },
     },
   },
   required: [],
