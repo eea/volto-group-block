@@ -1,5 +1,5 @@
 import codeSVG from '@plone/volto/icons/show-blocks.svg';
-import { MetaBlockEdit, MetaBlockView, MetaBlockSchema } from './components';
+import { GroupBlockEdit, GroupBlockView, GroupBlockSchema } from './components';
 
 const applyConfig = (config) => {
   const choices = Object.keys(config.blocks.blocksConfig)
@@ -14,24 +14,24 @@ const applyConfig = (config) => {
     .filter((val) => !!val);
 
   const schema = {
-    ...MetaBlockSchema,
+    ...GroupBlockSchema,
     properties: {
-      ...MetaBlockSchema.properties,
+      ...GroupBlockSchema.properties,
       allowedBlocks: {
-        ...MetaBlockSchema.properties.allowedBlocks,
+        ...GroupBlockSchema.properties.allowedBlocks,
         items: {
           choices: choices,
         },
       },
     },
   };
-  config.blocks.blocksConfig.metaBlock = {
-    id: 'metaBlock',
-    title: 'Meta',
+  config.blocks.blocksConfig.group = {
+    id: 'group',
+    title: 'Group',
     icon: codeSVG,
     group: 'common',
-    view: MetaBlockView,
-    edit: MetaBlockEdit,
+    view: GroupBlockView,
+    edit: GroupBlockEdit,
     schema: schema,
     restricted: false,
     mostUsed: false,

@@ -5,7 +5,7 @@ import { BlocksForm } from '@eeacms/volto-blocks-form/components';
 import { emptyBlocksForm } from '@eeacms/volto-blocks-form/helpers';
 import './editor.less';
 
-export const MetaBlockEdit = (props) => {
+const Edit = (props) => {
   const { block, data, onChangeBlock, pathname, selected, manage } = props;
 
   const properties = isEmpty(data?.data?.blocks)
@@ -45,3 +45,5 @@ export const MetaBlockEdit = (props) => {
     </section>
   );
 };
+
+export default Edit;

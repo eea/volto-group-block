@@ -1,4 +1,4 @@
-# volto-meta-block
+# volto-group-block
 
 ## Develop
 
@@ -25,16 +25,16 @@ Before starting make sure your development environment is properly set. See [Vol
             },
 
             "addons": [
-                "@eeacms/volto-meta-block"
+                "@eeacms/volto-group-block"
             ],
         }
 
 1. Add the following to `mrs.developer.json`:
 
         {
-            "volto-meta-block": {
-                "url": "https://github.com/eea/volto-meta-block.git",
-                "package": "@eeacms/volto-meta-block",
+            "volto-group-block": {
+                "url": "https://github.com/eea/volto-group-block.git",
+                "package": "@eeacms/volto-group-block",
                 "branch": "develop",
                 "path": "src"
             }
@@ -63,4 +63,4 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1. Happy hacking!
 
-        $ cd src/addons/volto-meta-block/
+        $ cd src/addons/volto-group-block/

@@ -1,5 +1,5 @@
-export const MetaBlockSchema = {
-  title: 'Meta block settings',
+const Schema = {
+  title: 'Group block settings',
   fieldsets: [
     {
       id: 'default',
@@ -52,3 +52,5 @@ export const MetaBlockSchema = {
   },
   required: [],
 };
+
+export default Schema;

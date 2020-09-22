@@ -1,22 +1,22 @@
 {
-  "name": "@eeacms/volto-meta-block",
+  "name": "@eeacms/volto-group-block",
   "version": "0.1.0",
-  "description": "volto-meta-block: Volto add-on",
+  "description": "volto-group-block: Volto block to be used to group other blocks",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
   "license": "MIT",
-  "homepage": "https://github.com/eea/volto-meta-block",
+  "homepage": "https://github.com/eea/volto-group-block",
   "keywords": [
     "volto-addon",
     "volto-block",
-    "volto-meta",
+    "volto-group",
     "volto",
     "plone",
     "react"
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:eea/volto-meta-block.git"
+    "url": "git@github.com:eea/volto-group-block.git"
   },
   "devDependencies": {
     "release-it": "*"
