@@ -13,6 +13,8 @@ const applyConfig = (config) => {
     })
     .filter((val) => !!val);
 
+  choices.push(['group', 'Group']);
+
   const schema = {
     ...GroupBlockSchema,
     properties: {
