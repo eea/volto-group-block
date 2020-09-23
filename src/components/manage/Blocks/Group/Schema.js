@@ -6,6 +6,7 @@ const Schema = {
       title: 'Default',
       fields: [
         'placeholder',
+        'instructions',
         'allowedBlocks',
         'required',
         'fixed',
@@ -28,6 +29,12 @@ const Schema = {
       description:
         'A short hint that describes the expected value within this block',
       type: 'string',
+    },
+    instructions: {
+      title: 'Instructions',
+      description: 'Detailed expected value within this block',
+      type: 'string',
+      widget: 'richtext',
     },
     required: {
       title: 'Required',
