@@ -21,10 +21,12 @@ Demo GIF
 1. Update `package.json`:
     ``` JSON
     "addons": [
+        "@eeacms/volto-blocks-form",
         "@eeacms/volto-group-block"
     ],
 
     "dependencies": {
+        "@eeacms/volto-blocks-form": "1.0.0",
         "@eeacms/volto-group-block": "1.0.0"
     }
     ```
@@ -41,7 +43,7 @@ Demo GIF
 
 ## How to contribute
 
-See [DEVELOP.md](https://github.com/eea/volto-group-block/blob/master/DEVELOP.md2).
+See [DEVELOP.md](https://github.com/eea/volto-group-block/blob/master/DEVELOP.md).
 
 ## Copyright and license
 

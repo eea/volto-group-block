@@ -25,8 +25,13 @@ Before starting make sure your development environment is properly set. See [Vol
             },
 
             "addons": [
+                "@eeacms/volto-blocks-form",
                 "@eeacms/volto-group-block"
             ],
+
+            "dependencies": {
+                "@eeacms/volto-blocks-form": "github:eea/volto-blocks-form#0.3.0",
+            }
         }
 
 1. Add the following to `mrs.developer.json`:
