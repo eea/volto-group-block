@@ -29,7 +29,7 @@ const applyConfig = (config) => {
   };
   config.blocks.blocksConfig.group = {
     id: 'group',
-    title: 'Group',
+    title: 'Section (Group)',
     icon: codeSVG,
     group: 'common',
     view: GroupBlockView,
