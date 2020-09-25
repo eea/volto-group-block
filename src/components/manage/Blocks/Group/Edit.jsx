@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
 import { BlocksForm } from '@eeacms/volto-blocks-form/components';
 import { emptyBlocksForm } from '@eeacms/volto-blocks-form/helpers';
@@ -11,7 +10,31 @@ const Edit = (props) => {
   const properties = isEmpty(data?.data?.blocks)
     ? emptyBlocksForm()
     : data.data;
-  const [selectedBlock, setSelectedBlock] = useState();
+
+  const [selectedBlock, setSelectedBlock] = useState(
+    properties.blocks_layout.items[0],
+  );
+
+  React.useEffect(() => {
+    if (
+      isEmpty(data?.data?.blocks) &&
+      properties.blocks_layout.items[0] !== selectedBlock
+    ) {
+      setSelectedBlock(properties.blocks_layout.items[0]);
+      onChangeBlock(block, {
+        ...data,
+        data: properties,
+      });
+    }
+  }, [
+    onChangeBlock,
+    properties,
+    selectedBlock,
+    block,
+    data,
+    data?.data?.blocks,
+  ]);
+
   const blockState = {};
 
   return (
