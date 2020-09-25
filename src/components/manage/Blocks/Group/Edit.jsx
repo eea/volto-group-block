@@ -46,9 +46,7 @@ const Edit = (props) => {
         allowedBlocks={data.allowedBlocks}
         title={data.placeholder}
         description={data?.instructions?.data}
-        onSelectBlock={(id) => {
-          setSelectedBlock(id);
-        }}
+        onSelectBlock={(id) => setSelectedBlock(id)}
         onChangeFormData={(newFormData) => {
           onChangeBlock(block, {
             ...data,
