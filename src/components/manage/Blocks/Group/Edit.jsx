@@ -5,15 +5,7 @@ import { emptyBlocksForm } from '@plone/volto/helpers';
 import './editor.less';
 
 const Edit = (props) => {
-  const {
-    block,
-    data,
-    onChangeBlock,
-    onSelectBlock,
-    pathname,
-    selected,
-    manage,
-  } = props;
+  const { block, data, onChangeBlock, pathname, selected, manage } = props;
 
   const properties = isEmpty(data?.data?.blocks)
     ? emptyBlocksForm()

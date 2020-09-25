@@ -37,7 +37,7 @@ const applyConfig = (config) => {
     schema: schema,
     restricted: false,
     mostUsed: false,
-    blockHasOwnFocusManagement: false,
+    blockHasOwnFocusManagement: true,
     sidebarTab: 0,
     security: {
       addPermission: [],
