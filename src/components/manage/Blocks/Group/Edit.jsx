@@ -1,12 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
 import { isEmpty } from 'lodash';
-import { BlocksForm } from '@eeacms/volto-blocks-form/components';
-import { emptyBlocksForm } from '@eeacms/volto-blocks-form/helpers';
+import { BlocksForm } from '@plone/volto/components';
+import { emptyBlocksForm } from '@plone/volto/helpers';
 import './editor.less';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, pathname, selected, manage } = props;
+  const {
+    block,
+    data,
+    onChangeBlock,
+    onSelectBlock,
+    pathname,
+    selected,
+    manage,
+  } = props;
 
   const properties = isEmpty(data?.data?.blocks)
     ? emptyBlocksForm()
@@ -23,7 +31,9 @@ const Edit = (props) => {
         allowedBlocks={data.allowedBlocks}
         title={data.placeholder}
         description={data?.instructions?.data}
-        onSelectBlock={(id) => setSelectedBlock(id)}
+        onSelectBlock={(id) => {
+          setSelectedBlock(id);
+        }}
         onChangeFormData={(newFormData) => {
           onChangeBlock(block, {
             ...data,
