@@ -30,7 +30,7 @@ Before starting make sure your development environment is properly set. See [Vol
             ],
 
             "dependencies": {
-                "@eeacms/volto-blocks-form": "github:eea/volto-blocks-form#0.3.0",
+                "@eeacms/volto-blocks-form": "github:eea/volto-blocks-form#0.4.0",
             }
         }
 
