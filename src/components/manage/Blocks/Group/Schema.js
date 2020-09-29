@@ -8,6 +8,7 @@ const Schema = {
         'placeholder',
         'instructions',
         'allowedBlocks',
+        'as',
         'required',
         'fixed',
         'disableNewBlocks',
@@ -35,6 +36,20 @@ const Schema = {
       description: 'Detailed expected value within this block',
       type: 'string',
       widget: 'richtext',
+    },
+    as: {
+      title: 'HTML5 element',
+      description: 'Select HTML5 element to be used for this block',
+      type: 'string',
+      factory: 'Choice',
+      default: 'div',
+      choices: [
+        ['div', 'div'],
+        ['section', 'section'],
+        ['article', 'article'],
+        ['aside', 'aside'],
+        ['details', 'details'],
+      ],
     },
     required: {
       title: 'Required',
