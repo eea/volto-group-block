@@ -3,7 +3,15 @@ import { RenderBlocks } from '@eeacms/volto-blocks-form/components';
 
 const View = (props) => {
   const { data } = props;
-  return <RenderBlocks as={data?.as} {...props} content={data?.data || {}} />;
+  const metadata = props.metadata || props.properties;
+  return (
+    <RenderBlocks
+      {...props}
+      as={data?.as}
+      metadata={metadata}
+      content={data?.data || {}}
+    />
+  );
 };
 
 export default View;
