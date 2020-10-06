@@ -7,6 +7,7 @@ import './editor.less';
 const Edit = (props) => {
   const { block, data, onChangeBlock, pathname, selected, manage } = props;
 
+  const metadata = props.metadata || props.properties;
   const properties = isEmpty(data?.data?.blocks)
     ? emptyBlocksForm()
     : data.data;
@@ -40,6 +41,7 @@ const Edit = (props) => {
   return (
     <section className="section-block">
       <BlocksForm
+        metadata={metadata}
         properties={properties}
         manage={manage}
         selectedBlock={selected ? selectedBlock : null}
