@@ -64,16 +64,16 @@ const Edit = (props) => {
   };
   const counterComponent = 
     (props.data.maxChars ?
-      (<p style={counterStyle}>
+      (<p style={counterStyle} className="counter">
         {
           props.data.maxChars ?
             props.data.maxChars - charCount < 0 ?
             (<>
-              {`${charCount - props.data.maxChars} characters over the limit`}
+              <span>{`${charCount - props.data.maxChars} characters over the limit`}</span>
               <Icon name={dissatisfiedSVG} size="24px" />
             </>) :
             (<>
-              {`${props.data.maxChars - charCount } characters remaining out of ${props.data.maxChars}`}
+              <span>{`${props.data.maxChars - charCount } characters remaining out of ${props.data.maxChars}`}</span>
               <Icon name={delightedSVG} size="24px" />
             </>) :
             charCount

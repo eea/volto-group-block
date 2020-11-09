@@ -56,6 +56,7 @@ const Schema = {
       title: 'Maximum Characters',
       description: "The maximum number of characters.",
       type: 'integer',
+      factory: "Integer",
     },
     required: {
       title: 'Required',
