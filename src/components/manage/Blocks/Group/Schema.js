@@ -9,6 +9,7 @@ const Schema = {
         'instructions',
         'allowedBlocks',
         'as',
+        'maxChars',
         'required',
         'fixed',
         'disableNewBlocks',
@@ -50,6 +51,12 @@ const Schema = {
         ['aside', 'aside'],
         ['details', 'details'],
       ],
+    },
+    maxChars: {
+      title: 'Maximum Characters',
+      description: "The maximum number of characters.",
+      type: 'integer',
+      factory: "Integer",
     },
     required: {
       title: 'Required',

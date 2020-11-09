@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { isEmpty } from 'lodash';
 import { BlocksForm } from '@eeacms/volto-blocks-form/components';
 import { emptyBlocksForm } from '@eeacms/volto-blocks-form/helpers';
+import { Icon } from '@plone/volto/components';
+import delightedSVG from '@plone/volto/icons/delighted.svg';
+import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
+import { isEmpty } from 'lodash';
+import React, { useState } from 'react';
 import './editor.less';
 
 const Edit = (props) => {
@@ -22,6 +25,8 @@ const Edit = (props) => {
       properties.blocks_layout.items[0] !== selectedBlock
     ) {
       setSelectedBlock(properties.blocks_layout.items[0]);
+      console.log('block', block)
+      console.log('data', data)
       onChangeBlock(block, {
         ...data,
         data: properties,
@@ -37,6 +42,43 @@ const Edit = (props) => {
   ]);
 
   const blockState = {};
+  let charCount = 0;
+
+  const showCharCounter = () => {
+    if(props.data?.data?.blocks) {
+      Object.keys(props.data?.data?.blocks).forEach(blockId => {
+        charCount = charCount + props.data.data.blocks[blockId]?.plaintext?.length || 0
+      })
+    }
+  }
+  showCharCounter()
+
+  const colors = { ok: '#CCC', warning: 'darkorange', danger: 'crimson' };
+  const counterStyle = {
+    color: charCount < Math.ceil(props.data.maxChars/1.05) ? 
+      colors.ok : 
+      charCount < props.data.maxChars ? 
+      colors.warning : 
+      colors.danger,
+      'textAlign': 'end'
+  };
+  const counterComponent = 
+    (props.data.maxChars ?
+      (<p style={counterStyle} className="counter">
+        {
+          props.data.maxChars ?
+            props.data.maxChars - charCount < 0 ?
+            (<>
+              <span>{`${charCount - props.data.maxChars} characters over the limit`}</span>
+              <Icon name={dissatisfiedSVG} size="24px" />
+            </>) :
+            (<>
+              <span>{`${props.data.maxChars - charCount } characters remaining out of ${props.data.maxChars}`}</span>
+              <Icon name={delightedSVG} size="24px" />
+            </>) :
+            charCount
+        }
+    </p>) : null);
 
   return (
     <section className="section-block">
@@ -69,6 +111,8 @@ const Edit = (props) => {
         }}
         pathname={pathname}
       />
+
+      {counterComponent}
     </section>
   );
 };
