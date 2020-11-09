@@ -1,10 +1,17 @@
 {
   "name": "@eeacms/volto-group-block",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "volto-group-block: Volto block to be used to group other blocks",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
   "license": "MIT",
+  "devDependencies": {
+    "release-it": "*"
+  },
+  "scripts": {
+    "release": "release-it",
+    "bootstrap": "node bootstrap"
+  },
   "homepage": "https://github.com/eea/volto-group-block",
   "keywords": [
     "volto-addon",
@@ -17,12 +24,5 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:eea/volto-group-block.git"
-  },
-  "devDependencies": {
-    "release-it": "*"
-  },
-  "scripts": {
-    "release": "release-it",
-    "bootstrap": "./bootstrap"
   }
 }
