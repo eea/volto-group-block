@@ -12,21 +12,19 @@
 
 1. Create new volto project if you don't already have one:
     ```
-    $ npm install -g @plone/create-volto-app
-    $ create-volto-app my-volto-project
+    $ npm install -g yo @plone/generator-volto
+    $ yo @plone/volto my-volto-project --addon @eeacms/volto-group-block
     $ cd my-volto-project
     ```
 
-1. Update `package.json`:
+1. If you already have a volto project, just update `package.json`:
     ``` JSON
     "addons": [
-        "@eeacms/volto-blocks-form",
         "@eeacms/volto-group-block"
     ],
 
     "dependencies": {
-        "@eeacms/volto-blocks-form": "github:eea/volto-blocks-form#0.4.0",
-        "@eeacms/volto-group-block": "github:eea/volto-group-block#0.1.0"
+        "@eeacms/volto-group-block": "^1.0.0"
     }
     ```
 
