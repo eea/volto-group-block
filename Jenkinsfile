@@ -35,6 +35,64 @@ pipeline {
       }
     }
 
+    stage('Tests') {
+      steps {
+        parallel(
+
+          "Volto": {
+            node(label: 'docker') {
+              script {
+                try {
+                  sh '''docker run -i --name="$BUILD_TAG-volto" -e NAMESPACE="$NAMESPACE" -e DEPENDENCIES="$DEPENDENCIES" -e GIT_NAME=$GIT_NAME -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/volto-test'''
+                  sh '''mkdir -p xunit-reports/coverage'''
+                  sh '''docker cp -r $BUILD_TAG-volto:/opt/frontend/my-volto-project/coverage/* xunit-reports/coverage/'''
+                  sh '''docker cp $BUILD_TAG-volto:/opt/frontend/my-volto-project/junit.xml xunit-reports/'''
+                  sh '''docker cp $BUILD_TAG-volto:/opt/frontend/my-volto-project/unit_tests_log.txt xunit-reports/'''
+                  stash name: "xunit-reports", includes: "xunit-reports/*"
+                  junit 'xunit-reports/junit.xml'
+                  archiveArtifacts artifacts: 'xunit-reports/unit_tests_log.txt', fingerprint: true
+                  publishHTML (target : [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'xunit-reports/coverage/lcov-report',
+                    reportFiles: 'index.html',
+                    reportName: 'UTCoverage',
+                    reportTitles: 'Unit Tests Code Coverage'
+                  ])
+                } finally {
+                  sh '''docker rm -v $BUILD_TAG-volto'''
+                }
+              }
+            }
+          }
+        )
+      }
+    }
+
+    stage('Report to SonarQube') {
+      // Exclude Pull-Requests
+      when {
+        allOf {
+          environment name: 'CHANGE_ID', value: ''
+        }
+      }
+      steps {
+        node(label: 'swarm') {
+          script{
+            checkout scm
+            dir("xunit-reports") {
+              unstash "xunit-reports"
+            }
+            withSonarQubeEnv('Sonarqube') {
+              sh '''sonar-scanner -Dsonar.javascript.lcov.reportPaths=./xunit-reports/coverage/lcov.info -Dsonar.sources=./src -Dsonar.projectKey=$GIT_NAME-$BRANCH_NAME -Dsonar.projectVersion=$BRANCH_NAME-$BUILD_NUMBER'''
+              sh '''try=2; while [ \$try -gt 0 ]; do curl -s -XPOST -u "${SONAR_AUTH_TOKEN}:" "${SONAR_HOST_URL}api/project_tags/set?project=${GIT_NAME}-${BRANCH_NAME}&tags=${SONARQUBE_TAGS},${BRANCH_NAME}" > set_tags_result; if [ \$(grep -ic error set_tags_result ) -eq 0 ]; then try=0; else cat set_tags_result; echo "... Will retry"; sleep 60; try=\$(( \$try - 1 )); fi; done'''
+            }
+          }
+        }
+      }
+    }
+
   }
 
   post {
