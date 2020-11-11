@@ -1,7 +1,7 @@
 # volto-group-block
 [![Releases](https://img.shields.io/github/v/release/eea/volto-group-block)](https://github.com/eea/volto-group-block/releases)
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-group-block%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-group-block/job/master/display/redirect)
-[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-group-block%develop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-group-block/job/develop/display/redirect)
+[![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-group-block%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-group-block/job/develop/display/redirect)
 
 [Volto](https://github.com/plone/volto) add-on to group blocks in sections and filter available blocks per content-type per section
 
