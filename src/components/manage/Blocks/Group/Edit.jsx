@@ -25,8 +25,6 @@ const Edit = (props) => {
       properties.blocks_layout.items[0] !== selectedBlock
     ) {
       setSelectedBlock(properties.blocks_layout.items[0]);
-      console.log('block', block);
-      console.log('data', data);
       onChangeBlock(block, {
         ...data,
         data: properties,
