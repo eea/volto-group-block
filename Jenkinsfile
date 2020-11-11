@@ -44,11 +44,11 @@ pipeline {
               script {
                 try {
                   sh '''docker run -i --name="$BUILD_TAG-volto" -e NAMESPACE="$NAMESPACE" -e DEPENDENCIES="$DEPENDENCIES" -e GIT_NAME=$GIT_NAME -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/volto-test'''
-                  sh '''mkdir -p xunit-reports/coverage'''
-                  sh '''docker cp -r $BUILD_TAG-volto:/opt/frontend/my-volto-project/coverage/* xunit-reports/coverage/'''
+                  sh '''mkdir -p xunit-reports'''
+                  sh '''docker cp $BUILD_TAG-volto:/opt/frontend/my-volto-project/coverage xunit-reports/'''
                   sh '''docker cp $BUILD_TAG-volto:/opt/frontend/my-volto-project/junit.xml xunit-reports/'''
                   sh '''docker cp $BUILD_TAG-volto:/opt/frontend/my-volto-project/unit_tests_log.txt xunit-reports/'''
-                  stash name: "xunit-reports", includes: "xunit-reports/*"
+                  stash name: "xunit-reports", includes: "xunit-reports/**/*"
                   junit 'xunit-reports/junit.xml'
                   archiveArtifacts artifacts: 'xunit-reports/unit_tests_log.txt', fingerprint: true
                   publishHTML (target : [
