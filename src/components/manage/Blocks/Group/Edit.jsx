@@ -25,8 +25,8 @@ const Edit = (props) => {
       properties.blocks_layout.items[0] !== selectedBlock
     ) {
       setSelectedBlock(properties.blocks_layout.items[0]);
-      console.log('block', block)
-      console.log('data', data)
+      console.log('block', block);
+      console.log('data', data);
       onChangeBlock(block, {
         ...data,
         data: properties,
@@ -45,40 +45,48 @@ const Edit = (props) => {
   let charCount = 0;
 
   const showCharCounter = () => {
-    if(props.data?.data?.blocks) {
-      Object.keys(props.data?.data?.blocks).forEach(blockId => {
-        charCount = charCount + props.data.data.blocks[blockId]?.plaintext?.length || 0
-      })
+    if (props.data?.data?.blocks) {
+      Object.keys(props.data?.data?.blocks).forEach((blockId) => {
+        charCount =
+          charCount + props.data.data.blocks[blockId]?.plaintext?.length || 0;
+      });
     }
-  }
-  showCharCounter()
+  };
+  showCharCounter();
 
   const colors = { ok: '#CCC', warning: 'darkorange', danger: 'crimson' };
   const counterStyle = {
-    color: charCount < Math.ceil(props.data.maxChars/1.05) ? 
-      colors.ok : 
-      charCount < props.data.maxChars ? 
-      colors.warning : 
-      colors.danger,
-      'textAlign': 'end'
+    color:
+      charCount < Math.ceil(props.data.maxChars / 1.05)
+        ? colors.ok
+        : charCount < props.data.maxChars
+        ? colors.warning
+        : colors.danger,
+    textAlign: 'end',
   };
-  const counterComponent = 
-    (props.data.maxChars ?
-      (<p style={counterStyle} className="counter">
-        {
-          props.data.maxChars ?
-            props.data.maxChars - charCount < 0 ?
-            (<>
-              <span>{`${charCount - props.data.maxChars} characters over the limit`}</span>
-              <Icon name={dissatisfiedSVG} size="24px" />
-            </>) :
-            (<>
-              <span>{`${props.data.maxChars - charCount } characters remaining out of ${props.data.maxChars}`}</span>
-              <Icon name={delightedSVG} size="24px" />
-            </>) :
-            charCount
-        }
-    </p>) : null);
+  const counterComponent = props.data.maxChars ? (
+    <p style={counterStyle} className="counter">
+      {props.data.maxChars ? (
+        props.data.maxChars - charCount < 0 ? (
+          <>
+            <span>{`${
+              charCount - props.data.maxChars
+            } characters over the limit`}</span>
+            <Icon name={dissatisfiedSVG} size="24px" />
+          </>
+        ) : (
+          <>
+            <span>{`${
+              props.data.maxChars - charCount
+            } characters remaining out of ${props.data.maxChars}`}</span>
+            <Icon name={delightedSVG} size="24px" />
+          </>
+        )
+      ) : (
+        charCount
+      )}
+    </p>
+  ) : null;
 
   return (
     <section className="section-block">

@@ -1,4 +1,5 @@
 # volto-group-block
+
 [![Releases](https://img.shields.io/github/v/release/eea/volto-group-block)](https://github.com/eea/volto-group-block/releases)
 
 [Volto](https://github.com/plone/volto) add-on to group blocks in sections and filter available blocks per content-type per section
@@ -7,32 +8,34 @@
 
 ![Group blocks and restrict available blocks](https://github.com/eea/volto-group-block/raw/docs/docs/volto-group-block.gif)
 
-
 ## Getting started
 
 1. Create new volto project if you don't already have one:
-    ```
-    $ npm install -g yo @plone/generator-volto
-    $ yo @plone/volto my-volto-project --addon @eeacms/volto-group-block
-    $ cd my-volto-project
-    ```
+
+   ```
+   $ npm install -g yo @plone/generator-volto
+   $ yo @plone/volto my-volto-project --addon @eeacms/volto-group-block
+   $ cd my-volto-project
+   ```
 
 1. If you already have a volto project, just update `package.json`:
-    ``` JSON
-    "addons": [
-        "@eeacms/volto-group-block"
-    ],
 
-    "dependencies": {
-        "@eeacms/volto-group-block": "^1.0.0"
-    }
-    ```
+   ```JSON
+   "addons": [
+       "@eeacms/volto-group-block"
+   ],
+
+   "dependencies": {
+       "@eeacms/volto-group-block": "^1.0.0"
+   }
+   ```
 
 1. Install new add-ons and restart Volto:
-    ```
-    $ yarn
-    $ yarn start
-    ```
+
+   ```
+   $ yarn
+   $ yarn start
+   ```
 
 1. Go to http://localhost:3000
 
