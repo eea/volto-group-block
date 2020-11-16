@@ -16,7 +16,9 @@
    ```
    $ npm install -g yo @plone/generator-volto
    $ yo @plone/volto my-volto-project --addon @eeacms/volto-group-block
+
    $ cd my-volto-project
+   $ yarn add -W @eeacms/volto-group-block
    ```
 
 1. If you already have a volto project, just update `package.json`:
