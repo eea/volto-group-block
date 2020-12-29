@@ -43,13 +43,24 @@ const Edit = (props) => {
   const blockState = {};
   let charCount = 0;
 
+  const countTextInBlocks = (blocksObject) => {
+    let groupCharCount = 0;
+
+    Object.keys(blocksObject).forEach((blockId) => {
+      const charCountTemp = blocksObject[blockId]?.text?.blocks[0]?.text
+        ? blocksObject[blockId].text.blocks[0].text.length
+        : blocksObject[blockId]['@type'] === 'group'
+        ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
+        : 0;
+      groupCharCount = groupCharCount + charCountTemp;
+    });
+
+    return groupCharCount;
+  };
+
   const showCharCounter = () => {
     if (props.data?.data?.blocks) {
-      Object.keys(props.data?.data?.blocks).forEach((blockId) => {
-        charCount =
-          charCount +
-          (props.data.data.blocks[blockId]?.text?.blocks[0]?.text?.length || 0);
-      });
+      charCount = countTextInBlocks(props.data?.data?.blocks);
     }
   };
   showCharCounter();
