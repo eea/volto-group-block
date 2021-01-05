@@ -4,6 +4,7 @@ import { Icon } from '@plone/volto/components';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import './editor.less';
 
@@ -42,12 +43,24 @@ const Edit = (props) => {
   const blockState = {};
   let charCount = 0;
 
+  const countTextInBlocks = (blocksObject) => {
+    let groupCharCount = 0;
+
+    Object.keys(blocksObject).forEach((blockId) => {
+      const charCountTemp = blocksObject[blockId]?.text?.blocks[0]?.text
+        ? blocksObject[blockId].text.blocks[0].text.length
+        : blocksObject[blockId]['@type'] === 'group'
+        ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
+        : 0;
+      groupCharCount = groupCharCount + charCountTemp;
+    });
+
+    return groupCharCount;
+  };
+
   const showCharCounter = () => {
     if (props.data?.data?.blocks) {
-      Object.keys(props.data?.data?.blocks).forEach((blockId) => {
-        charCount =
-          charCount + props.data.data.blocks[blockId]?.plaintext?.length || 0;
-      });
+      charCount = countTextInBlocks(props.data?.data?.blocks);
     }
   };
   showCharCounter();
@@ -62,26 +75,23 @@ const Edit = (props) => {
         : colors.danger,
     textAlign: 'end',
   };
+
   const counterComponent = props.data.maxChars ? (
     <p style={counterStyle} className="counter">
-      {props.data.maxChars ? (
-        props.data.maxChars - charCount < 0 ? (
-          <>
-            <span>{`${
-              charCount - props.data.maxChars
-            } characters over the limit`}</span>
-            <Icon name={dissatisfiedSVG} size="24px" />
-          </>
-        ) : (
-          <>
-            <span>{`${
-              props.data.maxChars - charCount
-            } characters remaining out of ${props.data.maxChars}`}</span>
-            <Icon name={delightedSVG} size="24px" />
-          </>
-        )
+      {props.data.maxChars - charCount < 0 ? (
+        <>
+          <span>{`${
+            charCount - props.data.maxChars
+          } characters over the limit`}</span>
+          <Icon name={dissatisfiedSVG} size="24px" />
+        </>
       ) : (
-        charCount
+        <>
+          <span>{`${
+            props.data.maxChars - charCount
+          } characters remaining out of ${props.data.maxChars}`}</span>
+          <Icon name={delightedSVG} size="24px" />
+        </>
       )}
     </p>
   ) : null;
@@ -121,6 +131,15 @@ const Edit = (props) => {
       {counterComponent}
     </section>
   );
+};
+
+Edit.propTypes = {
+  block: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  onChangeBlock: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  manage: PropTypes.bool.isRequired,
 };
 
 export default Edit;
