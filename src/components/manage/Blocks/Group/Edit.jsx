@@ -50,7 +50,9 @@ const Edit = (props) => {
       const charCountTemp = blocksObject[blockId]?.text?.blocks[0]?.text
         ? blocksObject[blockId].text.blocks[0].text.length
         : blocksObject[blockId]['@type'] === 'group'
-        ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
+        ? blocksObject[blockId]?.data?.blocks
+          ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
+          : 0
         : 0;
       groupCharCount = groupCharCount + charCountTemp;
     });
