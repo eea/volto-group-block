@@ -47,12 +47,14 @@ const Edit = (props) => {
     let groupCharCount = 0;
 
     Object.keys(blocksObject).forEach((blockId) => {
-      const charCountTemp = blocksObject[blockId]?.text?.blocks[0]?.text
+      const charCountTemp = blocksObject[blockId]?.plaintext
+        ? blocksObject[blockId]?.plaintext.length
+        : blocksObject[blockId]?.text?.blocks[0]?.text
         ? blocksObject[blockId].text.blocks[0].text.length
-        : blocksObject[blockId]['@type'] === 'group'
-        ? blocksObject[blockId]?.data?.blocks
-          ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
-          : 0
+        : blocksObject[blockId]?.data?.blocks
+        ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
+        : blocksObject[blockId]?.blocks
+        ? countTextInBlocks(blocksObject[blockId]?.blocks)
         : 0;
       groupCharCount = groupCharCount + charCountTemp;
     });
