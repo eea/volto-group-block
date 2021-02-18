@@ -5,7 +5,7 @@ pipeline {
         GIT_NAME = "volto-group-block"
         NAMESPACE = "@eeacms"
         SONARQUBE_TAGS = "volto.eea.europa.eu"
-        DEPENDENCIES = "@eeacms/volto-blocks-form"
+        DEPENDENCIES = ""
     }
 
   stages {

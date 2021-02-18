@@ -17,7 +17,6 @@
    $ npm install -g yo @plone/generator-volto
    $ yo @plone/volto \
         my-volto-project \
-        --addon @eeacms/volto-blocks-form \
         --addon @eeacms/volto-group-block \
         --no-interactive \
         --skip-install
@@ -30,7 +29,6 @@
 
    ```JSON
    "addons": [
-       "@eeacms/volto-blocks-form",
        "@eeacms/volto-group-block"
    ],
 
