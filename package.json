@@ -19,7 +19,7 @@
     "url": "git@github.com:eea/volto-group-block.git"
   },
   "dependencies": {
-    "@eeacms/volto-blocks-form": "^1.0.0"
+    "@eeacms/volto-blocks-form": "^2.0.0"
   },
   "scripts": {
     "release": "release-it",
