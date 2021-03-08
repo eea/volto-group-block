@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderBlocks } from '@eeacms/volto-blocks-form/components';
+import { RenderBlocks } from '@plone/volto/components';
 
 const View = (props) => {
   const { data } = props;

@@ -1,11 +1,11 @@
-import { BlocksForm } from '@eeacms/volto-blocks-form/components';
-import { emptyBlocksForm } from '@eeacms/volto-blocks-form/helpers';
+import React, { useState } from 'react';
+import { isEmpty } from 'lodash';
+import { BlocksForm } from '@plone/volto/components';
+import { emptyBlocksForm } from '@plone/volto/helpers';
 import { Icon } from '@plone/volto/components';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
-import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 import './editor.less';
 
 const Edit = (props) => {

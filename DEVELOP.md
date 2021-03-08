@@ -14,7 +14,6 @@ Before starting make sure your development environment is properly set. See [Vol
 
         $ yo @plone/volto \
              my-dev-project \
-             --addon @eeacms/volto-blocks-form \
              --addon @eeacms/volto-group-block \
              --workspace src/addons/volto-group-block \
              --no-interactive \
