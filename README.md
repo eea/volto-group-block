@@ -33,7 +33,7 @@
    ],
 
    "dependencies": {
-       "@eeacms/volto-group-block": "^1.0.0"
+       "@eeacms/volto-group-block": "^2.0.0"
    }
    ```
 
