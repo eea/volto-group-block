@@ -6,6 +6,11 @@ import { Icon } from '@plone/volto/components';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
+import { Button } from 'semantic-ui-react';
+import EditBlockWrapper from './EditBlockWrapper';
+import tuneSVG from '@plone/volto/icons/configuration.svg';
+import helpSVG from '@plone/volto/icons/help.svg';
+
 import './editor.less';
 
 const Edit = (props) => {
@@ -130,7 +135,48 @@ const Edit = (props) => {
           }
         }}
         pathname={pathname}
-      />
+      >
+        {({ draginfo }, editBlock, blockProps) => (
+          <EditBlockWrapper
+            draginfo={draginfo}
+            blockProps={blockProps}
+            extraControls={
+              <>
+                {!data?.readOnlySettings && (
+                  <>
+                    {manage ? (
+                      <Button
+                        icon
+                        basic
+                        title="Group settings"
+                        onClick={() => {
+                          setSelectedBlock();
+                          props.setSidebarTab(1);
+                        }}
+                      >
+                        <Icon name={tuneSVG} className="" size="19px" />
+                      </Button>
+                    ) : (
+                      <Button
+                        icon
+                        basic
+                        title="Help"
+                        onClick={() => {
+                          props.setSidebarTab(1);
+                        }}
+                      >
+                        <Icon name={helpSVG} className="" size="19px" />
+                      </Button>
+                    )}
+                  </>
+                )}
+              </>
+            }
+          >
+            {editBlock}
+          </EditBlockWrapper>
+        )}
+      </BlocksForm>
 
       {counterComponent}
     </section>
