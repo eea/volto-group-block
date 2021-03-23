@@ -1,8 +1,12 @@
 .block-editor-group {
   margin: 0 -2.2rem;
 
-  .block-editor-group {
-    margin: 0 0.1rem;
+  // .block-editor-group {
+  //   margin: 0 0.1rem;
+  // }
+
+  [data-rbd-draggable-context-id] {
+    margin-bottom: 1rem;
   }
 
   .selected {
@@ -52,38 +56,13 @@
     border-bottom: 1px solid #fff;
     margin-top: -45px;
     background-color: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 
     .ui.basic.button {
       padding: 3px;
       padding-right: 0;
     }
 
-    .wrapper-column-block {
-      > .ui.basic.button {
-        &:hover {
-          background-color: transparent !important;
-        }
-      }
-    }
-
-    > .ui.basic.button {
-      &:hover {
-        background-color: transparent !important;
-      }
-
-      svg {
-        color: #134448;
-      }
-    }
-
-    .drag.handle.wrapper-column-block {
-      position: initial;
-      left: initial;
-      min-height: 1em;
-      margin-left: initial !important;
-      font-size: 1rem;
-      line-height: 1em;
-      vertical-align: baseline;
-    }
   }
 }

@@ -1,10 +1,11 @@
 const Schema = {
-  title: 'Group block settings',
+  title: 'Section (Group) settings',
   fieldsets: [
     {
       id: 'default',
       title: 'Default',
       fields: [
+        'id',
         'placeholder',
         'instructions',
         'allowedBlocks',
@@ -14,10 +15,16 @@ const Schema = {
         'fixed',
         'disableNewBlocks',
         'readOnly',
+        'disableInnerButtons',
       ],
     },
   ],
   properties: {
+    id: {
+      title: 'Name',
+      description: 'Section friendly name',
+      type: 'string',
+    },
     allowedBlocks: {
       title: 'Allowed blocks',
       description: 'Allow only the following blocks types',
@@ -76,6 +83,11 @@ const Schema = {
     readOnly: {
       title: 'Read-only',
       description: 'Disable editing on this block',
+      type: 'boolean',
+    },
+    disableInnerButtons: {
+      title: 'Disable inner buttons',
+      description: 'Hide all block related buttons within this block',
       type: 'boolean',
     },
   },

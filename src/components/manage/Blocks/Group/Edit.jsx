@@ -8,7 +8,7 @@ import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 import EditBlockWrapper from './EditBlockWrapper';
-import tuneSVG from '@plone/volto/icons/configuration.svg';
+import tuneSVG from '@plone/volto/icons/show-blocks.svg';
 import helpSVG from '@plone/volto/icons/help.svg';
 
 import './editor.less';
@@ -140,6 +140,7 @@ const Edit = (props) => {
           <EditBlockWrapper
             draginfo={draginfo}
             blockProps={blockProps}
+            disabled={data.disableInnerButtons}
             extraControls={
               <>
                 {!data?.readOnlySettings && (
@@ -148,7 +149,7 @@ const Edit = (props) => {
                       <Button
                         icon
                         basic
-                        title="Group settings"
+                        title="Section (Group) settings"
                         onClick={() => {
                           setSelectedBlock();
                           props.setSidebarTab(1);

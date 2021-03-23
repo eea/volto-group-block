@@ -58,7 +58,14 @@ class EditBlockWrapper extends React.Component {
   blockNode = React.createRef();
 
   render() {
-    const { intl, blockProps, draginfo, extraControls, children } = this.props;
+    const {
+      intl,
+      blockProps,
+      draginfo,
+      extraControls,
+      disabled,
+      children,
+    } = this.props;
 
     const {
       allowedBlocks,
@@ -70,7 +77,8 @@ class EditBlockWrapper extends React.Component {
     } = blockProps;
     const type = data['@type'];
     const { disableNewBlocks } = data;
-    const visible = !data.fixed;
+    const dragVisible = !data.fixed;
+    const visible = selected && !disabled;
 
     const required = isBoolean(data.required)
       ? data.required
@@ -92,11 +100,11 @@ class EditBlockWrapper extends React.Component {
               {...draginfo.dragHandleProps}
             ></div>
           )}
-          {selected && (
+          {visible && (
             <div className="block-toolbar">
               <div
                 style={{
-                  display: visible ? 'inline-block' : 'none',
+                  display: dragVisible ? 'inline-block' : 'none',
                 }}
                 {...draginfo.dragHandleProps}
                 className="drag handle wrapper-group-block"
