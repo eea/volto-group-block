@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
-import { BlocksForm } from '@plone/volto/components';
+import { BlocksForm, SidebarPortal } from '@plone/volto/components';
 import { emptyBlocksForm } from '@plone/volto/helpers';
 import { Icon } from '@plone/volto/components';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
-import { Button } from 'semantic-ui-react';
+import { Button, Segment } from 'semantic-ui-react';
 import EditBlockWrapper from './EditBlockWrapper';
 import tuneSVG from '@plone/volto/icons/row.svg';
 import helpSVG from '@plone/volto/icons/help.svg';
@@ -14,7 +14,15 @@ import helpSVG from '@plone/volto/icons/help.svg';
 import './editor.less';
 
 const Edit = (props) => {
-  const { block, data, onChangeBlock, pathname, selected, manage } = props;
+  const {
+    block,
+    data,
+    onChangeBlock,
+    pathname,
+    selected,
+    manage,
+    formDescription,
+  } = props;
 
   const metadata = props.metadata || props.properties;
   const properties = isEmpty(data?.data?.blocks)
@@ -105,6 +113,12 @@ const Edit = (props) => {
     </p>
   ) : null;
 
+  // Get editing instructions from block settings or props
+  let instructions = data?.instructions?.data || data?.instructions;
+  if (!instructions || instructions === '<p><br/></p>') {
+    instructions = formDescription;
+  }
+
   return (
     <section className="section-block">
       <BlocksForm
@@ -163,6 +177,7 @@ const Edit = (props) => {
                         basic
                         title="Help"
                         onClick={() => {
+                          setSelectedBlock();
                           props.setSidebarTab(1);
                         }}
                       >
@@ -180,6 +195,13 @@ const Edit = (props) => {
       </BlocksForm>
 
       {counterComponent}
+      {instructions && (
+        <SidebarPortal selected={selected}>
+          <Segment attached>
+            <div dangerouslySetInnerHTML={{ __html: instructions }} />
+          </Segment>
+        </SidebarPortal>
+      )}
     </section>
   );
 };
