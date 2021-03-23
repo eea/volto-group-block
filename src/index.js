@@ -1,4 +1,4 @@
-import codeSVG from '@plone/volto/icons/show-blocks.svg';
+import codeSVG from '@plone/volto/icons/row.svg';
 import { GroupBlockEdit, GroupBlockView, GroupBlockSchema } from './components';
 
 const applyConfig = (config) => {
