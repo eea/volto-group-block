@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
-import { BlocksForm, SidebarPortal } from '@plone/volto/components';
+import {
+  BlocksForm,
+  SidebarPortal,
+  Icon,
+  InlineForm,
+} from '@plone/volto/components';
 import { emptyBlocksForm } from '@plone/volto/helpers';
-import { Icon } from '@plone/volto/components';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
 import { Button, Segment } from 'semantic-ui-react';
 import EditBlockWrapper from './EditBlockWrapper';
+import EditSchema from './EditSchema';
 import helpSVG from '@plone/volto/icons/help.svg';
-
 import './editor.less';
 
 const Edit = (props) => {
@@ -127,7 +131,7 @@ const Edit = (props) => {
         }}
         aria-hidden="true"
       >
-        {data.id || 'Section'}
+        {data.title || 'Section'}
       </legend>
       <BlocksForm
         metadata={metadata}
@@ -189,13 +193,26 @@ const Edit = (props) => {
       </BlocksForm>
 
       {counterComponent}
-      {instructions && (
-        <SidebarPortal selected={selected}>
+      <SidebarPortal selected={selected}>
+        {instructions && (
           <Segment attached>
             <div dangerouslySetInnerHTML={{ __html: instructions }} />
           </Segment>
-        </SidebarPortal>
-      )}
+        )}
+        {!data?.readOnlySettings && (
+          <InlineForm
+            schema={EditSchema}
+            title="Section (Group) settings"
+            formData={data}
+            onChangeField={(id, value) => {
+              props.onChangeBlock(props.block, {
+                ...props.data,
+                [id]: value,
+              });
+            }}
+          />
+        )}
+      </SidebarPortal>
     </fieldset>
   );
 };

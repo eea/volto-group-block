@@ -1,5 +1,5 @@
 import codeSVG from '@plone/volto/icons/row.svg';
-import { GroupBlockEdit, GroupBlockView, GroupBlockSchema } from './components';
+import { GroupBlockEdit, GroupBlockView, GroupBlockLayout } from './components';
 
 const applyConfig = (config) => {
   const choices = Object.keys(config.blocks.blocksConfig)
@@ -16,11 +16,11 @@ const applyConfig = (config) => {
   choices.push(['group', 'Group']);
 
   const schema = {
-    ...GroupBlockSchema,
+    ...GroupBlockLayout,
     properties: {
-      ...GroupBlockSchema.properties,
+      ...GroupBlockLayout.properties,
       allowedBlocks: {
-        ...GroupBlockSchema.properties.allowedBlocks,
+        ...GroupBlockLayout.properties.allowedBlocks,
         items: {
           choices: choices,
         },

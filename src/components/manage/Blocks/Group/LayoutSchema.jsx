@@ -5,23 +5,24 @@ const Schema = {
       id: 'default',
       title: 'Default',
       fields: [
-        'id',
+        'title',
         'placeholder',
         'instructions',
         'allowedBlocks',
         'as',
         'maxChars',
+        'readOnlySettings',
+        'disableInnerButtons',
         'required',
         'fixed',
         'disableNewBlocks',
         'readOnly',
-        'disableInnerButtons',
       ],
     },
   ],
   properties: {
-    id: {
-      title: 'Name',
+    title: {
+      title: 'Title',
       description: 'Section friendly name',
       type: 'string',
     },
@@ -83,6 +84,11 @@ const Schema = {
     readOnly: {
       title: 'Read-only',
       description: 'Disable editing on this block',
+      type: 'boolean',
+    },
+    readOnlySettings: {
+      title: 'Read-only settings',
+      description: 'Disable editing on section block settings',
       type: 'boolean',
     },
     disableInnerButtons: {
