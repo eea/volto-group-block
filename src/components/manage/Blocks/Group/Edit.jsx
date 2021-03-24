@@ -8,7 +8,6 @@ import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
 import { Button, Segment } from 'semantic-ui-react';
 import EditBlockWrapper from './EditBlockWrapper';
-import tuneSVG from '@plone/volto/icons/row.svg';
 import helpSVG from '@plone/volto/icons/help.svg';
 
 import './editor.less';

@@ -6,7 +6,6 @@
 @borderColor: rgba(120, 192, 215, 0.75);
 
 .block-editor-group {
-
   [data-rbd-draggable-context-id] {
     margin-bottom: 1rem;
   }
@@ -28,17 +27,17 @@
     border: none;
 
     legend {
-      text-align: center;
-      background-color: @pageBackground;
       position: absolute;
-      width: fit-content;
       top: -1em;
       left: 1rem;
+      width: fit-content;
       padding: 0 1rem;
-      margin-left: auto;
       margin-right: auto;
+      margin-left: auto;
+      background-color: @pageBackground;
       color: @borderColor;
       cursor: pointer;
+      text-align: center;
     }
   }
 
