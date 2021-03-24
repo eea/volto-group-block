@@ -120,7 +120,16 @@ const Edit = (props) => {
   }
 
   return (
-    <section className="section-block">
+    <fieldset className="section-block">
+      <legend
+        onClick={() => {
+          setSelectedBlock();
+          props.setSidebarTab(1);
+        }}
+        aria-hidden="true"
+      >
+        {data.id || 'Section'}
+      </legend>
       <BlocksForm
         metadata={metadata}
         properties={properties}
@@ -157,33 +166,19 @@ const Edit = (props) => {
             disabled={data.disableInnerButtons}
             extraControls={
               <>
-                {!data?.readOnlySettings && (
+                {!data?.readOnlySettings && instructions && (
                   <>
-                    {manage ? (
-                      <Button
-                        icon
-                        basic
-                        title="Go to Section (Group) settings"
-                        onClick={() => {
-                          setSelectedBlock();
-                          props.setSidebarTab(1);
-                        }}
-                      >
-                        <Icon name={tuneSVG} className="" size="19px" />
-                      </Button>
-                    ) : (
-                      <Button
-                        icon
-                        basic
-                        title="Help"
-                        onClick={() => {
-                          setSelectedBlock();
-                          props.setSidebarTab(1);
-                        }}
-                      >
-                        <Icon name={helpSVG} className="" size="19px" />
-                      </Button>
-                    )}
+                    <Button
+                      icon
+                      basic
+                      title="Help"
+                      onClick={() => {
+                        setSelectedBlock();
+                        props.setSidebarTab(1);
+                      }}
+                    >
+                      <Icon name={helpSVG} className="" size="19px" />
+                    </Button>
                   </>
                 )}
               </>
@@ -202,7 +197,7 @@ const Edit = (props) => {
           </Segment>
         </SidebarPortal>
       )}
-    </section>
+    </fieldset>
   );
 };
 

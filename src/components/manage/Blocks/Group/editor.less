@@ -1,34 +1,51 @@
-.block-editor-group {
-  margin: 0 -2.2rem;
+@type: 'extra';
+@element: 'custom';
 
-  // .block-editor-group {
-  //   margin: 0 0.1rem;
-  // }
+@import (multiple, reference, optional) '../../theme.config';
+
+@borderColor: rgba(120, 192, 215, 0.75);
+
+.block-editor-group {
 
   [data-rbd-draggable-context-id] {
     margin-bottom: 1rem;
   }
 
-  .selected {
-    .delete-button {
-      display: none !important;
-    }
+  .delete-button {
+    display: none !important;
+  }
 
-    .block-add-button {
-      display: none !important;
-    }
+  .block-add-button {
+    display: none !important;
   }
 
   .block.group.selected::before,
   .block.group:hover::before {
     border-style: dashed;
-    border-radius: 0.5rem;
+  }
+
+  fieldset {
+    border: none;
+
+    legend {
+      text-align: center;
+      background-color: @pageBackground;
+      position: absolute;
+      width: fit-content;
+      top: -1em;
+      left: 1rem;
+      padding: 0 1rem;
+      margin-left: auto;
+      margin-right: auto;
+      color: @borderColor;
+      cursor: pointer;
+    }
   }
 
   .section-block {
     padding-top: 1rem;
     padding-bottom: 0.1rem;
-    margin: 0 2rem;
+    margin: 0;
   }
 
   .counter {
@@ -42,7 +59,7 @@
   .blocks-chooser {
     right: 0;
     left: auto;
-    margin-top: 50px;
+    margin-top: 3rem;
   }
 
   .block-toolbar {
@@ -52,10 +69,10 @@
     display: flex;
     padding: 5px;
     border: none;
-    border: 1px solid #78c0d7bf;
-    border-bottom: 1px solid #fff;
+    border: 1px solid @borderColor;
+    border-bottom: 1px solid @pageBackground;
     margin-top: -45px;
-    background-color: #fff;
+    background-color: @pageBackground;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
 
