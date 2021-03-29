@@ -67,7 +67,6 @@
     z-index: 3;
     right: -9px;
     display: flex;
-    padding: 5px;
     border: none;
     border: 1px solid @borderColor;
     border-bottom: 1px solid @pageBackground;
@@ -77,8 +76,11 @@
     border-top-right-radius: 1rem;
 
     .ui.basic.button {
-      padding: 3px;
-      padding-right: 0;
+      padding: 8px 5px;
+    }
+
+    .ui.basic.button:hover {
+      background: transparent !important;
     }
   }
 }

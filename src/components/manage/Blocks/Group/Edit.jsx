@@ -97,7 +97,15 @@ const Edit = (props) => {
   };
 
   const counterComponent = props.data.maxChars ? (
-    <p style={counterStyle} className="counter">
+    <p
+      style={counterStyle}
+      className="counter"
+      onClick={() => {
+        setSelectedBlock();
+        props.setSidebarTab(1);
+      }}
+      aria-hidden="true"
+    >
       {props.data.maxChars - charCount < 0 ? (
         <>
           <span>{`${
@@ -141,7 +149,9 @@ const Edit = (props) => {
         allowedBlocks={data.allowedBlocks}
         title={data.placeholder}
         description={data?.instructions?.data}
-        onSelectBlock={(id) => setSelectedBlock(id)}
+        onSelectBlock={(id) => {
+          setSelectedBlock(id);
+        }}
         onChangeFormData={(newFormData) => {
           onChangeBlock(block, {
             ...data,
@@ -169,7 +179,7 @@ const Edit = (props) => {
             disabled={data.disableInnerButtons}
             extraControls={
               <>
-                {!data?.readOnlySettings && instructions && (
+                {instructions && (
                   <>
                     <Button
                       icon
@@ -177,7 +187,8 @@ const Edit = (props) => {
                       title="Help"
                       onClick={() => {
                         setSelectedBlock();
-                        props.setSidebarTab(1);
+                        const tab = manage ? 0 : 1;
+                        props.setSidebarTab(tab);
                       }}
                     >
                       <Icon name={helpSVG} className="" size="19px" />

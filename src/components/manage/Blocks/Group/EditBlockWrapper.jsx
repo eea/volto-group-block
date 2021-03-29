@@ -78,7 +78,7 @@ class EditBlockWrapper extends React.Component {
     const type = data['@type'];
     const { disableNewBlocks } = data;
     const dragVisible = !data.fixed;
-    const visible = selected && !disabled;
+    const visible = selected;
 
     const required = isBoolean(data.required)
       ? data.required
@@ -91,7 +91,7 @@ class EditBlockWrapper extends React.Component {
           {...(selected ? draginfo?.draggableProps : null)}
           className={`block-editor-${data['@type']}`}
         >
-          {!selected && (
+          {(!selected || !visible || disabled) && (
             <div
               style={{
                 display: 'none',
@@ -102,56 +102,60 @@ class EditBlockWrapper extends React.Component {
           )}
           {visible && (
             <div className="block-toolbar">
-              <div
-                style={{
-                  display: dragVisible ? 'inline-block' : 'none',
-                }}
-                {...draginfo.dragHandleProps}
-                className="drag handle wrapper-group-block"
-              >
-                <Button icon basic title="Drag and drop">
-                  <Icon name={dragSVG} size="19px" />
-                </Button>
-              </div>
-
               {extraControls}
 
-              {!disableNewBlocks && !blockHasValue(data) && (
-                <Button
-                  icon
-                  basic
-                  title="Add block"
-                  onClick={() => {
-                    this.setState({
-                      addNewBlockOpened: !this.state.addNewBlockOpened,
-                    });
-                  }}
-                  className="group-block-add-button"
-                >
-                  <Icon name={addSVG} className="" size="19px" />
-                </Button>
-              )}
-              {!required && (
-                <Button
-                  icon
-                  basic
-                  title="Remove block"
-                  onClick={() => onDeleteBlock(block)}
-                  className="delete-button-group-block"
-                  aria-label={intl.formatMessage(messages.delete)}
-                >
-                  <Icon name={trashSVG} size="19px" />
-                </Button>
-              )}
-              {this.state.addNewBlockOpened && (
-                <BlockChooser
-                  onMutateBlock={(id, value) => {
-                    this.setState({ addNewBlockOpened: false });
-                    onMutateBlock(id, value);
-                  }}
-                  currentBlock={block}
-                  allowedBlocks={allowedBlocks}
-                />
+              {!disabled && (
+                <>
+                  <div
+                    style={{
+                      display: dragVisible ? 'inline-block' : 'none',
+                    }}
+                    {...draginfo.dragHandleProps}
+                    className="drag handle wrapper-group-block"
+                  >
+                    <Button icon basic title="Drag and drop">
+                      <Icon name={dragSVG} size="19px" />
+                    </Button>
+                  </div>
+
+                  {!disableNewBlocks && !blockHasValue(data) && (
+                    <Button
+                      icon
+                      basic
+                      title="Add block"
+                      onClick={() => {
+                        this.setState({
+                          addNewBlockOpened: !this.state.addNewBlockOpened,
+                        });
+                      }}
+                      className="group-block-add-button"
+                    >
+                      <Icon name={addSVG} className="" size="19px" />
+                    </Button>
+                  )}
+                  {!required && (
+                    <Button
+                      icon
+                      basic
+                      title="Remove block"
+                      onClick={() => onDeleteBlock(block)}
+                      className="delete-button-group-block"
+                      aria-label={intl.formatMessage(messages.delete)}
+                    >
+                      <Icon name={trashSVG} size="19px" />
+                    </Button>
+                  )}
+                  {this.state.addNewBlockOpened && (
+                    <BlockChooser
+                      onMutateBlock={(id, value) => {
+                        this.setState({ addNewBlockOpened: false });
+                        onMutateBlock(id, value);
+                      }}
+                      currentBlock={block}
+                      allowedBlocks={allowedBlocks}
+                    />
+                  )}
+                </>
               )}
             </div>
           )}
