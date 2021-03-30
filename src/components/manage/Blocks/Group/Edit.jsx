@@ -148,7 +148,7 @@ const Edit = (props) => {
         selectedBlock={selected ? selectedBlock : null}
         allowedBlocks={data.allowedBlocks}
         title={data.placeholder}
-        description={data?.instructions?.data}
+        description={instructions}
         onSelectBlock={(id) => {
           setSelectedBlock(id);
         }}
@@ -184,7 +184,7 @@ const Edit = (props) => {
                     <Button
                       icon
                       basic
-                      title="Help"
+                      title="Section help"
                       onClick={() => {
                         setSelectedBlock();
                         const tab = manage ? 0 : 1;
@@ -204,7 +204,7 @@ const Edit = (props) => {
       </BlocksForm>
 
       {counterComponent}
-      <SidebarPortal selected={selected}>
+      <SidebarPortal selected={selected && !selectedBlock}>
         {instructions && (
           <Segment attached>
             <div dangerouslySetInnerHTML={{ __html: instructions }} />
