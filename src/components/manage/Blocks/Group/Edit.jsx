@@ -229,7 +229,7 @@ const Edit = (props) => {
 };
 
 Edit.propTypes = {
-  block: PropTypes.object.isRequired,
+  block: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
   onChangeBlock: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
