@@ -15,6 +15,7 @@ const Schema = {
         'disableInnerButtons',
         'required',
         'fixed',
+        'fixedLayout',
         'disableNewBlocks',
         'readOnly',
       ],
@@ -74,6 +75,12 @@ const Schema = {
     fixed: {
       title: 'Fixed position',
       description: 'Disable drag & drop on this block',
+      type: 'boolean',
+    },
+    fixedLayout: {
+      title: 'Fixed layout',
+      description:
+        'Fixed layout, New blocks created by Editor within this block will be ignored',
       type: 'boolean',
     },
     disableNewBlocks: {
