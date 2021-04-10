@@ -21,6 +21,7 @@ const Edit = (props) => {
     block,
     data,
     onChangeBlock,
+    onChangeField,
     pathname,
     selected,
     manage,
@@ -168,6 +169,8 @@ const Edit = (props) => {
                 ...blockState,
               },
             });
+          } else {
+            onChangeField(id, value);
           }
         }}
         pathname={pathname}
