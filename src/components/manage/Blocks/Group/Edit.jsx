@@ -14,6 +14,7 @@ import { Button, Segment } from 'semantic-ui-react';
 import EditBlockWrapper from './EditBlockWrapper';
 import EditSchema from './EditSchema';
 import helpSVG from '@plone/volto/icons/help.svg';
+import cx from 'classnames';
 import './editor.less';
 
 const Edit = (props) => {
@@ -86,21 +87,16 @@ const Edit = (props) => {
   };
   showCharCounter();
 
-  const colors = { ok: '#CCC', warning: 'darkorange', danger: 'crimson' };
-  const counterStyle = {
-    color:
-      charCount < Math.ceil(props.data.maxChars / 1.05)
-        ? colors.ok
-        : charCount < props.data.maxChars
-        ? colors.warning
-        : colors.danger,
-    textAlign: 'end',
-  };
+  const counterClass =
+    charCount < Math.ceil(props.data.maxChars / 1.05)
+      ? 'info'
+      : charCount < props.data.maxChars
+      ? 'warning'
+      : 'danger';
 
   const counterComponent = props.data.maxChars ? (
     <p
-      style={counterStyle}
-      className="counter"
+      className={cx('counter', counterClass)}
       onClick={() => {
         setSelectedBlock();
         props.setSidebarTab(1);

@@ -86,6 +86,12 @@ class EditBlockWrapper extends React.Component {
       ? data.required
       : includes(config.blocks.requiredBlocks, type);
 
+    // Get editing instructions from block settings or props
+    let instructions = data?.instructions?.data || data?.instructions;
+    if (!instructions || instructions === '<p><br/></p>') {
+      instructions = '';
+    }
+
     return (
       <div ref={this.blockNode}>
         <div
@@ -104,7 +110,7 @@ class EditBlockWrapper extends React.Component {
           )}
           {visible && (
             <div className="block-toolbar">
-              {extraControls}
+              {instructions ? extraControls : ''}
 
               {!disabled && (
                 <>
