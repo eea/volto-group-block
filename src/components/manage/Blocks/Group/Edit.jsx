@@ -80,7 +80,7 @@ const Edit = (props) => {
     let groupCharCount = 0;
 
     Object.keys(blocksObject).forEach((blockId) => {
-      const charText = blocksObject[blockId]?.plaintext
+      const foundText = blocksObject[blockId]?.plaintext
         ? blocksObject[blockId]?.plaintext
         : blocksObject[blockId]?.text?.blocks[0]?.text
         ? blocksObject[blockId].text.blocks[0].text
@@ -90,7 +90,7 @@ const Edit = (props) => {
         ? countTextInBlocks(blocksObject[blockId]?.blocks)
         : '';
 
-      groupCharCount = groupCharCount + countCharWithoutSpaces(charText);
+      groupCharCount = groupCharCount + countCharWithoutSpaces(foundText);
     });
 
     return groupCharCount;
