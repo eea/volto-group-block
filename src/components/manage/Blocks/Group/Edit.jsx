@@ -61,20 +61,36 @@ const Edit = (props) => {
   const blockState = {};
   let charCount = 0;
 
+  /**
+   * Count the number of characters that are anything except using Regex
+   * @param {string} paragraph
+   * @returns
+   */
+  const countCharWithoutSpaces = (paragraph) => {
+    const regex = /[^\s\\]/g;
+    return (paragraph.match(regex) || []).length;
+  };
+
+  /**
+   * Recursively look for any block that contains text or plaintext
+   * @param {Object} blocksObject
+   * @returns
+   */
   const countTextInBlocks = (blocksObject) => {
     let groupCharCount = 0;
 
     Object.keys(blocksObject).forEach((blockId) => {
-      const charCountTemp = blocksObject[blockId]?.plaintext
-        ? blocksObject[blockId]?.plaintext.length
+      const charText = blocksObject[blockId]?.plaintext
+        ? blocksObject[blockId]?.plaintext
         : blocksObject[blockId]?.text?.blocks[0]?.text
-        ? blocksObject[blockId].text.blocks[0].text.length
+        ? blocksObject[blockId].text.blocks[0].text
         : blocksObject[blockId]?.data?.blocks
         ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
         : blocksObject[blockId]?.blocks
         ? countTextInBlocks(blocksObject[blockId]?.blocks)
-        : 0;
-      groupCharCount = groupCharCount + charCountTemp;
+        : '';
+
+      groupCharCount = groupCharCount + countCharWithoutSpaces(charText);
     });
 
     return groupCharCount;
