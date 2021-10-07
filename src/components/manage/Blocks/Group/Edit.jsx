@@ -68,6 +68,7 @@ const Edit = (props) => {
    */
   const countCharWithoutSpaces = (paragraph) => {
     const regex = /[^\s\\]/g;
+
     return (paragraph.match(regex) || []).length;
   };
 
@@ -89,8 +90,12 @@ const Edit = (props) => {
         : blocksObject[blockId]?.blocks
         ? countTextInBlocks(blocksObject[blockId]?.blocks)
         : '';
+      const resultText =
+        typeof foundText === 'string' || foundText instanceof String
+          ? foundText
+          : '';
 
-      groupCharCount = groupCharCount + countCharWithoutSpaces(foundText);
+      groupCharCount = groupCharCount + countCharWithoutSpaces(resultText);
     });
 
     return groupCharCount;
