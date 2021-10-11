@@ -30,9 +30,8 @@ const Edit = (props) => {
   } = props;
 
   const metadata = props.metadata || props.properties;
-  const properties = isEmpty(data?.data?.blocks)
-    ? emptyBlocksForm()
-    : data.data;
+  const data_blocks = data?.data?.blocks;
+  const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
   const [selectedBlock, setSelectedBlock] = useState(
     properties.blocks_layout.items[0],
@@ -40,7 +39,7 @@ const Edit = (props) => {
 
   React.useEffect(() => {
     if (
-      isEmpty(data?.data?.blocks) &&
+      isEmpty(data_blocks) &&
       properties.blocks_layout.items[0] !== selectedBlock
     ) {
       setSelectedBlock(properties.blocks_layout.items[0]);
@@ -49,40 +48,65 @@ const Edit = (props) => {
         data: properties,
       });
     }
-  }, [
-    onChangeBlock,
-    properties,
-    selectedBlock,
-    block,
-    data,
-    data?.data?.blocks,
-  ]);
+  }, [onChangeBlock, properties, selectedBlock, block, data, data_blocks]);
 
   const blockState = {};
   let charCount = 0;
 
+  /**
+   * Count the number of characters that are anything except using Regex
+   * @param {string} paragraph
+   * @returns
+   */
+  const countCharsWithoutSpaces = (paragraph) => {
+    const regex = /[^\s\\]/g;
+
+    return (paragraph.match(regex) || []).length;
+  };
+
+  /**
+   * Count the number of characters
+   * @param {string} paragraph
+   * @returns
+   */
+  const countCharsWithSpaces = (paragraph) => {
+    return paragraph?.length || 0;
+  };
+
+  /**
+   * Recursively look for any block that contains text or plaintext
+   * @param {Object} blocksObject
+   * @returns
+   */
   const countTextInBlocks = (blocksObject) => {
     let groupCharCount = 0;
 
     Object.keys(blocksObject).forEach((blockId) => {
-      const charCountTemp = blocksObject[blockId]?.plaintext
-        ? blocksObject[blockId]?.plaintext.length
+      const foundText = blocksObject[blockId]?.plaintext
+        ? blocksObject[blockId]?.plaintext
         : blocksObject[blockId]?.text?.blocks[0]?.text
-        ? blocksObject[blockId].text.blocks[0].text.length
+        ? blocksObject[blockId].text.blocks[0].text
         : blocksObject[blockId]?.data?.blocks
         ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
         : blocksObject[blockId]?.blocks
         ? countTextInBlocks(blocksObject[blockId]?.blocks)
-        : 0;
-      groupCharCount = groupCharCount + charCountTemp;
+        : '';
+      const resultText =
+        typeof foundText === 'string' || foundText instanceof String
+          ? foundText
+          : '';
+
+      groupCharCount += props.data.ignoreSpaces
+        ? countCharsWithoutSpaces(resultText)
+        : countCharsWithSpaces(resultText);
     });
 
     return groupCharCount;
   };
 
   const showCharCounter = () => {
-    if (props.data?.data?.blocks) {
-      charCount = countTextInBlocks(props.data?.data?.blocks);
+    if (data_blocks) {
+      charCount = countTextInBlocks(data_blocks);
     }
   };
   showCharCounter();
