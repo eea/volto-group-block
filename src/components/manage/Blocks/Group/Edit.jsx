@@ -30,9 +30,8 @@ const Edit = (props) => {
   } = props;
 
   const metadata = props.metadata || props.properties;
-  const properties = isEmpty(data?.data?.blocks)
-    ? emptyBlocksForm()
-    : data.data;
+  const data_blocks = data?.data?.blocks;
+  const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
   const [selectedBlock, setSelectedBlock] = useState(
     properties.blocks_layout.items[0],
@@ -40,7 +39,7 @@ const Edit = (props) => {
 
   React.useEffect(() => {
     if (
-      isEmpty(data?.data?.blocks) &&
+      isEmpty(data_blocks) &&
       properties.blocks_layout.items[0] !== selectedBlock
     ) {
       setSelectedBlock(properties.blocks_layout.items[0]);
@@ -49,14 +48,7 @@ const Edit = (props) => {
         data: properties,
       });
     }
-  }, [
-    onChangeBlock,
-    properties,
-    selectedBlock,
-    block,
-    data,
-    data?.data?.blocks,
-  ]);
+  }, [onChangeBlock, properties, selectedBlock, block, data, data_blocks]);
 
   const blockState = {};
   let charCount = 0;
@@ -66,10 +58,19 @@ const Edit = (props) => {
    * @param {string} paragraph
    * @returns
    */
-  const countCharWithoutSpaces = (paragraph) => {
+  const countCharsWithoutSpaces = (paragraph) => {
     const regex = /[^\s\\]/g;
 
     return (paragraph.match(regex) || []).length;
+  };
+
+  /**
+   * Count the number of characters
+   * @param {string} paragraph
+   * @returns
+   */
+  const countCharsWithSpaces = (paragraph) => {
+    return paragraph?.length || 0;
   };
 
   /**
@@ -95,15 +96,17 @@ const Edit = (props) => {
           ? foundText
           : '';
 
-      groupCharCount = groupCharCount + countCharWithoutSpaces(resultText);
+      groupCharCount += props.data.ignoreSpaces
+        ? countCharsWithoutSpaces(resultText)
+        : countCharsWithSpaces(resultText);
     });
 
     return groupCharCount;
   };
 
   const showCharCounter = () => {
-    if (props.data?.data?.blocks) {
-      charCount = countTextInBlocks(props.data?.data?.blocks);
+    if (data_blocks) {
+      charCount = countTextInBlocks(data_blocks);
     }
   };
   showCharCounter();

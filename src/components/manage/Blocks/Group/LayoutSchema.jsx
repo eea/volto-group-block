@@ -11,6 +11,7 @@ const Schema = {
         'allowedBlocks',
         'as',
         'maxChars',
+        'ignoreSpaces',
         'readOnlySettings',
         'disableInnerButtons',
         'required',
@@ -66,6 +67,11 @@ const Schema = {
       description: 'The maximum number of characters.',
       type: 'integer',
       factory: 'Integer',
+    },
+    ignoreSpaces: {
+      title: 'Ignore spaces',
+      description: 'Ignore spaces while calculating maximum characters',
+      type: 'boolean',
     },
     required: {
       title: 'Required',
