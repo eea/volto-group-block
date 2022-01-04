@@ -22,16 +22,15 @@ describe('Blocks Tests', () => {
     cy.get('.blocks-chooser .title').contains('Common').click();
     cy.get('.content.active.common .button.group').contains('Group').click();
 
-    cy.get('.block.text.selected').type("test");
-    cy.get('.block.text.selected').type("{enter}");
-    cy.get('.block.text.selected').type("test2");
-    cy.get('.block.text.selected').type("{enter}");
-    cy.get('.block.text.selected').type("test3");
-    
-    cy.get('.block-toolbar svg').first()
-      .trigger('mousedown', { button: 0})
-      .trigger('mousemove', 10, -40, { force: true})
-      .trigger('mouseup', 10, -40, {force:true});
+    cy.get('.block-editor-group [contenteditable=true]').focus().click().type('test{enter}');
+    cy.get('.block-editor-group [contenteditable=true]').eq(1).focus().click().type('test2{enter}');
+    cy.get('.block-editor-group [contenteditable=true]').eq(1).focus().click().type('test3');
+
+    cy.get('.block-toolbar svg')
+      .first()
+      .trigger('mousedown', { button: 0 })
+      .trigger('mousemove', 10, -40, { force: true })
+      .trigger('mouseup', 10, -40, { force: true });
 
     // Save
     cy.get('#toolbar-save').click();
