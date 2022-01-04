@@ -22,9 +22,9 @@ describe('Blocks Tests', () => {
     cy.get('.blocks-chooser .title').contains('Common').click();
     cy.get('.content.active.common .button.group').contains('Group').click();
 
-    cy.get('.block-editor-group [contenteditable=true]').focus().click().type('test{enter}');
-    cy.get('.block-editor-group [contenteditable=true]').eq(1).focus().click().type('test2{enter}');
-    cy.get('.block-editor-group [contenteditable=true]').eq(1).focus().click().type('test3');
+    cy.get('[contenteditable=true]').eq(1).focus().click().type('test{enter}');
+    cy.get('[contenteditable=true]').eq(2).focus().click().type('test2{enter}');
+    cy.get('[contenteditable=true]').eq(3).focus().click().type('test3');
 
     cy.get('.block-toolbar svg')
       .first()
@@ -41,3 +41,4 @@ describe('Blocks Tests', () => {
     cy.contains('test2');
   });
 });
+
