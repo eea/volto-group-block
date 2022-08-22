@@ -80,6 +80,9 @@ const Edit = (props) => {
    */
   const countTextInBlocks = (blocksObject) => {
     let groupCharCount = 0;
+    if (!props.data.maxChars) {
+      return groupCharCount;
+    }
 
     Object.keys(blocksObject).forEach((blockId) => {
       const foundText = blocksObject[blockId]?.plaintext
