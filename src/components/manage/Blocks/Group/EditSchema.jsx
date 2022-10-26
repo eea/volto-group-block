@@ -1,3 +1,15 @@
+import imageFitSVG from '@plone/volto/icons/image-fit.svg';
+import imageWideSVG from '@plone/volto/icons/image-wide.svg';
+import imageFullSVG from '@plone/volto/icons/image-full.svg';
+import clearSVG from '@plone/volto/icons/clear.svg';
+
+const VALUE_MAP = [
+  ['normal', imageFitSVG],
+  ['wide', imageWideSVG],
+  ['full', imageFullSVG],
+  ['', clearSVG],
+];
+
 const Schema = {
   title: 'Section block',
   fieldsets: [
@@ -5,6 +17,11 @@ const Schema = {
       id: 'default',
       title: 'Default',
       fields: ['title', 'as'],
+    },
+    {
+      id: 'styling',
+      title: 'Styling',
+      fields: ['styles'],
     },
   ],
   properties: {
@@ -26,6 +43,27 @@ const Schema = {
         ['aside', 'aside'],
         ['details', 'details'],
       ],
+    },
+    styles: {
+      widget: 'object',
+      title: 'Styling',
+      schema: {
+        fieldsets: [
+          {
+            id: 'default',
+            title: 'Default',
+            fields: ['align'],
+          },
+        ],
+        properties: {
+          align: {
+            widget: 'style_text_align',
+            title: 'Section size',
+            actions: VALUE_MAP,
+          },
+        },
+        required: [],
+      },
     },
   },
   required: [],
