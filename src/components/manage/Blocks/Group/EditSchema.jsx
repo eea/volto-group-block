@@ -3,9 +3,9 @@ import imageWideSVG from '@plone/volto/icons/image-wide.svg';
 import imageFullSVG from '@plone/volto/icons/image-full.svg';
 
 const ALIGN_INFO_MAP = {
-  'narrow-width': [imageFitSVG, 'Narrow width'],
-  'container-width': [imageFitSVG, 'Container width'],
-  'wide-width': [imageWideSVG, 'Wide width'],
+  narrow_width: [imageFitSVG, 'Narrow width'],
+  container_width: [imageFitSVG, 'Container width'],
+  wide_width: [imageWideSVG, 'Wide width'],
   full: [imageFullSVG, 'Full width'],
 };
 
