@@ -1,14 +1,13 @@
 import imageFitSVG from '@plone/volto/icons/image-fit.svg';
 import imageWideSVG from '@plone/volto/icons/image-wide.svg';
 import imageFullSVG from '@plone/volto/icons/image-full.svg';
-import clearSVG from '@plone/volto/icons/clear.svg';
 
-const VALUE_MAP = [
-  ['normal', imageFitSVG],
-  ['wide', imageWideSVG],
-  ['full', imageFullSVG],
-  ['', clearSVG],
-];
+const ALIGN_INFO_MAP = {
+  'narrow-width': [imageFitSVG, 'Narrow width'],
+  'container-width': [imageFitSVG, 'Container width'],
+  'wide-width': [imageWideSVG, 'Wide width'],
+  full: [imageFullSVG, 'Full width'],
+};
 
 const Schema = {
   title: 'Section block',
@@ -52,14 +51,15 @@ const Schema = {
           {
             id: 'default',
             title: 'Default',
-            fields: ['align'],
+            fields: ['size'],
           },
         ],
         properties: {
-          align: {
-            widget: 'style_text_align',
+          size: {
+            widget: 'style_align',
             title: 'Section size',
-            actions: VALUE_MAP,
+            actions: Object.keys(ALIGN_INFO_MAP),
+            actionsInfoMap: ALIGN_INFO_MAP,
           },
         },
         required: [],
