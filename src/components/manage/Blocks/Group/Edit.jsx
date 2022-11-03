@@ -4,7 +4,7 @@ import {
   BlocksForm,
   SidebarPortal,
   Icon,
-  InlineForm,
+  BlockDataForm,
 } from '@plone/volto/components';
 import { emptyBlocksForm } from '@plone/volto/helpers';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
@@ -237,7 +237,7 @@ const Edit = (props) => {
           </Segment>
         )}
         {!data?.readOnlySettings && (
-          <InlineForm
+          <BlockDataForm
             schema={EditSchema}
             title="Section (Group) settings"
             formData={data}
