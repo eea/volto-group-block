@@ -1,4 +1,4 @@
-import imageFitSVG from '@plone/volto/icons/image-fit.svg';
+import imageFitSVG from '@eeacms/volto-group-block/components/manage/Blocks/Group/icons/image-narrow.svg';
 import imageWideSVG from '@plone/volto/icons/image-wide.svg';
 import imageFullSVG from '@plone/volto/icons/image-full.svg';
 
