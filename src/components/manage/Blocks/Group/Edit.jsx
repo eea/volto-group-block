@@ -5,6 +5,7 @@ import {
   SidebarPortal,
   Icon,
   BlockDataForm,
+  BlocksToolbar,
 } from '@plone/volto/components';
 import { emptyBlocksForm } from '@plone/volto/helpers';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
@@ -36,7 +37,28 @@ const Edit = (props) => {
   const [selectedBlock, setSelectedBlock] = useState(
     properties.blocks_layout.items[0],
   );
-
+  const changeBlockDataPaste = (newBlockData) => {
+    let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
+      if (data?.data?.blocks_layout.items.find((x) => x === blockID))
+        return false;
+      return true;
+    });
+    const selectedIndex =
+      data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
+    onChangeBlock(block, {
+      ...data,
+      data: {
+        ...newBlockData,
+        blocks_layout: {
+          items: [
+            ...data.data.blocks_layout.items.slice(0, selectedIndex),
+            ...pastedBlocks,
+            ...data.data.blocks_layout.items.slice(selectedIndex),
+          ],
+        },
+      },
+    });
+  };
   React.useEffect(() => {
     if (
       isEmpty(data_blocks) &&
@@ -165,6 +187,18 @@ const Edit = (props) => {
       >
         {data.title || 'Section'}
       </legend>
+      {selected ? (
+        <BlocksToolbar
+          selectedBlock={Object.keys(selectedBlock)[0]}
+          formData={data.data}
+          selectedBlocks={[]}
+          onChangeBlocks={(newBlockData) => {
+            changeBlockDataPaste(newBlockData);
+          }}
+        />
+      ) : (
+        ''
+      )}
       <BlocksForm
         metadata={metadata}
         properties={properties}
