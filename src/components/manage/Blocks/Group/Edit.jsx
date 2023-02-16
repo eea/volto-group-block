@@ -48,6 +48,7 @@ const Edit = (props) => {
     onChangeBlock(block, {
       ...data,
       data: {
+        ...data?.data,
         ...newBlockData,
         blocks_layout: {
           items: [
