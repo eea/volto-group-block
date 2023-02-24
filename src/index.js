@@ -1,5 +1,10 @@
 import codeSVG from '@plone/volto/icons/row.svg';
-import { GroupBlockEdit, GroupBlockView, GroupBlockLayout } from './components';
+import {
+  GroupBlockEdit,
+  GroupBlockView,
+  GroupBlockLayout,
+  GroupBlockDefaultBody,
+} from './components';
 
 const applyConfig = (config) => {
   const choices = Object.keys(config.blocks.blocksConfig)
@@ -43,6 +48,14 @@ const applyConfig = (config) => {
       addPermission: [],
       view: [],
     },
+    variations: [
+      {
+        id: 'default',
+        isDefault: true,
+        title: 'Default',
+        template: GroupBlockDefaultBody,
+      },
+    ],
   };
 
   return config;

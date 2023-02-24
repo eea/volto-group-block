@@ -1,56 +1,40 @@
 import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
-import {
-  BlocksForm,
-  SidebarPortal,
-  Icon,
-  BlockDataForm,
-} from '@plone/volto/components';
-import { emptyBlocksForm } from '@plone/volto/helpers';
+import { SidebarPortal, Icon, BlockDataForm } from '@plone/volto/components';
+
+import { emptyBlocksForm, withBlockExtensions } from '@plone/volto/helpers';
+import BodyComponent from './Body';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
-import { Button, Segment } from 'semantic-ui-react';
-import EditBlockWrapper from './EditBlockWrapper';
+import { Segment } from 'semantic-ui-react';
 import EditSchema from './EditSchema';
-import helpSVG from '@plone/volto/icons/help.svg';
+
 import cx from 'classnames';
 import './editor.less';
 
 const Edit = (props) => {
-  const {
-    block,
-    data,
-    onChangeBlock,
-    onChangeField,
-    pathname,
-    selected,
-    manage,
-    formDescription,
-  } = props;
-
-  const metadata = props.metadata || props.properties;
+  const { block, data, onChangeBlock, selected, formDescription } = props;
   const data_blocks = data?.data?.blocks;
-  const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
+  const childBlocksForm = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
   const [selectedBlock, setSelectedBlock] = useState(
-    properties.blocks_layout.items[0],
+    childBlocksForm.blocks_layout.items[0],
   );
 
   React.useEffect(() => {
     if (
       isEmpty(data_blocks) &&
-      properties.blocks_layout.items[0] !== selectedBlock
+      childBlocksForm.blocks_layout.items[0] !== selectedBlock
     ) {
-      setSelectedBlock(properties.blocks_layout.items[0]);
+      setSelectedBlock(childBlocksForm.blocks_layout.items[0]);
       onChangeBlock(block, {
         ...data,
-        data: properties,
+        data: childBlocksForm,
       });
     }
-  }, [onChangeBlock, properties, selectedBlock, block, data, data_blocks]);
+  }, [onChangeBlock, childBlocksForm, selectedBlock, block, data, data_blocks]);
 
-  const blockState = {};
   let charCount = 0;
 
   /**
@@ -165,70 +149,13 @@ const Edit = (props) => {
       >
         {data.title || 'Section'}
       </legend>
-      <BlocksForm
-        metadata={metadata}
-        properties={properties}
-        manage={manage}
-        selectedBlock={selected ? selectedBlock : null}
-        allowedBlocks={data.allowedBlocks}
-        title={data.placeholder}
-        description={instructions}
-        onSelectBlock={(id) => {
-          setSelectedBlock(id);
-        }}
-        onChangeFormData={(newFormData) => {
-          onChangeBlock(block, {
-            ...data,
-            data: newFormData,
-          });
-        }}
-        onChangeField={(id, value) => {
-          if (['blocks', 'blocks_layout'].indexOf(id) > -1) {
-            blockState[id] = value;
-            onChangeBlock(block, {
-              ...data,
-              data: {
-                ...data.data,
-                ...blockState,
-              },
-            });
-          } else {
-            onChangeField(id, value);
-          }
-        }}
-        pathname={pathname}
-      >
-        {({ draginfo }, editBlock, blockProps) => (
-          <EditBlockWrapper
-            draginfo={draginfo}
-            blockProps={blockProps}
-            disabled={data.disableInnerButtons}
-            extraControls={
-              <>
-                {instructions && (
-                  <>
-                    <Button
-                      icon
-                      basic
-                      title="Section help"
-                      onClick={() => {
-                        setSelectedBlock();
-                        const tab = manage ? 0 : 1;
-                        props.setSidebarTab(tab);
-                      }}
-                    >
-                      <Icon name={helpSVG} className="" size="19px" />
-                    </Button>
-                  </>
-                )}
-              </>
-            }
-          >
-            {editBlock}
-          </EditBlockWrapper>
-        )}
-      </BlocksForm>
-
+      <BodyComponent
+        {...props}
+        isEditMode={true}
+        selectedBlock={selectedBlock}
+        setSelectedBlock={setSelectedBlock}
+        childBlocksForm={childBlocksForm}
+      />
       {counterComponent}
       <SidebarPortal selected={selected && !selectedBlock}>
         {instructions && (
@@ -247,6 +174,8 @@ const Edit = (props) => {
                 [id]: value,
               });
             }}
+            onChangeBlock={onChangeBlock}
+            block={block}
           />
         )}
       </SidebarPortal>
@@ -263,4 +192,4 @@ Edit.propTypes = {
   manage: PropTypes.bool.isRequired,
 };
 
-export default Edit;
+export default withBlockExtensions(Edit);
