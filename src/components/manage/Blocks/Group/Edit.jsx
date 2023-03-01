@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, without } from 'lodash';
 import {
   BlocksForm,
   SidebarPortal,
@@ -7,7 +7,10 @@ import {
   BlockDataForm,
   BlocksToolbar,
 } from '@plone/volto/components';
-import { emptyBlocksForm } from '@plone/volto/helpers';
+import {
+  emptyBlocksForm,
+  getBlocksLayoutFieldname,
+} from '@plone/volto/helpers';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
@@ -29,8 +32,43 @@ const Edit = (props) => {
     manage,
     formDescription,
   } = props;
+  const onSelectBlock = (id, isMultipleSelection, event, activeBlock) => {
+    let newMultiSelected = [];
+    let selected = id;
 
+    if (isMultipleSelection) {
+      selected = null;
+      const blocksLayoutFieldname = getBlocksLayoutFieldname(data?.data);
+      const blocks_layout = data?.data[blocksLayoutFieldname].items;
+      if (event.shiftKey) {
+        const anchor =
+          multiSelected.length > 0
+            ? blocks_layout.indexOf(multiSelected[0])
+            : blocks_layout.indexOf(activeBlock);
+        const focus = blocks_layout.indexOf(id);
+        if (anchor === focus) {
+          newMultiSelected = [id];
+        } else if (focus > anchor) {
+          newMultiSelected = [...blocks_layout.slice(anchor, focus + 1)];
+        } else {
+          newMultiSelected = [...blocks_layout.slice(focus, anchor + 1)];
+        }
+      }
+      if ((event.ctrlKey || event.metaKey) && !event.shiftKey) {
+        if (multiSelected.includes(id)) {
+          selected = null;
+          newMultiSelected = without(multiSelected, id);
+        } else {
+          newMultiSelected = [...(multiSelected || []), id];
+        }
+      }
+      setMultiSelected(newMultiSelected);
+    }
+
+    setSelectedBlock(selected);
+  };
   const metadata = props.metadata || props.properties;
+  const [multiSelected, setMultiSelected] = useState([]);
   const data_blocks = data?.data?.blocks;
   const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
@@ -191,8 +229,15 @@ const Edit = (props) => {
       {selected ? (
         <BlocksToolbar
           selectedBlock={Object.keys(selectedBlock || {})[0]}
+          selectedBlocks={multiSelected}
           formData={data.data}
-          selectedBlocks={[]}
+          onSelectBlock={(id, l, e) => {
+            const isMultipleSelection = e
+              ? e.shiftKey || e.ctrlKey || e.metaKey
+              : false;
+
+            onSelectBlock(id, isMultipleSelection, e, selectedBlock);
+          }}
           onChangeBlocks={(newBlockData) => {
             changeBlockDataPaste(newBlockData);
           }}
@@ -208,8 +253,11 @@ const Edit = (props) => {
         allowedBlocks={data.allowedBlocks}
         title={data.placeholder}
         description={instructions}
-        onSelectBlock={(id) => {
-          setSelectedBlock(id);
+        onSelectBlock={(id, l, e) => {
+          const isMultipleSelection = e
+            ? e.shiftKey || e.ctrlKey || e.metaKey
+            : false;
+          onSelectBlock(id, isMultipleSelection, e, selectedBlock);
         }}
         onChangeFormData={(newFormData) => {
           onChangeBlock(block, {
@@ -258,6 +306,7 @@ const Edit = (props) => {
                 )}
               </>
             }
+            multiSelected={multiSelected.includes(blockProps.block)}
           >
             {editBlock}
           </EditBlockWrapper>
