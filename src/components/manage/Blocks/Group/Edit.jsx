@@ -190,7 +190,7 @@ const Edit = (props) => {
       </legend>
       {selected ? (
         <BlocksToolbar
-          selectedBlock={Object.keys(selectedBlock)[0]}
+          selectedBlock={Object.keys(selectedBlock || {})[0]}
           formData={data.data}
           selectedBlocks={[]}
           onChangeBlocks={(newBlockData) => {
