@@ -62,10 +62,10 @@ const Edit = (props) => {
           newMultiSelected = [...(multiSelected || []), id];
         }
       }
-      setMultiSelected(newMultiSelected);
     }
 
     setSelectedBlock(selected);
+    setMultiSelected(newMultiSelected);
   };
   const metadata = props.metadata || props.properties;
   const [multiSelected, setMultiSelected] = useState([]);
@@ -230,6 +230,9 @@ const Edit = (props) => {
         <BlocksToolbar
           selectedBlock={Object.keys(selectedBlock || {})[0]}
           selectedBlocks={multiSelected}
+          onSetSelectedBlocks={(blockIds) => {
+            setMultiSelected(blockIds);
+          }}
           formData={data.data}
           onSelectBlock={(id, l, e) => {
             const isMultipleSelection = e
