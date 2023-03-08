@@ -75,7 +75,7 @@ const Edit = (props) => {
   const [selectedBlock, setSelectedBlock] = useState(
     properties.blocks_layout.items[0],
   );
-  const changeBlockDataPaste = (newBlockData) => {
+  const changeBlockData = (newBlockData) => {
     let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
       if (data?.data?.blocks_layout.items.find((x) => x === blockID))
         return false;
@@ -214,7 +214,7 @@ const Edit = (props) => {
   if (!instructions || instructions === '<p><br/></p>') {
     instructions = formDescription;
   }
-
+  console.log({ selected });
   return (
     <fieldset className="section-block">
       <legend
@@ -242,7 +242,7 @@ const Edit = (props) => {
             onSelectBlock(id, isMultipleSelection, e, selectedBlock);
           }}
           onChangeBlocks={(newBlockData) => {
-            changeBlockDataPaste(newBlockData);
+            changeBlockData(newBlockData);
           }}
         />
       ) : (
