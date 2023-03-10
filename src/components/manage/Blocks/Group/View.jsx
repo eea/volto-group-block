@@ -1,5 +1,4 @@
 import React from 'react';
-//import { RenderBlocks } from '@plone/volto/components';
 import { withBlockExtensions } from '@plone/volto/helpers';
 import BodyComponent from './Body';
 

@@ -1,7 +1,5 @@
 import { Button } from 'semantic-ui-react';
-import { isEmpty } from 'lodash';
 import { BlocksForm, Icon, RenderBlocks } from '@plone/volto/components';
-import { emptyBlocksForm } from '@plone/volto/helpers';
 import EditBlockWrapper from './EditBlockWrapper';
 
 import helpSVG from '@plone/volto/icons/help.svg';
