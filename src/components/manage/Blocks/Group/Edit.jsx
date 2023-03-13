@@ -214,7 +214,7 @@ const Edit = (props) => {
   if (!instructions || instructions === '<p><br/></p>') {
     instructions = formDescription;
   }
-  console.log({ selected });
+
   return (
     <fieldset className="section-block">
       <legend
