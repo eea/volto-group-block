@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-group-block",
-  "version": "5.0.1",
+  "version": "6.0.0",
   "description": "volto-group-block: Volto block to be used to group other blocks",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -18,10 +18,9 @@
     "type": "git",
     "url": "git@github.com:eea/volto-group-block.git"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@plone/scripts": "*",
     "@cypress/code-coverage": "^3.10.0",
+    "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "md5": "^2.3.0"
   },
