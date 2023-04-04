@@ -13,9 +13,11 @@ const GroupBlockDefaultBody = (props) => {
     pathname,
     selected,
     selectedBlock,
+    onSelectBlock,
     setSelectedBlock,
     manage,
     childBlocksForm,
+    multiSelected,
     formDescription,
     isEditMode,
   } = props;
@@ -36,8 +38,11 @@ const GroupBlockDefaultBody = (props) => {
       allowedBlocks={data.allowedBlocks}
       title={data.placeholder}
       description={instructions}
-      onSelectBlock={(id) => {
-        setSelectedBlock(id);
+      onSelectBlock={(id, l, e) => {
+        const isMultipleSelection = e
+          ? e.shiftKey || e.ctrlKey || e.metaKey
+          : false;
+        onSelectBlock(id, isMultipleSelection, e, selectedBlock);
       }}
       onChangeFormData={(newFormData) => {
         onChangeBlock(block, {
@@ -86,6 +91,7 @@ const GroupBlockDefaultBody = (props) => {
               )}
             </>
           }
+          multiSelected={multiSelected.includes(blockProps.block)}
         >
           {editBlock}
         </EditBlockWrapper>

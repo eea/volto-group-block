@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import { isEmpty } from 'lodash';
-import { SidebarPortal, Icon, BlockDataForm } from '@plone/volto/components';
-
-import { emptyBlocksForm, withBlockExtensions } from '@plone/volto/helpers';
+import { isEmpty, without } from 'lodash';
+import {
+  emptyBlocksForm,
+  withBlockExtensions,
+  getBlocksLayoutFieldname,
+} from '@plone/volto/helpers';
 import BodyComponent from './Body';
+
+import config from '@plone/volto/registry';
+import {
+  SidebarPortal,
+  Icon,
+  BlockDataForm,
+  BlocksToolbar,
+} from '@plone/volto/components';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
@@ -15,12 +25,101 @@ import './editor.less';
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, formDescription } = props;
+  const [multiSelected, setMultiSelected] = useState([]);
   const data_blocks = data?.data?.blocks;
   const childBlocksForm = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
   const [selectedBlock, setSelectedBlock] = useState(
     childBlocksForm.blocks_layout.items[0],
   );
+
+  let charCount = 0;
+
+  const handleKeyDown = (
+    e,
+    index,
+    block,
+    node,
+    {
+      disableEnter = false,
+      disableArrowUp = false,
+      disableArrowDown = false,
+    } = {},
+  ) => {
+    const hasblockActive = !!selectedBlock;
+    if (e.key === 'ArrowUp' && !disableArrowUp && !hasblockActive) {
+      props.onFocusPreviousBlock(block, node);
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowDown' && !disableArrowDown && !hasblockActive) {
+      props.onFocusNextBlock(block, node);
+      e.preventDefault();
+    }
+    if (e.key === 'Enter' && !disableEnter && !hasblockActive) {
+      props.onAddBlock(config.settings.defaultBlockType, index + 1);
+      e.preventDefault();
+    }
+  };
+
+  const onSelectBlock = (id, isMultipleSelection, event, activeBlock) => {
+    let newMultiSelected = [];
+    let selected = id;
+
+    if (isMultipleSelection) {
+      selected = null;
+      const blocksLayoutFieldname = getBlocksLayoutFieldname(data?.data);
+      const blocks_layout = data?.data[blocksLayoutFieldname].items;
+      if (event.shiftKey) {
+        const anchor =
+          multiSelected.length > 0
+            ? blocks_layout.indexOf(multiSelected[0])
+            : blocks_layout.indexOf(activeBlock);
+        const focus = blocks_layout.indexOf(id);
+        if (anchor === focus) {
+          newMultiSelected = [id];
+        } else if (focus > anchor) {
+          newMultiSelected = [...blocks_layout.slice(anchor, focus + 1)];
+        } else {
+          newMultiSelected = [...blocks_layout.slice(focus, anchor + 1)];
+        }
+      }
+      if ((event.ctrlKey || event.metaKey) && !event.shiftKey) {
+        if (multiSelected.includes(id)) {
+          selected = null;
+          newMultiSelected = without(multiSelected, id);
+        } else {
+          newMultiSelected = [...(multiSelected || []), id];
+        }
+      }
+    }
+
+    setSelectedBlock(selected);
+    setMultiSelected(newMultiSelected);
+  };
+
+  const changeBlockData = (newBlockData) => {
+    let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
+      if (data?.data?.blocks_layout.items.find((x) => x === blockID))
+        return false;
+      return true;
+    });
+    const selectedIndex =
+      data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
+    onChangeBlock(block, {
+      ...data,
+      data: {
+        ...data?.data,
+        ...newBlockData,
+        blocks_layout: {
+          items: [
+            ...data.data.blocks_layout.items.slice(0, selectedIndex),
+            ...pastedBlocks,
+            ...data.data.blocks_layout.items.slice(selectedIndex),
+          ],
+        },
+      },
+    });
+  };
 
   React.useEffect(() => {
     if (
@@ -34,8 +133,6 @@ const Edit = (props) => {
       });
     }
   }, [onChangeBlock, childBlocksForm, selectedBlock, block, data, data_blocks]);
-
-  let charCount = 0;
 
   /**
    * Count the number of characters that are anything except using Regex
@@ -139,7 +236,16 @@ const Edit = (props) => {
   }
 
   return (
-    <fieldset className="section-block">
+    <fieldset
+      role="presentation"
+      className="section-block"
+      onKeyDown={(e) => {
+        handleKeyDown(e, props.index, props.block, props.blockNode.current);
+      }}
+      // The tabIndex is required for the keyboard navigation
+      /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+      tabIndex={-1}
+    >
       <legend
         onClick={() => {
           setSelectedBlock();
@@ -154,8 +260,33 @@ const Edit = (props) => {
         isEditMode={true}
         selectedBlock={selectedBlock}
         setSelectedBlock={setSelectedBlock}
+        multiSelected={multiSelected}
+        setMultiSelected={setMultiSelected}
+        onSelectBlock={onSelectBlock}
         childBlocksForm={childBlocksForm}
       />
+      {selected ? (
+        <BlocksToolbar
+          selectedBlock={Object.keys(selectedBlock || {})[0]}
+          selectedBlocks={multiSelected}
+          onSetSelectedBlocks={(blockIds) => {
+            setMultiSelected(blockIds);
+          }}
+          formData={data.data}
+          onSelectBlock={(id, l, e) => {
+            const isMultipleSelection = e
+              ? e.shiftKey || e.ctrlKey || e.metaKey
+              : false;
+
+            onSelectBlock(id, isMultipleSelection, e, selectedBlock);
+          }}
+          onChangeBlocks={(newBlockData) => {
+            changeBlockData(newBlockData);
+          }}
+        />
+      ) : (
+        ''
+      )}
       {counterComponent}
       <SidebarPortal selected={selected && !selectedBlock}>
         {instructions && (
@@ -174,8 +305,6 @@ const Edit = (props) => {
                 [id]: value,
               });
             }}
-            onChangeBlock={onChangeBlock}
-            block={block}
           />
         )}
       </SidebarPortal>
