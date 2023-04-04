@@ -1,13 +1,16 @@
 import React from 'react';
 import { Icon, BlockChooser } from '@plone/volto/components';
-import { blockHasValue } from '@plone/volto/helpers';
-import config from '@plone/volto/registry';
+import {
+  blockHasValue,
+  buildStyleClassNamesFromData,
+} from '@plone/volto/helpers';
 import { Button } from 'semantic-ui-react';
 import includes from 'lodash/includes';
 import isBoolean from 'lodash/isBoolean';
 import { defineMessages, injectIntl } from 'react-intl';
-import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import cx from 'classnames';
+import config from '@plone/volto/registry';
+import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 
 import dragSVG from '@plone/volto/icons/drag.svg';
 import addSVG from '@plone/volto/icons/circle-plus.svg';
@@ -86,6 +89,8 @@ class EditBlockWrapper extends React.Component {
       ? data.required
       : includes(config.blocks.requiredBlocks, type);
 
+    const styles = buildStyleClassNamesFromData(data.styles);
+
     // Get editing instructions from block settings or props
     let instructions = data?.instructions?.data || data?.instructions;
     if (!instructions || instructions === '<p><br/></p>') {
@@ -97,7 +102,9 @@ class EditBlockWrapper extends React.Component {
         <div
           ref={draginfo?.innerRef}
           {...(selected ? draginfo?.draggableProps : null)}
-          className={`block-editor-${data['@type']}`}
+          className={cx(`block-editor-${data['@type']}`, styles, {
+            [data.align]: data.align,
+          })}
         >
           {(!selected || !visible || disabled) && (
             <div
