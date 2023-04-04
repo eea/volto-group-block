@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { isEmpty, without } from 'lodash';
+import config from '@plone/volto/registry';
 import {
   BlocksForm,
   SidebarPortal,
@@ -32,6 +33,44 @@ const Edit = (props) => {
     manage,
     formDescription,
   } = props;
+  const metadata = props.metadata || props.properties;
+  const [multiSelected, setMultiSelected] = useState([]);
+  const data_blocks = data?.data?.blocks;
+  const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
+
+  const [selectedBlock, setSelectedBlock] = useState(
+    properties.blocks_layout.items[0],
+  );
+
+  const blockState = {};
+  let charCount = 0;
+
+  const handleKeyDown = (
+    e,
+    index,
+    block,
+    node,
+    {
+      disableEnter = false,
+      disableArrowUp = false,
+      disableArrowDown = false,
+    } = {},
+  ) => {
+    const hasblockActive = !!selectedBlock;
+    if (e.key === 'ArrowUp' && !disableArrowUp && !hasblockActive) {
+      props.onFocusPreviousBlock(block, node);
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowDown' && !disableArrowDown && !hasblockActive) {
+      props.onFocusNextBlock(block, node);
+      e.preventDefault();
+    }
+    if (e.key === 'Enter' && !disableEnter && !hasblockActive) {
+      props.onAddBlock(config.settings.defaultBlockType, index + 1);
+      e.preventDefault();
+    }
+  };
+
   const onSelectBlock = (id, isMultipleSelection, event, activeBlock) => {
     let newMultiSelected = [];
     let selected = id;
@@ -67,14 +106,7 @@ const Edit = (props) => {
     setSelectedBlock(selected);
     setMultiSelected(newMultiSelected);
   };
-  const metadata = props.metadata || props.properties;
-  const [multiSelected, setMultiSelected] = useState([]);
-  const data_blocks = data?.data?.blocks;
-  const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
-  const [selectedBlock, setSelectedBlock] = useState(
-    properties.blocks_layout.items[0],
-  );
   const changeBlockData = (newBlockData) => {
     let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
       if (data?.data?.blocks_layout.items.find((x) => x === blockID))
@@ -98,6 +130,7 @@ const Edit = (props) => {
       },
     });
   };
+
   React.useEffect(() => {
     if (
       isEmpty(data_blocks) &&
@@ -110,9 +143,6 @@ const Edit = (props) => {
       });
     }
   }, [onChangeBlock, properties, selectedBlock, block, data, data_blocks]);
-
-  const blockState = {};
-  let charCount = 0;
 
   /**
    * Count the number of characters that are anything except using Regex
@@ -216,7 +246,16 @@ const Edit = (props) => {
   }
 
   return (
-    <fieldset className="section-block">
+    <fieldset
+      role="presentation"
+      className="section-block"
+      onKeyDown={(e) => {
+        handleKeyDown(e, props.index, props.block, props.blockNode.current);
+      }}
+      // The tabIndex is required for the keyboard navigation
+      /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+      tabIndex={-1}
+    >
       <legend
         onClick={() => {
           setSelectedBlock();
