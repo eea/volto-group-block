@@ -1,13 +1,16 @@
-import { useMemo, useEffect } from 'React';
 import cx from 'classnames';
+import isString from 'lodash/isString';
+import isArray from 'lodash/isArray';
 import { Icon } from '@plone/volto/components';
+import config from '@plone/volto/registry';
+import { visitBlocks } from '@plone/volto/helpers/Blocks/Blocks';
+import { serializeNodesToText } from '@plone/volto-slate/editor/render';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 
 const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
   const { maxChars } = data;
   let charCount = 0;
-  const data_blocks = data?.data?.blocks;
 
   const countCharsWithoutSpaces = (paragraph) => {
     const regex = /[^\s\\]/g;
@@ -20,40 +23,30 @@ const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
   };
 
   const countTextInBlocks = (blocksObject) => {
+    const { countTextIn } = config.blocks?.blocksConfig?.group;
     let groupCharCount = 0;
     if (!maxChars) {
       return groupCharCount;
     }
+    if (!blocksObject) return groupCharCount;
 
-    Object.keys(blocksObject).forEach((blockId) => {
-      const foundText = blocksObject[blockId]?.plaintext
-        ? blocksObject[blockId]?.plaintext
-        : blocksObject[blockId]?.text?.blocks[0]?.text
-        ? blocksObject[blockId].text.blocks[0].text
-        : blocksObject[blockId]?.data?.blocks
-        ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
-        : blocksObject[blockId]?.blocks
-        ? countTextInBlocks(blocksObject[blockId]?.blocks)
-        : '';
-      const resultText =
-        typeof foundText === 'string' || foundText instanceof String
-          ? foundText
-          : '';
+    visitBlocks(blocksObject, ([id, data]) => {
+      let foundText;
+      if (countTextIn.includes(data['@type'])) {
+        if (isString(data.plaintext)) foundText = data.plaintext;
+        else if (isArray(data.value) && data.value !== null)
+          foundText = serializeNodesToText(data.value);
+      } else foundText = '';
 
       groupCharCount += data.ignoreSpaces
-        ? countCharsWithoutSpaces(resultText)
-        : countCharsWithSpaces(resultText);
+        ? countCharsWithoutSpaces(foundText)
+        : countCharsWithSpaces(foundText);
     });
 
     return groupCharCount;
   };
 
-  const showCharCounter = () => {
-    if (data_blocks) {
-      charCount = countTextInBlocks(data_blocks);
-    }
-  };
-  showCharCounter();
+  charCount = countTextInBlocks(data?.data);
 
   const counterClass =
     charCount < Math.ceil(maxChars / 1.05)
