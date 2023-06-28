@@ -32,13 +32,13 @@ const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
 
     visitBlocks(blocksObject, ([id, data]) => {
       let foundText;
-      if (countTextIn.includes(data['@type'])) {
-        if (isString(data.plaintext)) foundText = data.plaintext;
-        else if (isArray(data.value) && data.value !== null)
-          foundText = serializeNodesToText(data.value);
+      if (data && countTextIn?.includes(data?.['@type'])) {
+        if (isString(data?.plaintext)) foundText = data?.plaintext;
+        else if (isArray(data?.value) && data?.value !== null)
+          foundText = serializeNodesToText(data?.value);
       } else foundText = '';
 
-      groupCharCount += data.ignoreSpaces
+      groupCharCount += data?.ignoreSpaces
         ? countCharsWithoutSpaces(foundText)
         : countCharsWithSpaces(foundText);
     });
