@@ -108,9 +108,7 @@ const Edit = (props) => {
 
   const changeBlockData = (newBlockData) => {
     let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
-      if (data?.data?.blocks_layout.items.find((x) => x === blockID))
-        return false;
-      return true;
+      return !data?.data?.blocks_layout.items.find((x) => x === blockID);
     });
     const selectedIndex =
       data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
