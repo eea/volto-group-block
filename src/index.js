@@ -59,6 +59,7 @@ const applyConfig = (config) => {
       });
       return entries;
     },
+    countTextIn: ['slate', 'description'], //id of the block whose text should be counted
   };
 
   return config;

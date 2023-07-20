@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { isEmpty, without } from 'lodash';
 import config from '@plone/volto/registry';
 import {
@@ -12,14 +12,12 @@ import {
   emptyBlocksForm,
   getBlocksLayoutFieldname,
 } from '@plone/volto/helpers';
-import delightedSVG from '@plone/volto/icons/delighted.svg';
-import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import PropTypes from 'prop-types';
 import { Button, Segment } from 'semantic-ui-react';
 import EditBlockWrapper from './EditBlockWrapper';
 import EditSchema from './EditSchema';
+import CounterComponent from './CounterComponent';
 import helpSVG from '@plone/volto/icons/help.svg';
-import cx from 'classnames';
 import './editor.less';
 
 const Edit = (props) => {
@@ -43,8 +41,6 @@ const Edit = (props) => {
   );
 
   const blockState = {};
-  let charCount = 0;
-
   const handleKeyDown = (
     e,
     index,
@@ -71,47 +67,48 @@ const Edit = (props) => {
     }
   };
 
-  const onSelectBlock = (id, isMultipleSelection, event, activeBlock) => {
-    let newMultiSelected = [];
-    let selected = id;
+  const onSelectBlock = useCallback(
+    (id, isMultipleSelection, event, activeBlock) => {
+      let newMultiSelected = [];
+      let selected = id;
 
-    if (isMultipleSelection) {
-      selected = null;
-      const blocksLayoutFieldname = getBlocksLayoutFieldname(data?.data);
-      const blocks_layout = data?.data[blocksLayoutFieldname].items;
-      if (event.shiftKey) {
-        const anchor =
-          multiSelected.length > 0
-            ? blocks_layout.indexOf(multiSelected[0])
-            : blocks_layout.indexOf(activeBlock);
-        const focus = blocks_layout.indexOf(id);
-        if (anchor === focus) {
-          newMultiSelected = [id];
-        } else if (focus > anchor) {
-          newMultiSelected = [...blocks_layout.slice(anchor, focus + 1)];
-        } else {
-          newMultiSelected = [...blocks_layout.slice(focus, anchor + 1)];
+      if (isMultipleSelection) {
+        selected = null;
+        const blocksLayoutFieldname = getBlocksLayoutFieldname(data?.data);
+        const blocks_layout = data?.data[blocksLayoutFieldname].items;
+        if (event.shiftKey) {
+          const anchor =
+            multiSelected.length > 0
+              ? blocks_layout.indexOf(multiSelected[0])
+              : blocks_layout.indexOf(activeBlock);
+          const focus = blocks_layout.indexOf(id);
+          if (anchor === focus) {
+            newMultiSelected = [id];
+          } else if (focus > anchor) {
+            newMultiSelected = [...blocks_layout.slice(anchor, focus + 1)];
+          } else {
+            newMultiSelected = [...blocks_layout.slice(focus, anchor + 1)];
+          }
+        }
+        if ((event.ctrlKey || event.metaKey) && !event.shiftKey) {
+          if (multiSelected.includes(id)) {
+            selected = null;
+            newMultiSelected = without(multiSelected, id);
+          } else {
+            newMultiSelected = [...(multiSelected || []), id];
+          }
         }
       }
-      if ((event.ctrlKey || event.metaKey) && !event.shiftKey) {
-        if (multiSelected.includes(id)) {
-          selected = null;
-          newMultiSelected = without(multiSelected, id);
-        } else {
-          newMultiSelected = [...(multiSelected || []), id];
-        }
-      }
-    }
 
-    setSelectedBlock(selected);
-    setMultiSelected(newMultiSelected);
-  };
+      setSelectedBlock(selected);
+      setMultiSelected(newMultiSelected);
+    },
+    [data.data, multiSelected],
+  );
 
   const changeBlockData = (newBlockData) => {
     let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
-      if (data?.data?.blocks_layout.items.find((x) => x === blockID))
-        return false;
-      return true;
+      return !data?.data?.blocks_layout.items.find((x) => x === blockID);
     });
     const selectedIndex =
       data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
@@ -143,101 +140,6 @@ const Edit = (props) => {
       });
     }
   }, [onChangeBlock, properties, selectedBlock, block, data, data_blocks]);
-
-  /**
-   * Count the number of characters that are anything except using Regex
-   * @param {string} paragraph
-   * @returns
-   */
-  const countCharsWithoutSpaces = (paragraph) => {
-    const regex = /[^\s\\]/g;
-
-    return (paragraph.match(regex) || []).length;
-  };
-
-  /**
-   * Count the number of characters
-   * @param {string} paragraph
-   * @returns
-   */
-  const countCharsWithSpaces = (paragraph) => {
-    return paragraph?.length || 0;
-  };
-
-  /**
-   * Recursively look for any block that contains text or plaintext
-   * @param {Object} blocksObject
-   * @returns
-   */
-  const countTextInBlocks = (blocksObject) => {
-    let groupCharCount = 0;
-    if (!props.data.maxChars) {
-      return groupCharCount;
-    }
-
-    Object.keys(blocksObject).forEach((blockId) => {
-      const foundText = blocksObject[blockId]?.plaintext
-        ? blocksObject[blockId]?.plaintext
-        : blocksObject[blockId]?.text?.blocks[0]?.text
-        ? blocksObject[blockId].text.blocks[0].text
-        : blocksObject[blockId]?.data?.blocks
-        ? countTextInBlocks(blocksObject[blockId]?.data?.blocks)
-        : blocksObject[blockId]?.blocks
-        ? countTextInBlocks(blocksObject[blockId]?.blocks)
-        : '';
-      const resultText =
-        typeof foundText === 'string' || foundText instanceof String
-          ? foundText
-          : '';
-
-      groupCharCount += props.data.ignoreSpaces
-        ? countCharsWithoutSpaces(resultText)
-        : countCharsWithSpaces(resultText);
-    });
-
-    return groupCharCount;
-  };
-
-  const showCharCounter = () => {
-    if (data_blocks) {
-      charCount = countTextInBlocks(data_blocks);
-    }
-  };
-  showCharCounter();
-
-  const counterClass =
-    charCount < Math.ceil(props.data.maxChars / 1.05)
-      ? 'info'
-      : charCount < props.data.maxChars
-      ? 'warning'
-      : 'danger';
-
-  const counterComponent = props.data.maxChars ? (
-    <p
-      className={cx('counter', counterClass)}
-      onClick={() => {
-        setSelectedBlock();
-        props.setSidebarTab(1);
-      }}
-      aria-hidden="true"
-    >
-      {props.data.maxChars - charCount < 0 ? (
-        <>
-          <span>{`${
-            charCount - props.data.maxChars
-          } characters over the limit`}</span>
-          <Icon name={dissatisfiedSVG} size="24px" />
-        </>
-      ) : (
-        <>
-          <span>{`${
-            props.data.maxChars - charCount
-          } characters remaining out of ${props.data.maxChars}`}</span>
-          <Icon name={delightedSVG} size="24px" />
-        </>
-      )}
-    </p>
-  ) : null;
 
   // Get editing instructions from block settings or props
   let instructions = data?.instructions?.data || data?.instructions;
@@ -355,7 +257,9 @@ const Edit = (props) => {
         )}
       </BlocksForm>
 
-      {counterComponent}
+      {props.data.maxChars && (
+        <CounterComponent {...props} setSelectedBlock={setSelectedBlock} />
+      )}
       <SidebarPortal selected={selected && !selectedBlock}>
         {instructions && (
           <Segment attached>
