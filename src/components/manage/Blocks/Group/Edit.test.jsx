@@ -76,4 +76,108 @@ describe('Edit', () => {
     );
     fireEvent.keyDown(getByRole('presentation'), { key: 'ArrowUp', code: 38 });
   });
+
+  it('should call ArrowUp keydown', () => {
+    const props = {
+      block: 'testBlock',
+      data: {
+        instructions: 'test',
+        data: {
+          blocks: {
+            block1: {
+              type: 'test',
+              data: {
+                value: 'Test',
+              },
+            },
+          },
+          blocks_layout: {
+            items: [undefined],
+          },
+        },
+      },
+      onChangeBlock,
+      onChangeField,
+      pathname: '/',
+      selected: true,
+      manage: true,
+    };
+    const mockOnFocusPreviousBlock = jest.fn();
+    const mockOnFocusNextBlock = jest.fn();
+    const mockOnAddBlock = jest.fn();
+    const { container } = render(
+      <Provider store={store}>
+        <Edit
+          {...props}
+          onFocusPreviousBlock={mockOnFocusPreviousBlock}
+          onFocusNextBlock={mockOnFocusNextBlock}
+          onAddBlock={mockOnAddBlock}
+          blockNode={mockBlockNode}
+        />
+      </Provider>,
+    );
+
+    fireEvent.keyDown(container.querySelector('.section-block'), {
+      key: 'ArrowUp',
+      code: 38,
+    });
+    fireEvent.keyDown(container.querySelector('.section-block'), {
+      key: 'ArrowDown',
+      code: 40,
+    });
+    fireEvent.keyDown(container.querySelector('.section-block'), {
+      key: 'Enter',
+      code: 13,
+    });
+
+    fireEvent.click(container.querySelector('.blocks-form'), {
+      shiftKey: true,
+    });
+    fireEvent.click(container.querySelector('.section-block legend'));
+  });
+
+  it('should call ArrowUp keydown', () => {
+    const props = {
+      block: 'testBlock',
+      data: {
+        instructions: 'test',
+        data: {
+          blocks: {
+            block1: {
+              type: 'test',
+              data: {
+                value: 'Test',
+              },
+            },
+          },
+          blocks_layout: {
+            items: [undefined],
+          },
+        },
+      },
+      onChangeBlock,
+      onChangeField,
+      pathname: '/',
+      selected: true,
+      manage: true,
+    };
+    const mockOnFocusPreviousBlock = jest.fn();
+    const mockOnFocusNextBlock = jest.fn();
+    const mockOnAddBlock = jest.fn();
+    const mockSidebarTab = jest.fn();
+    const { container } = render(
+      <Provider store={store}>
+        <Edit
+          {...props}
+          onFocusPreviousBlock={mockOnFocusPreviousBlock}
+          onFocusNextBlock={mockOnFocusNextBlock}
+          onAddBlock={mockOnAddBlock}
+          setSidebarTab={mockSidebarTab}
+          blockNode={mockBlockNode}
+        />
+      </Provider>,
+    );
+
+    fireEvent.click(container.querySelector('.section-block legend'));
+  });
 });
