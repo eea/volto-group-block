@@ -105,6 +105,8 @@ describe('Edit', () => {
     const mockOnFocusPreviousBlock = jest.fn();
     const mockOnFocusNextBlock = jest.fn();
     const mockOnAddBlock = jest.fn();
+    const mockSidebarTab = jest.fn();
+
     const { container } = render(
       <Provider store={store}>
         <Edit
@@ -113,6 +115,7 @@ describe('Edit', () => {
           onFocusNextBlock={mockOnFocusNextBlock}
           onAddBlock={mockOnAddBlock}
           blockNode={mockBlockNode}
+          setSidebarTab={mockSidebarTab}
         />
       </Provider>,
     );
