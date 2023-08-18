@@ -8,46 +8,53 @@ import { serializeNodesToText } from '@plone/volto-slate/editor/render';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 
+const countCharsWithoutSpaces = (paragraph) => {
+  const regex = /[^\s\\]/g;
+  return (paragraph.match(regex) || []).length;
+};
+
+const countCharsWithSpaces = (paragraph) => {
+  return paragraph?.length || 0;
+};
+
+const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
+  id,
+  blockData,
+]) => {
+  const foundText =
+    blockData && countTextIn?.includes(blockData?.['@type'])
+      ? isString(blockData?.plaintext)
+        ? blockData?.plaintext
+        : isArray(blockData?.value) && blockData?.value !== null
+        ? serializeNodesToText(blockData?.value)
+        : ''
+      : '';
+
+  groupCharCount.value += ignoreSpaces
+    ? countCharsWithoutSpaces(foundText)
+    : countCharsWithSpaces(foundText);
+};
+
+const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
+  const { countTextIn } = config.blocks?.blocksConfig?.group;
+  // use obj ref to update value - if you send number it will not be updated
+  const groupCharCount = { value: 0 };
+
+  if (!maxChars || !blocksObject) {
+    return groupCharCount.value;
+  }
+
+  visitBlocks(
+    blocksObject,
+    countTextInEachBlock(countTextIn, ignoreSpaces, groupCharCount),
+  );
+
+  return groupCharCount.value;
+};
+
 const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
-  const { maxChars } = data;
-  let charCount = 0;
-
-  const countCharsWithoutSpaces = (paragraph) => {
-    const regex = /[^\s\\]/g;
-
-    return (paragraph.match(regex) || []).length;
-  };
-
-  const countCharsWithSpaces = (paragraph) => {
-    return paragraph?.length || 0;
-  };
-
-  const countTextInBlocks = (blocksObject) => {
-    const { countTextIn } = config.blocks?.blocksConfig?.group;
-    let groupCharCount = 0;
-    if (!maxChars) {
-      return groupCharCount;
-    }
-    if (!blocksObject) return groupCharCount;
-
-    visitBlocks(blocksObject, ([id, data]) => {
-      let foundText;
-      if (data && countTextIn?.includes(data?.['@type'])) {
-        if (isString(data?.plaintext)) foundText = data?.plaintext;
-        else if (isArray(data?.value) && data?.value !== null)
-          foundText = serializeNodesToText(data?.value);
-      } else foundText = '';
-
-      groupCharCount += data?.ignoreSpaces
-        ? countCharsWithoutSpaces(foundText)
-        : countCharsWithSpaces(foundText);
-    });
-
-    return groupCharCount;
-  };
-
-  charCount = countTextInBlocks(data?.data);
-
+  const { maxChars, ignoreSpaces } = data;
+  const charCount = countTextInBlocks(data?.data, ignoreSpaces, maxChars);
   const counterClass =
     charCount < Math.ceil(maxChars / 1.05)
       ? 'info'
