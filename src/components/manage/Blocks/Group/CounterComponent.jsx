@@ -17,29 +17,39 @@ const countCharsWithSpaces = (paragraph) => {
   return paragraph?.length || 0;
 };
 
+const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
+  id,
+  blockData,
+]) => {
+  const foundText =
+    blockData && countTextIn?.includes(blockData?.['@type'])
+      ? isString(blockData?.plaintext)
+        ? blockData?.plaintext
+        : isArray(blockData?.value) && blockData?.value !== null
+        ? serializeNodesToText(blockData?.value)
+        : ''
+      : '';
+
+  groupCharCount.value += ignoreSpaces
+    ? countCharsWithoutSpaces(foundText)
+    : countCharsWithSpaces(foundText);
+};
+
 const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
   const { countTextIn } = config.blocks?.blocksConfig?.group;
-  let groupCharCount = 0;
+  // use obj ref to update value - if you send number it will not be updated
+  const groupCharCount = { value: 0 };
+
   if (!maxChars || !blocksObject) {
-    return groupCharCount;
+    return groupCharCount.value;
   }
 
-  visitBlocks(blocksObject, ([id, blockData]) => {
-    const foundText =
-      blockData && countTextIn?.includes(blockData?.['@type'])
-        ? isString(blockData?.plaintext)
-          ? blockData?.plaintext
-          : isArray(blockData?.value) && blockData?.value !== null
-          ? serializeNodesToText(blockData?.value)
-          : ''
-        : '';
+  visitBlocks(
+    blocksObject,
+    countTextInEachBlock(countTextIn, ignoreSpaces, groupCharCount),
+  );
 
-    groupCharCount += ignoreSpaces
-      ? countCharsWithoutSpaces(foundText)
-      : countCharsWithSpaces(foundText);
-  });
-
-  return groupCharCount;
+  return groupCharCount.value;
 };
 
 const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
