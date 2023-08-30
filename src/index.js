@@ -1,10 +1,11 @@
-import codeSVG from '@plone/volto/icons/row.svg';
+import { getBlocks } from '@plone/volto/helpers';
 import {
   GroupBlockEdit,
   GroupBlockView,
   GroupBlockLayout,
   GroupBlockDefaultBody,
 } from './components';
+import codeSVG from '@plone/volto/icons/row.svg';
 
 const applyConfig = (config) => {
   const choices = Object.keys(config.blocks.blocksConfig)
@@ -56,6 +57,21 @@ const applyConfig = (config) => {
         template: GroupBlockDefaultBody,
       },
     ],
+    tocEntries: (block = {}, tocData) => {
+      // integration with volto-block-toc
+      const headlines = tocData.levels || ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+      let entries = [];
+      const blocks = getBlocks(block?.data || {});
+      blocks.forEach((block) => {
+        const { value, plaintext } = block[1];
+        const type = value?.[0]?.type;
+        if (headlines.includes(type)) {
+          entries.push([parseInt(type.slice(1)), plaintext, block[0]]);
+        }
+      });
+      return entries;
+    },
+    countTextIn: ['slate', 'description'], //id of the block whose text should be counted
   };
 
   return config;

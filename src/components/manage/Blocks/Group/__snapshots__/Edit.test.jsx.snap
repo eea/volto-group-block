@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Edit should render without crashing 1`] = `
+<fieldset
+  className="section-block"
+  onKeyDown={[Function]}
+  role="presentation"
+  tabIndex={-1}
+>
+  <legend
+    aria-hidden="true"
+    onClick={[Function]}
+  >
+    Section
+  </legend>
+  
+  <div
+    className="blocks-form"
+  >
+    <fieldset
+      className="invisible"
+      disabled={false}
+    />
+  </div>
+</fieldset>
+`;
