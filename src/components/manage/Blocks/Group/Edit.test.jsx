@@ -1,5 +1,5 @@
 import React from 'react';
-import Edit from './Edit';
+import { default as Edit } from './Edit';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
 import thunk from 'redux-thunk';
@@ -14,6 +14,21 @@ const store = mockStore({
     messages: {},
   },
 });
+
+jest.mock('@plone/volto/components', () => ({
+  BlocksForm: jest.fn(() => <div className="blocks-form">RenderBlocks</div>),
+  Icon: () => <div>Icon</div>,
+  SidebarPortal: () => <div>SidebarPortal</div>,
+  BlocksToolbar: () => <div>BlocksToolbar</div>,
+  BlockDataForm: () => <div>BlockDataForm</div>,
+  RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
+}));
+
+jest.mock('@plone/volto/helpers', () => ({
+  withBlockExtensions: jest.fn((Component) => Component),
+  emptyBlocksForm: jest.fn(),
+  getBlocksLayoutFieldname: jest.fn(),
+}));
 
 describe('Edit', () => {
   const onChangeBlock = jest.fn();
@@ -41,6 +56,7 @@ describe('Edit', () => {
     pathname: '/',
     selected: true,
     manage: true,
+    variation: {},
   };
 
   it('should render without crashing', () => {
@@ -101,6 +117,7 @@ describe('Edit', () => {
       pathname: '/',
       selected: true,
       manage: true,
+      variation: {},
     };
     const mockOnFocusPreviousBlock = jest.fn();
     const mockOnFocusNextBlock = jest.fn();
@@ -163,6 +180,7 @@ describe('Edit', () => {
       pathname: '/',
       selected: true,
       manage: true,
+      variation: {},
     };
     const mockOnFocusPreviousBlock = jest.fn();
     const mockOnFocusNextBlock = jest.fn();
