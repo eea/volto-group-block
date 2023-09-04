@@ -73,7 +73,7 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
     cy.getSlateTitle().type('My First Book');
     cy.get('.documentFirstHeading').contains('My First Book');
 
-    cy.get('.documentDescription div[role="textbox"]')
+    cy.get('.documentDescription .slate-editor div')
       .click()
       .type('This is my description');
 
