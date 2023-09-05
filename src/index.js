@@ -1,6 +1,10 @@
 import { getBlocks } from '@plone/volto/helpers';
-import { GroupBlockEdit, GroupBlockView, GroupBlockLayout } from './components';
-
+import {
+  GroupBlockEdit,
+  GroupBlockView,
+  GroupBlockLayout,
+  GroupBlockDefaultBody,
+} from './components';
 import codeSVG from '@plone/volto/icons/row.svg';
 
 const applyConfig = (config) => {
@@ -45,6 +49,14 @@ const applyConfig = (config) => {
       addPermission: [],
       view: [],
     },
+    variations: [
+      {
+        id: 'default',
+        isDefault: true,
+        title: 'Default',
+        template: GroupBlockDefaultBody,
+      },
+    ],
     tocEntries: (block = {}, tocData) => {
       // integration with volto-block-toc
       const headlines = tocData.levels || ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];

@@ -1,9 +1,9 @@
 import React from 'react';
-import { RenderBlocks } from '@plone/volto/components';
+import { withBlockExtensions } from '@plone/volto/helpers';
+import BodyComponent from './Body';
 
 const View = (props) => {
   const { data } = props;
-  const metadata = props.metadata || props.properties;
   const CustomTag = `${data.as || 'div'}`;
   const customId = data?.title
     ?.toLowerCase()
@@ -12,9 +12,9 @@ const View = (props) => {
     ?.replace(/\s+/gi, '-');
   return (
     <CustomTag id={customId}>
-      <RenderBlocks {...props} metadata={metadata} content={data?.data || {}} />
+      <BodyComponent {...props} />
     </CustomTag>
   );
 };
 
-export default View;
+export default withBlockExtensions(View);

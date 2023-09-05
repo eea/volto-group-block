@@ -7,6 +7,11 @@ import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@plone/volto/components', () => ({
   RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
+  BodyComponent: () => <div>BodyComponent</div>,
+}));
+
+jest.mock('@plone/volto/helpers', () => ({
+  withBlockExtensions: jest.fn((Component) => Component),
 }));
 
 describe('View', () => {
@@ -15,6 +20,7 @@ describe('View', () => {
       data: {},
       metadata: {},
       properties: {},
+      variation: {},
     };
     const component = renderer.create(<View {...props} />);
 
@@ -24,9 +30,12 @@ describe('View', () => {
 
   it('renders with default tag and without crashing', () => {
     const props = {
-      data: {},
+      data: {
+        variation: {},
+      },
       metadata: {},
       properties: {},
+      variation: {},
     };
     const { container } = render(<View {...props} />);
     expect(container.querySelector('div')).toBeInTheDocument();
@@ -40,6 +49,7 @@ describe('View', () => {
         data: { key: 'value' },
       },
       properties: {},
+      variation: {},
     };
     const { container } = render(<View {...props} />);
     expect(container.querySelector('section')).toBeInTheDocument();
@@ -55,6 +65,7 @@ describe('View', () => {
       },
       metadata: { meta: 'data' },
       properties: { prop: 'erty' },
+      variation: {},
     };
     render(<View {...props} />);
     expect(RenderBlocks).toHaveBeenCalledWith(

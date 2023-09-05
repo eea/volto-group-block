@@ -13,14 +13,16 @@ exports[`Edit should render without crashing 1`] = `
   >
     Section
   </legend>
-  
   <div
     className="blocks-form"
   >
-    <fieldset
-      className="invisible"
-      disabled={false}
-    />
+    RenderBlocks
+  </div>
+  <div>
+    BlocksToolbar
+  </div>
+  <div>
+    SidebarPortal
   </div>
 </fieldset>
 `;

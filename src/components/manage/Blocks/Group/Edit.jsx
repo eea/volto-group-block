@@ -1,46 +1,35 @@
 import React, { useState, useCallback } from 'react';
 import { isEmpty, without } from 'lodash';
+import {
+  emptyBlocksForm,
+  withBlockExtensions,
+  getBlocksLayoutFieldname,
+} from '@plone/volto/helpers';
+import BodyComponent from './Body';
+
 import config from '@plone/volto/registry';
 import {
-  BlocksForm,
   SidebarPortal,
-  Icon,
   BlockDataForm,
   BlocksToolbar,
 } from '@plone/volto/components';
-import {
-  emptyBlocksForm,
-  getBlocksLayoutFieldname,
-} from '@plone/volto/helpers';
 import PropTypes from 'prop-types';
-import { Button, Segment } from 'semantic-ui-react';
-import EditBlockWrapper from './EditBlockWrapper';
+import { Segment } from 'semantic-ui-react';
 import EditSchema from './EditSchema';
+
 import CounterComponent from './CounterComponent';
-import helpSVG from '@plone/volto/icons/help.svg';
 import './editor.less';
 
 const Edit = (props) => {
-  const {
-    block,
-    data,
-    onChangeBlock,
-    onChangeField,
-    pathname,
-    selected,
-    manage,
-    formDescription,
-  } = props;
-  const metadata = props.metadata || props.properties;
+  const { block, data, onChangeBlock, selected, formDescription } = props;
   const [multiSelected, setMultiSelected] = useState([]);
   const data_blocks = data?.data?.blocks;
-  const properties = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
+  const childBlocksForm = isEmpty(data_blocks) ? emptyBlocksForm() : data.data;
 
   const [selectedBlock, setSelectedBlock] = useState(
-    properties.blocks_layout.items[0],
+    childBlocksForm.blocks_layout.items[0],
   );
 
-  const blockState = {};
   const handleKeyDown = (
     e,
     index,
@@ -131,15 +120,15 @@ const Edit = (props) => {
   React.useEffect(() => {
     if (
       isEmpty(data_blocks) &&
-      properties.blocks_layout.items[0] !== selectedBlock
+      childBlocksForm.blocks_layout.items[0] !== selectedBlock
     ) {
-      setSelectedBlock(properties.blocks_layout.items[0]);
+      setSelectedBlock(childBlocksForm.blocks_layout.items[0]);
       onChangeBlock(block, {
         ...data,
-        data: properties,
+        data: childBlocksForm,
       });
     }
-  }, [onChangeBlock, properties, selectedBlock, block, data, data_blocks]);
+  }, [onChangeBlock, childBlocksForm, selectedBlock, block, data, data_blocks]);
 
   // Get editing instructions from block settings or props
   let instructions = data?.instructions?.data || data?.instructions;
@@ -167,6 +156,16 @@ const Edit = (props) => {
       >
         {data.title || 'Section'}
       </legend>
+      <BodyComponent
+        {...props}
+        isEditMode={true}
+        selectedBlock={selectedBlock}
+        setSelectedBlock={setSelectedBlock}
+        multiSelected={multiSelected}
+        setMultiSelected={setMultiSelected}
+        onSelectBlock={onSelectBlock}
+        childBlocksForm={childBlocksForm}
+      />
       {selected ? (
         <BlocksToolbar
           selectedBlock={Object.keys(selectedBlock || {})[0]}
@@ -189,74 +188,6 @@ const Edit = (props) => {
       ) : (
         ''
       )}
-      <BlocksForm
-        metadata={metadata}
-        properties={properties}
-        manage={manage}
-        selectedBlock={selected ? selectedBlock : null}
-        allowedBlocks={data.allowedBlocks}
-        title={data.placeholder}
-        description={instructions}
-        onSelectBlock={(id, l, e) => {
-          const isMultipleSelection = e
-            ? e.shiftKey || e.ctrlKey || e.metaKey
-            : false;
-          onSelectBlock(id, isMultipleSelection, e, selectedBlock);
-        }}
-        onChangeFormData={(newFormData) => {
-          onChangeBlock(block, {
-            ...data,
-            data: newFormData,
-          });
-        }}
-        onChangeField={(id, value) => {
-          if (['blocks', 'blocks_layout'].indexOf(id) > -1) {
-            blockState[id] = value;
-            onChangeBlock(block, {
-              ...data,
-              data: {
-                ...data.data,
-                ...blockState,
-              },
-            });
-          } else {
-            onChangeField(id, value);
-          }
-        }}
-        pathname={pathname}
-      >
-        {({ draginfo }, editBlock, blockProps) => (
-          <EditBlockWrapper
-            draginfo={draginfo}
-            blockProps={blockProps}
-            disabled={data.disableInnerButtons}
-            extraControls={
-              <>
-                {instructions && (
-                  <>
-                    <Button
-                      icon
-                      basic
-                      title="Section help"
-                      onClick={() => {
-                        setSelectedBlock();
-                        const tab = manage ? 0 : 1;
-                        props.setSidebarTab(tab);
-                      }}
-                    >
-                      <Icon name={helpSVG} className="" size="19px" />
-                    </Button>
-                  </>
-                )}
-              </>
-            }
-            multiSelected={multiSelected.includes(blockProps.block)}
-          >
-            {editBlock}
-          </EditBlockWrapper>
-        )}
-      </BlocksForm>
-
       {props.data.maxChars && (
         <CounterComponent {...props} setSelectedBlock={setSelectedBlock} />
       )}
@@ -293,4 +224,4 @@ Edit.propTypes = {
   manage: PropTypes.bool.isRequired,
 };
 
-export default Edit;
+export default withBlockExtensions(Edit);
