@@ -47,15 +47,6 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
         'https://eea.github.io/volto-eea-design-system/img/eea_icon.png{enter}',
       );
 
-    cy.get(
-      '.section-block .blocks-form .block-editor-slate .slate-editor',
-    ).click();
-    cy.get('.ui.basic.icon.button.group-block-add-button:visible').click();
-    cy.get('.blocks-chooser .title').contains('Common').click({ force: true });
-    cy.get('.content.active.common .button.callToActionBlock')
-      .contains('Call to Action')
-      .click({ force: true });
-
     cy.get('#toolbar-save').click();
 
     cy.visit('/cypress');
@@ -73,8 +64,7 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
     cy.getSlateTitle().type('My First Book');
     cy.get('.documentFirstHeading').contains('My First Book');
 
-    cy.get('.call-to-action.block').click();
-    cy.get('.text #field-text').click().clear().type('My Button');
+    cy.get('.section-block .text-slate-editor-inner').click().type('My description');
 
     cy.get('#toolbar-save').click();
     cy.get('.documentFirstHeading').contains('My First Book');
@@ -83,6 +73,6 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
       'src',
       'https://eea.github.io/volto-eea-design-system/img/eea_icon.png',
     );
-    cy.get('.call-to-action').contains('My Button');
+    cy.get('#page-document').contains('My description');
   });
 });
