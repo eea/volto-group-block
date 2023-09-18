@@ -98,7 +98,7 @@ const GroupBlockDefaultBody = (props) => {
       )}
     </BlocksForm>
   ) : (
-    <RenderBlocks {...props} metadata={metadata} content={data?.data || {}} />
+    <RenderBlocks metadata={metadata} content={data?.data || {}} />
   );
 };
 
