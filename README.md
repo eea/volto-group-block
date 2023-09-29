@@ -20,32 +20,16 @@
 
 ![Group blocks and restrict available blocks](https://github.com/eea/volto-group-block/raw/docs/docs/volto-group-block.gif)
 
+## Getting started
+
 ### Try volto-group-block with Docker
 
-1. Get the latest Docker images
+      git clone https://github.com/eea/volto-group-block.git
+      cd volto-group-block
+      make
+      make start
 
-   ```
-   docker pull plone
-   docker pull plone/volto
-   ```
-
-1. Start Plone backend
-
-   ```
-   docker run -d --name plone -p 8080:8080 -e SITE=Plone -e PROFILES="profile-plone.restapi:blocks" plone
-   ```
-
-1. Start Volto frontend
-
-   ```
-   docker run -it --rm -p 3000:3000 --link plone -e ADDONS="@eeacms/volto-group-block" plone/volto
-   ```
-
-1. Go to http://localhost:3000
-
-1. Login with **admin:admin**
-
-1. Create a new **Page** and add a new **Section (Group)** block.
+Go to http://localhost:3000
 
 ### Add volto-group-block to your Volto project
 
@@ -57,25 +41,25 @@
 
 1. Start Volto frontend
 
-- If you already have a volto project, just update `package.json`:
+* If you already have a volto project, just update `package.json`:
 
-  ```JSON
-  "addons": [
-      "@eeacms/volto-group-block"
-  ],
+   ```JSON
+   "addons": [
+       "@eeacms/volto-group-block"
+   ],
 
-  "dependencies": {
-      "@eeacms/volto-group-block": "^4.0.0"
-  }
-  ```
+   "dependencies": {
+       "@eeacms/volto-group-block": "*"
+   }
+   ```
 
-- If not, create one:
+* If not, create one:
 
-  ```
-  npm install -g yo @plone/generator-volto
-  yo @plone/volto my-volto-project --addon @eeacms/volto-group-block
-  cd my-volto-project
-  ```
+   ```
+   npm install -g yo @plone/generator-volto
+   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-group-block
+   cd my-volto-project
+   ```
 
 1. Install new add-ons and restart Volto:
 
