@@ -18,13 +18,13 @@
 
 ## Features
 
-![Group blocks and restrict available blocks](https://github.com/eea/volto-group-block/raw/docs/docs/volto-group-block.gif)
+![Group blocks and restrict available blocks](https://github.com/eea/volto-group-block/raw/master/docs/volto-group-block.gif)
 
 ## Getting started
 
 ### Try volto-group-block with Docker
 
-      git clone https://github.com/eea/volto-group-block.git
+      git clone https://github.com/eea/volto-group-block.gits
       cd volto-group-block
       make
       make start
