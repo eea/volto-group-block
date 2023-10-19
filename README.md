@@ -18,7 +18,7 @@
 
 ## Features
 
-![Group blocks and restrict available blocks](https://github.com/eea/volto-group-block/raw/master/docs/volto-group-block.gif)
+![Group blocks and restrict available blocks](https://raw.githubusercontent.com/eea/volto-group-block/master/docs/volto-group-block.gif)
 
 ## Getting started
 
