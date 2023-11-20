@@ -1,6 +1,7 @@
 import { Button } from 'semantic-ui-react';
 import { BlocksForm, Icon, RenderBlocks } from '@plone/volto/components';
 import EditBlockWrapper from './EditBlockWrapper';
+import { useLocation } from 'react-router-dom';
 
 import helpSVG from '@plone/volto/icons/help.svg';
 
@@ -21,6 +22,7 @@ const GroupBlockDefaultBody = (props) => {
     formDescription,
     isEditMode,
   } = props;
+  const location = useLocation();
   const metadata = props.metadata || props.properties;
   const blockState = {};
 
@@ -98,7 +100,11 @@ const GroupBlockDefaultBody = (props) => {
       )}
     </BlocksForm>
   ) : (
-    <RenderBlocks metadata={metadata} content={data?.data || {}} />
+    <RenderBlocks
+      location={location}
+      metadata={metadata}
+      content={data?.data || {}}
+    />
   );
 };
 
