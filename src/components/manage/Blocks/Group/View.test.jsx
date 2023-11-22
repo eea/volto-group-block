@@ -20,7 +20,6 @@ jest.mock('react-router-dom', () => ({
     pathname: '/',
     hash: '',
     search: '',
-    state: undefined,
   }),
 }));
 
@@ -77,10 +76,9 @@ describe('View', () => {
       properties: { prop: 'erty' },
       variation: {},
       location: {
-        pathname: '/my-page',
+        pathname: '/',
         search: '',
         hash: '',
-        key: 'q5b96h',
       },
     };
     render(<View {...props} />);

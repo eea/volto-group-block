@@ -36,7 +36,6 @@ jest.mock('react-router-dom', () => ({
     pathname: '/',
     hash: '',
     search: '',
-    state: undefined,
   }),
 }));
 
