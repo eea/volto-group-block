@@ -30,6 +30,16 @@ jest.mock('@plone/volto/helpers', () => ({
   getBlocksLayoutFieldname: jest.fn(),
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({
+    pathname: '/',
+    hash: '',
+    search: '',
+    state: undefined,
+  }),
+}));
+
 describe('Edit', () => {
   const onChangeBlock = jest.fn();
   const onChangeField = jest.fn();
