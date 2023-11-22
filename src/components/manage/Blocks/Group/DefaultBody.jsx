@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import helpSVG from '@plone/volto/icons/help.svg';
 
 const GroupBlockDefaultBody = (props) => {
+  const location = useLocation();
   const {
     block,
     data,
@@ -22,7 +23,6 @@ const GroupBlockDefaultBody = (props) => {
     formDescription,
     isEditMode,
   } = props;
-  const location = useLocation();
   const metadata = props.metadata || props.properties;
   const blockState = {};
 
