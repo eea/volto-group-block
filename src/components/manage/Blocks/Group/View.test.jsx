@@ -14,6 +14,16 @@ jest.mock('@plone/volto/helpers', () => ({
   withBlockExtensions: jest.fn((Component) => Component),
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({
+    pathname: '/',
+    hash: '',
+    search: '',
+    state: undefined,
+  }),
+}));
+
 describe('View', () => {
   it('should render without crashing', () => {
     const props = {
