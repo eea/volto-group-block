@@ -76,12 +76,19 @@ describe('View', () => {
       metadata: { meta: 'data' },
       properties: { prop: 'erty' },
       variation: {},
+      location: {
+        pathname: '/my-page',
+        search: '',
+        hash: '',
+        key: 'q5b96h',
+      },
     };
     render(<View {...props} />);
     expect(RenderBlocks).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: props.metadata,
         content: props.data.data,
+        location: props.location,
       }),
       {},
     );
