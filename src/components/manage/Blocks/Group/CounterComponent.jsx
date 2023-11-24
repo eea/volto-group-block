@@ -7,15 +7,7 @@ import { visitBlocks } from '@plone/volto/helpers/Blocks/Blocks';
 import { serializeNodesToText } from '@plone/volto-slate/editor/render';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
-
-const countCharsWithoutSpaces = (paragraph) => {
-  const regex = /[^\s\\]/g;
-  return (paragraph.match(regex) || []).length;
-};
-
-const countCharsWithSpaces = (paragraph) => {
-  return paragraph?.length || 0;
-};
+import { countCharsWithoutSpaces, countCharsWithSpaces } from './utils';
 
 const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
   id,
