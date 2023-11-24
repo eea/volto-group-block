@@ -36,7 +36,7 @@ const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
 };
 
 const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
-  const { countTextIn } = config.blocks?.blocksConfig?.group;
+  const { countTextIn } = config.blocks?.blocksConfig?.group || [];
   // use obj ref to update value - if you send number it will not be updated
   const groupCharCount = { value: 0 };
 

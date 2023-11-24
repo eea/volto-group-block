@@ -46,3 +46,30 @@ describe('DefaultBody', () => {
     expect(getByText('RenderBlocks')).toBeInTheDocument();
   });
 });
+
+describe('DefaultBody Edit', () => {
+  it('renders children', () => {
+    const props = {
+      isEditMode: true,
+      data: {
+        variation: {},
+        allowedBlocks: ['listing'],
+      },
+      metadata: {},
+      properties: {},
+      variation: {},
+      onSelectBlock: jest.fn(),
+      onDeleteBlock: jest.fn(),
+      onMutateBlock: jest.fn(),
+      onInsertBlock: jest.fn(),
+      selected: true,
+    };
+
+    const { getByText } = render(
+      <Provider store={store}>
+        <DefaultBody {...props} />
+      </Provider>,
+    );
+    expect(getByText('RenderBlocks')).toBeInTheDocument();
+  });
+});
