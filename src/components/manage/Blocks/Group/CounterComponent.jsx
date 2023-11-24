@@ -7,15 +7,7 @@ import { visitBlocks } from '@plone/volto/helpers/Blocks/Blocks';
 import { serializeNodesToText } from '@plone/volto-slate/editor/render';
 import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
-
-const countCharsWithoutSpaces = (paragraph) => {
-  const regex = /[^\s\\]/g;
-  return (paragraph.match(regex) || []).length;
-};
-
-const countCharsWithSpaces = (paragraph) => {
-  return paragraph?.length || 0;
-};
+import { countCharsWithoutSpaces, countCharsWithSpaces } from './utils';
 
 const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
   id,
@@ -36,7 +28,7 @@ const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
 };
 
 const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
-  const { countTextIn } = config.blocks?.blocksConfig?.group;
+  const { countTextIn } = config.blocks?.blocksConfig?.group || [];
   // use obj ref to update value - if you send number it will not be updated
   const groupCharCount = { value: 0 };
 

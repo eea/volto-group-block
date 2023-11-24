@@ -14,6 +14,15 @@ jest.mock('@plone/volto/helpers', () => ({
   withBlockExtensions: jest.fn((Component) => Component),
 }));
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({
+    pathname: '/',
+    hash: '',
+    search: '',
+  }),
+}));
+
 describe('View', () => {
   it('should render without crashing', () => {
     const props = {
@@ -66,12 +75,18 @@ describe('View', () => {
       metadata: { meta: 'data' },
       properties: { prop: 'erty' },
       variation: {},
+      location: {
+        pathname: '/',
+        search: '',
+        hash: '',
+      },
     };
     render(<View {...props} />);
     expect(RenderBlocks).toHaveBeenCalledWith(
       expect.objectContaining({
         metadata: props.metadata,
         content: props.data.data,
+        location: props.location,
       }),
       {},
     );
