@@ -36,6 +36,25 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
     cy.get('.content.active.common .button.group')
       .contains('Section (Group)')
       .click({ force: true });
+
+    cy.get('legend').contains('Section').click();
+    cy.get('#sidebar-settings .field-wrapper-title input').type(
+      'Intro section',
+    );
+    cy.get('#sidebar-settings .field-wrapper-placeholder input').type(
+      'Highlighted description',
+    );
+    cy.get('#sidebar-settings .field-wrapper-maxChars').type('250');
+    cy.get(
+      '#sidebar-settings .field-wrapper-allowedBlocks .react-select__value-container',
+    )
+      .click()
+      .type('Image{enter}');
+    cy.get(
+      '#sidebar-settings .field-wrapper-ignoreSpaces .ui.checkbox',
+    ).click();
+    cy.get('.block-editor-group .blocks-form .block-editor-slate').click();
+
     cy.get('.ui.basic.icon.button.group-block-add-button:visible').click();
     cy.get('.blocks-chooser .title').contains('Media').click({ force: true });
     cy.get('.content.active.media .button.image')
@@ -64,7 +83,9 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
     cy.getSlateTitle().type('My First Book');
     cy.get('.documentFirstHeading').contains('My First Book');
 
-    cy.get('.section-block .text-slate-editor-inner').click().type('My description');
+    cy.get('.section-block .text-slate-editor-inner')
+      .click()
+      .type('My description');
 
     cy.get('#toolbar-save').click();
     cy.get('.documentFirstHeading').contains('My First Book');
