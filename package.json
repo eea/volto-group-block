@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-group-block",
-  "version": "6.3.5",
+  "version": "6.3.6",
   "description": "volto-group-block: Volto block to be used to group other blocks",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
