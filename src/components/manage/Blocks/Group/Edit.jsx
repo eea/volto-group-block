@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import cx from 'classnames';
 import { isEmpty, without } from 'lodash';
 import {
   emptyBlocksForm,
@@ -139,7 +140,8 @@ const Edit = (props) => {
   return (
     <fieldset
       role="presentation"
-      className="section-block"
+      id={props.data.id}
+      className={cx('section-block', props.data.className)}
       onKeyDown={(e) => {
         handleKeyDown(e, props.index, props.block, props.blockNode.current);
       }}
