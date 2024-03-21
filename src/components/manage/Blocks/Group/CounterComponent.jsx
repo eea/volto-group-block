@@ -9,23 +9,22 @@ import delightedSVG from '@plone/volto/icons/delighted.svg';
 import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import { countCharsWithoutSpaces, countCharsWithSpaces } from './utils';
 
-const countTextInEachBlock = (countTextIn, ignoreSpaces, groupCharCount) => ([
-  id,
-  blockData,
-]) => {
-  const foundText =
-    blockData && countTextIn?.includes(blockData?.['@type'])
-      ? isString(blockData?.plaintext)
-        ? blockData?.plaintext
-        : isArray(blockData?.value) && blockData?.value !== null
-        ? serializeNodesToText(blockData?.value)
-        : ''
-      : '';
+const countTextInEachBlock =
+  (countTextIn, ignoreSpaces, groupCharCount) =>
+  ([id, blockData]) => {
+    const foundText =
+      blockData && countTextIn?.includes(blockData?.['@type'])
+        ? isString(blockData?.plaintext)
+          ? blockData?.plaintext
+          : isArray(blockData?.value) && blockData?.value !== null
+          ? serializeNodesToText(blockData?.value)
+          : ''
+        : '';
 
-  groupCharCount.value += ignoreSpaces
-    ? countCharsWithoutSpaces(foundText)
-    : countCharsWithSpaces(foundText);
-};
+    groupCharCount.value += ignoreSpaces
+      ? countCharsWithoutSpaces(foundText)
+      : countCharsWithSpaces(foundText);
+  };
 
 const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
   const { countTextIn } = config.blocks?.blocksConfig?.group || [];
