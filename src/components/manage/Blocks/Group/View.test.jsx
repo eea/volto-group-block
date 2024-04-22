@@ -1,7 +1,6 @@
 import React from 'react';
 import View from './View';
-import renderer from 'react-test-renderer';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { RenderBlocks } from '@plone/volto/components';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -31,10 +30,8 @@ describe('View', () => {
       properties: {},
       variation: {},
     };
-    const component = renderer.create(<View {...props} />);
-
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
+    render(<View {...props} />);
+    expect(screen.getByText('RenderBlocks')).toBeInTheDocument();
   });
 
   it('renders with default tag and without crashing', () => {

@@ -113,7 +113,7 @@ describe('Blocks Tests', () => {
     cy.get(
       '.block-editor-slate .block-toolbar button[title="Add block"]',
     ).click();
-    cy.get('.blocks-chooser .field.searchbox div.ui.transparent.input input')
+    cy.get('.blocks-chooser .field.searchbox div.ui.input input')
       .click()
       .focus()
       .type('Description{enter}');

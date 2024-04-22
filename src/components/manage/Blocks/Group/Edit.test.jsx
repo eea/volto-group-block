@@ -3,8 +3,7 @@ import { default as Edit } from './Edit';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
 import thunk from 'redux-thunk';
-import renderer from 'react-test-renderer';
-import { render, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 const mockStore = configureStore([thunk]);
@@ -69,14 +68,17 @@ describe('Edit', () => {
   };
 
   it('should render without crashing', () => {
-    const component = renderer.create(
+    const { container, getByRole } = render(
       <Provider store={store}>
         <Edit {...props} />
       </Provider>,
     );
 
-    const json = component.toJSON();
-    expect(json).toMatchSnapshot();
+    expect(getByRole('presentation')).toBeInTheDocument();
+    expect(container.querySelector('legend')).toBeInTheDocument();
+    expect(container.querySelector('div.blocks-form')).toBeInTheDocument();
+    expect(screen.getByText('BlocksToolbar')).toBeInTheDocument();
+    expect(screen.getByText('SidebarPortal')).toBeInTheDocument();
   });
 
   it('renders without crashing', () => {
