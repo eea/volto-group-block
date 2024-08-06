@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-group-block",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "volto-group-block: Volto block to be used to group other blocks",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -25,7 +25,8 @@
     "dotenv": "^16.3.2",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "md5": "^2.3.0"
+    "md5": "^2.3.0",
+    "cypress": "13.1.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [

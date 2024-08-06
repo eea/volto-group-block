@@ -33,6 +33,7 @@ const GroupBlockDefaultBody = (props) => {
   }
   return isEditMode ? (
     <BlocksForm
+      {...props}
       metadata={metadata}
       properties={childBlocksForm}
       manage={manage}
