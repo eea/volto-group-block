@@ -4,7 +4,7 @@ const Schema = {
     {
       id: 'default',
       title: 'Default',
-      fields: ['title', 'as'],
+      fields: ['title', 'as', 'restrictedBlock'],
     },
   ],
   properties: {
@@ -26,6 +26,10 @@ const Schema = {
         ['aside', 'aside'],
         ['details', 'details'],
       ],
+    },
+    restrictedBlock: {
+      title: 'Restricted block',
+      type: 'boolean',
     },
   },
   required: [],

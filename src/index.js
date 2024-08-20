@@ -33,6 +33,19 @@ const applyConfig = (config) => {
       },
     },
   };
+
+  if (!config.blocks.blocksConfig.empty) {
+    config.blocks.blocksConfig.empty = {
+      id: 'empty',
+      edit: () => {
+        return null;
+      },
+      view: () => {
+        return null;
+      },
+    };
+  }
+
   config.blocks.blocksConfig.group = {
     id: 'group',
     title: 'Section (Group)',
