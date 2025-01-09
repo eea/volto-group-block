@@ -1,24 +1,79 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Plone\n"
-"POT-Creation-Date: 2023-08-29T17:38:01.779Z\n"
+"POT-Creation-Date: 2025-01-09T11:33:13.413Z\n"
 "Last-Translator: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
 "Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
-"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
 "Language-Code: en\n"
 "Language-Name: English\n"
 "Preferred-Encodings: utf-8\n"
 "Domain: volto\n"
 
+#. Default: "Section (Group) settings"
+#: components/manage/Blocks/Group/Edit
+msgid "SectionGroupSettings"
+msgstr ""
+
+#. Default: "Unknown Block {block}"
 #: components/manage/Blocks/Group/EditBlockWrapper
-# defaultMessage: Unknown Block {block}
 msgid "Unknown Block"
 msgstr ""
 
+#. Default: "Add block"
 #: components/manage/Blocks/Group/EditBlockWrapper
-# defaultMessage: delete
+msgid "addBlock"
+msgstr ""
+
+#. Default: "Select HTML5 element to be used for this block"
+#: components/manage/Blocks/Group/EditSchema
+msgid "asPropertyDescription"
+msgstr ""
+
+#. Default: "HTML5 element"
+#: components/manage/Blocks/Group/EditSchema
+msgid "asPropertyTitle"
+msgstr ""
+
+#. Default: "delete"
+#: components/manage/Blocks/Group/EditBlockWrapper
 msgid "delete"
+msgstr ""
+
+#. Default: "Default"
+#: components/manage/Blocks/Group/EditSchema
+msgid "fieldsetDefaultTitle"
+msgstr ""
+
+#. Default: "Remove block"
+#: components/manage/Blocks/Group/EditBlockWrapper
+msgid "removeBlock"
+msgstr ""
+
+#. Default: "Restricted block"
+#: components/manage/Blocks/Group/EditSchema
+msgid "restrictedBlockTitle"
+msgstr ""
+
+#. Default: "Section block"
+#: components/manage/Blocks/Group/EditSchema
+msgid "sectionBlock"
+msgstr ""
+
+#. Default: "Section"
+#: components/manage/Blocks/Group/Edit
+msgid "sectionTitle"
+msgstr ""
+
+#. Default: "Section friendly name"
+#: components/manage/Blocks/Group/EditSchema
+msgid "titlePropertyDescription"
+msgstr ""
+
+#. Default: "Title"
+#: components/manage/Blocks/Group/EditSchema
+msgid "titlePropertyTitle"
 msgstr ""
