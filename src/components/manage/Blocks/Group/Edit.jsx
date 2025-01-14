@@ -20,7 +20,8 @@ import EditSchema from './EditSchema';
 
 import CounterComponent from './CounterComponent';
 import './editor.less';
-import { defineMessages } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
+import { compose } from 'redux';
 
 const messages = defineMessages({
   sectionGroupSettings: {
@@ -238,4 +239,4 @@ Edit.propTypes = {
   manage: PropTypes.bool.isRequired,
 };
 
-export default withBlockExtensions(Edit);
+export default compose(injectIntl, withBlockExtensions)(Edit);
