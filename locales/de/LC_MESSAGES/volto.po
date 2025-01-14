@@ -11,10 +11,15 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. Default: "Section (Group)"
+#: index
+msgid "Section (Group)"
+msgstr "Abschnitt (Gruppe)"
+
 #. Default: "Section (Group) settings"
 #: components/manage/Blocks/Group/Edit
 msgid "SectionGroupSettings"
-msgstr "Einstellungen Abschnitt (Gruppe)"
+msgstr "Abschnitt (Gruppe) Einstellungen"
 
 #. Default: "Unknown Block {block}"
 #: components/manage/Blocks/Group/EditBlockWrapper

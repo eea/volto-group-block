@@ -11,6 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. Default: "Section (Group)"
+#: index
+msgid "Section (Group)"
+msgstr ""
+
 #. Default: "Section (Group) settings"
 #: components/manage/Blocks/Group/Edit
 msgid "SectionGroupSettings"
