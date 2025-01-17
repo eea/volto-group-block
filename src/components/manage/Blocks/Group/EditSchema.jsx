@@ -1,21 +1,54 @@
-const Schema = {
-  title: 'Section block',
+import { defineMessages } from 'react-intl';
+
+const messages = defineMessages({
+  sectionBlock: {
+    id: 'sectionBlock',
+    defaultMessage: 'Section block',
+  },
+  fieldsetDefaultTitle: {
+    id: 'fieldsetDefaultTitle',
+    defaultMessage: 'Default',
+  },
+  titlePropertyTitle: {
+    id: 'titlePropertyTitle',
+    defaultMessage: 'Title',
+  },
+  titlePropertyDescription: {
+    id: 'titlePropertyDescription',
+    defaultMessage: 'Section friendly name',
+  },
+  asPropertyTitle: {
+    id: 'asPropertyTitle',
+    defaultMessage: 'HTML5 element',
+  },
+  asPropertyDescription: {
+    id: 'asPropertyDescription',
+    defaultMessage: 'Select HTML5 element to be used for this block',
+  },
+  restrictedBlockTitle: {
+    id: 'restrictedBlockTitle',
+    defaultMessage: 'Restricted block',
+  },
+});
+
+const Schema = (intl) => ({
+  title: intl.formatMessage(messages.sectionBlock),
   fieldsets: [
     {
       id: 'default',
-      title: 'Default',
+      title: intl.formatMessage(messages.fieldsetDefaultTitle),
       fields: ['title', 'as', 'restrictedBlock'],
     },
   ],
   properties: {
     title: {
-      title: 'Title',
-      description: 'Section friendly name',
+      title: intl.formatMessage(messages.titlePropertyTitle),
+      description: intl.formatMessage(messages.titlePropertyDescription),
       type: 'string',
     },
     as: {
-      title: 'HTML5 element',
-      description: 'Select HTML5 element to be used for this block',
+      title: intl.formatMessage(messages.asPropertyTitle),
+      description: intl.formatMessage(messages.asPropertyDescription),
       type: 'string',
       factory: 'Choice',
       default: 'div',
@@ -28,11 +61,11 @@ const Schema = {
       ],
     },
     restrictedBlock: {
-      title: 'Restricted block',
+      title: intl.formatMessage(messages.restrictedBlockTitle),
       type: 'boolean',
     },
   },
   required: [],
-};
+});
 
 export default Schema;
