@@ -6,6 +6,14 @@ import {
   GroupBlockDefaultBody,
 } from './components';
 import codeSVG from '@plone/volto/icons/row.svg';
+import { defineMessages } from 'react-intl';
+
+defineMessages({
+  sectionGroup: {
+    id: 'Section (Group)',
+    defaultMessage: 'Section (Group)',
+  },
+});
 
 const applyConfig = (config) => {
   const choices = Object.keys(config.blocks.blocksConfig)
