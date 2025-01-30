@@ -11,12 +11,72 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. Default: "Section (Group)"
+#: index
+msgid "Section (Group)"
+msgstr "Abschnitt (Gruppe)"
+
+#. Default: "Section (Group) settings"
+#: components/manage/Blocks/Group/Edit
+msgid "SectionGroupSettings"
+msgstr "Abschnitt (Gruppe) Einstellungen"
+
+#. Default: "Unknown Block {block}"
 #: components/manage/Blocks/Group/EditBlockWrapper
-# defaultMessage: Unknown Block {block}
 msgid "Unknown Block"
+msgstr "Unbekannter Block {block}"
+
+#. Default: "Add block"
+#: components/manage/Blocks/Group/EditBlockWrapper
+msgid "addBlock"
+msgstr "Block hinzufügen"
+
+#. Default: "Select HTML5 element to be used for this block"
+#: components/manage/Blocks/Group/EditSchema
+msgid "asPropertyDescription"
+msgstr "Wählen Sie das HTML5-Element, das für diesen Block verwendet werden soll"
+
+#. Default: "HTML5 element"
+#: components/manage/Blocks/Group/EditSchema
+msgid "asPropertyTitle"
 msgstr ""
 
+#. Default: "delete"
 #: components/manage/Blocks/Group/EditBlockWrapper
-# defaultMessage: delete
 msgid "delete"
-msgstr ""
+msgstr "Löschen"
+
+#. Default: "Default"
+#: components/manage/Blocks/Group/EditSchema
+msgid "fieldsetDefaultTitle"
+msgstr "Standard"
+
+#. Default: "Remove block"
+#: components/manage/Blocks/Group/EditBlockWrapper
+msgid "removeBlock"
+msgstr "Block entfernen"
+
+#. Default: "Restricted block"
+#: components/manage/Blocks/Group/EditSchema
+msgid "restrictedBlockTitle"
+msgstr "Eingeschränkter Block"
+
+#. Default: "Section block"
+#: components/manage/Blocks/Group/EditSchema
+msgid "sectionBlock"
+msgstr "Abschnittsblock"
+
+#. Default: "Section"
+#: components/manage/Blocks/Group/Edit
+msgid "sectionTitle"
+msgstr "Abschnitt"
+
+#. Default: "Section friendly name"
+#: components/manage/Blocks/Group/EditSchema
+msgid "titlePropertyDescription"
+msgstr "Kurzname für den Abschnitt"
+
+#. Default: "Title"
+#: components/manage/Blocks/Group/EditSchema
+msgid "titlePropertyTitle"
+msgstr "Titel"

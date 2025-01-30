@@ -20,6 +20,19 @@ import EditSchema from './EditSchema';
 
 import CounterComponent from './CounterComponent';
 import './editor.less';
+import { defineMessages, injectIntl } from 'react-intl';
+import { compose } from 'redux';
+
+const messages = defineMessages({
+  sectionGroupSettings: {
+    id: 'SectionGroupSettings',
+    defaultMessage: 'Section (Group) settings',
+  },
+  section: {
+    id: 'sectionTitle',
+    defaultMessage: 'Section',
+  },
+});
 
 const Edit = (props) => {
   const { block, data, onChangeBlock, selected, formDescription } = props;
@@ -156,7 +169,7 @@ const Edit = (props) => {
         }}
         aria-hidden="true"
       >
-        {data.title || 'Section'}
+        {data.title || props.intl.formatMessage(messages.section)}
       </legend>
       <BodyComponent
         {...props}
@@ -201,8 +214,8 @@ const Edit = (props) => {
         )}
         {!data?.readOnlySettings && (
           <BlockDataForm
-            schema={EditSchema}
-            title="Section (Group) settings"
+            schema={EditSchema(props.intl)}
+            title={props.intl.formatMessage(messages.sectionGroupSettings)}
             formData={data}
             onChangeField={(id, value) => {
               props.onChangeBlock(props.block, {
@@ -226,4 +239,4 @@ Edit.propTypes = {
   manage: PropTypes.bool.isRequired,
 };
 
-export default withBlockExtensions(Edit);
+export default compose(injectIntl, withBlockExtensions)(Edit);
