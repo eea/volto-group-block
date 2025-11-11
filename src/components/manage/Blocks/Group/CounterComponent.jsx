@@ -10,8 +10,23 @@ import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import { countCharsWithoutSpaces, countCharsWithSpaces } from './utils';
 
 const countTextInEachBlock =
-  (countTextIn, ignoreSpaces, groupCharCount) =>
+  (countTextIn, ignoreSpaces, groupCharCount, figureMetadataBlockIds = new Set()) =>
   ([id, blockData]) => {
+    // Track figure-metadata group block IDs and their children
+    if (blockData?.['@type'] === 'group' && blockData?.className === 'figure-metadata') {
+      // Get all child block IDs from this group and mark them to be skipped
+      if (blockData?.data?.blocks) {
+        Object.keys(blockData.data.blocks).forEach(childId => {
+          figureMetadataBlockIds.add(childId);
+        });
+      }
+    }
+
+    // Skip counting if this block is inside a figure-metadata group
+    if (figureMetadataBlockIds.has(id)) {
+      return;
+    }
+
     const foundText =
       blockData && countTextIn?.includes(blockData?.['@type'])
         ? isString(blockData?.plaintext)
@@ -30,6 +45,7 @@ const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
   const { countTextIn } = config.blocks?.blocksConfig?.group || [];
   // use obj ref to update value - if you send number it will not be updated
   const groupCharCount = { value: 0 };
+  const figureMetadataBlockIds = new Set();
 
   if (!maxChars || !blocksObject) {
     return groupCharCount.value;
@@ -37,7 +53,7 @@ const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
 
   visitBlocks(
     blocksObject,
-    countTextInEachBlock(countTextIn, ignoreSpaces, groupCharCount),
+    countTextInEachBlock(countTextIn, ignoreSpaces, groupCharCount, figureMetadataBlockIds),
   );
 
   return groupCharCount.value;
