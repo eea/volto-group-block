@@ -10,13 +10,21 @@ import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import { countCharsWithoutSpaces, countCharsWithSpaces } from './utils';
 
 const countTextInEachBlock =
-  (countTextIn, ignoreSpaces, groupCharCount, figureMetadataBlockIds = new Set()) =>
+  (
+    countTextIn,
+    ignoreSpaces,
+    groupCharCount,
+    figureMetadataBlockIds = new Set(),
+  ) =>
   ([id, blockData]) => {
     // Track figure-metadata group block IDs and their children
-    if (blockData?.['@type'] === 'group' && blockData?.className === 'figure-metadata') {
+    if (
+      blockData?.['@type'] === 'group' &&
+      blockData?.className === 'figure-metadata'
+    ) {
       // Get all child block IDs from this group and mark them to be skipped
       if (blockData?.data?.blocks) {
-        Object.keys(blockData.data.blocks).forEach(childId => {
+        Object.keys(blockData.data.blocks).forEach((childId) => {
           figureMetadataBlockIds.add(childId);
         });
       }
@@ -53,7 +61,12 @@ const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
 
   visitBlocks(
     blocksObject,
-    countTextInEachBlock(countTextIn, ignoreSpaces, groupCharCount, figureMetadataBlockIds),
+    countTextInEachBlock(
+      countTextIn,
+      ignoreSpaces,
+      groupCharCount,
+      figureMetadataBlockIds,
+    ),
   );
 
   return groupCharCount.value;
