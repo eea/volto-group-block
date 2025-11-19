@@ -14,24 +14,31 @@ const countTextInEachBlock =
     countTextIn,
     ignoreSpaces,
     groupCharCount,
-    figureMetadataBlockIds = new Set(),
+    skipBlockIds = new Set(),
+    skipBlocksInGroups = [],
   ) =>
   ([id, blockData]) => {
-    // Track figure-metadata group block IDs and their children
-    if (
-      blockData?.['@type'] === 'group' &&
-      blockData?.className === 'figure-metadata'
-    ) {
-      // Get all child block IDs from this group and mark them to be skipped
-      if (blockData?.data?.blocks) {
-        Object.keys(blockData.data.blocks).forEach((childId) => {
-          figureMetadataBlockIds.add(childId);
+    // Track group blocks matching skip criteria and their children
+    if (blockData?.['@type'] === 'group') {
+      const shouldSkip = skipBlocksInGroups.some((criteria) => {
+        // Check if all criteria match
+        return Object.keys(criteria).every((key) => {
+          return blockData?.[key] === criteria[key];
         });
+      });
+
+      if (shouldSkip) {
+        // Get all child block IDs from this group and mark them to be skipped
+        if (blockData?.data?.blocks) {
+          Object.keys(blockData.data.blocks).forEach((childId) => {
+            skipBlockIds.add(childId);
+          });
+        }
       }
     }
 
-    // Skip counting if this block is inside a figure-metadata group
-    if (figureMetadataBlockIds.has(id)) {
+    // Skip counting if this block is inside a skipped group
+    if (skipBlockIds.has(id)) {
       return;
     }
 
@@ -50,10 +57,11 @@ const countTextInEachBlock =
   };
 
 const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
-  const { countTextIn } = config.blocks?.blocksConfig?.group || [];
+  const { countTextIn, skipBlocksInGroups = [] } =
+    config.blocks?.blocksConfig?.group || {};
   // use obj ref to update value - if you send number it will not be updated
   const groupCharCount = { value: 0 };
-  const figureMetadataBlockIds = new Set();
+  const skipBlockIds = new Set();
 
   if (!maxChars || !blocksObject) {
     return groupCharCount.value;
@@ -65,7 +73,8 @@ const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
       countTextIn,
       ignoreSpaces,
       groupCharCount,
-      figureMetadataBlockIds,
+      skipBlockIds,
+      skipBlocksInGroups,
     ),
   );
 
