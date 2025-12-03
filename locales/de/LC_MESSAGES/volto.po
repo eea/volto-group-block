@@ -56,11 +56,6 @@ msgstr "Standard"
 msgid "removeBlock"
 msgstr "Block entfernen"
 
-#. Default: "Restricted block"
-#: components/manage/Blocks/Group/EditSchema
-msgid "restrictedBlockTitle"
-msgstr "Eingeschränkter Block"
-
 #. Default: "Section block"
 #: components/manage/Blocks/Group/EditSchema
 msgid "sectionBlock"
