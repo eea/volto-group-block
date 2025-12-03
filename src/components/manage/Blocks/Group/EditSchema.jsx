@@ -25,10 +25,6 @@ const messages = defineMessages({
     id: 'asPropertyDescription',
     defaultMessage: 'Select HTML5 element to be used for this block',
   },
-  restrictedBlockTitle: {
-    id: 'restrictedBlockTitle',
-    defaultMessage: 'Restricted block',
-  },
 });
 
 const Schema = (intl) => ({
@@ -37,7 +33,7 @@ const Schema = (intl) => ({
     {
       id: 'default',
       title: intl.formatMessage(messages.fieldsetDefaultTitle),
-      fields: ['title', 'as', 'restrictedBlock'],
+      fields: ['title', 'as'],
     },
   ],
   properties: {
@@ -59,10 +55,6 @@ const Schema = (intl) => ({
         ['aside', 'aside'],
         ['details', 'details'],
       ],
-    },
-    restrictedBlock: {
-      title: intl.formatMessage(messages.restrictedBlockTitle),
-      type: 'boolean',
     },
   },
   required: [],
