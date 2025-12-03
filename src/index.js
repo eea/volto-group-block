@@ -93,6 +93,7 @@ const applyConfig = (config) => {
       return entries;
     },
     countTextIn: ['slate', 'description'], //id of the block whose text should be counted
+    skipBlocksInGroups: [], // Array of group criteria to skip when counting chars. Each item can have: { className: 'group-class-name' }
   };
 
   return config;

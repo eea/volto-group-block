@@ -10,8 +10,38 @@ import dissatisfiedSVG from '@plone/volto/icons/dissatisfied.svg';
 import { countCharsWithoutSpaces, countCharsWithSpaces } from './utils';
 
 const countTextInEachBlock =
-  (countTextIn, ignoreSpaces, groupCharCount) =>
+  (
+    countTextIn,
+    ignoreSpaces,
+    groupCharCount,
+    skipBlockIds = new Set(),
+    skipBlocksInGroups = [],
+  ) =>
   ([id, blockData]) => {
+    // Track group blocks matching skip criteria and their children
+    if (blockData?.['@type'] === 'group') {
+      const shouldSkip = skipBlocksInGroups.some((criteria) => {
+        // Check if all criteria match
+        return Object.keys(criteria).every((key) => {
+          return blockData?.[key] === criteria[key];
+        });
+      });
+
+      if (shouldSkip) {
+        // Get all child block IDs from this group and mark them to be skipped
+        if (blockData?.data?.blocks) {
+          Object.keys(blockData.data.blocks).forEach((childId) => {
+            skipBlockIds.add(childId);
+          });
+        }
+      }
+    }
+
+    // Skip counting if this block is inside a skipped group
+    if (skipBlockIds.has(id)) {
+      return;
+    }
+
     const foundText =
       blockData && countTextIn?.includes(blockData?.['@type'])
         ? isString(blockData?.plaintext)
@@ -27,9 +57,11 @@ const countTextInEachBlock =
   };
 
 const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
-  const { countTextIn } = config.blocks?.blocksConfig?.group || [];
+  const { countTextIn, skipBlocksInGroups = [] } =
+    config.blocks?.blocksConfig?.group || {};
   // use obj ref to update value - if you send number it will not be updated
   const groupCharCount = { value: 0 };
+  const skipBlockIds = new Set();
 
   if (!maxChars || !blocksObject) {
     return groupCharCount.value;
@@ -37,7 +69,13 @@ const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
 
   visitBlocks(
     blocksObject,
-    countTextInEachBlock(countTextIn, ignoreSpaces, groupCharCount),
+    countTextInEachBlock(
+      countTextIn,
+      ignoreSpaces,
+      groupCharCount,
+      skipBlockIds,
+      skipBlocksInGroups,
+    ),
   );
 
   return groupCharCount.value;
