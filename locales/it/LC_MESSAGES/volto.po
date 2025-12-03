@@ -56,11 +56,6 @@ msgstr ""
 msgid "removeBlock"
 msgstr ""
 
-#. Default: "Restricted block"
-#: components/manage/Blocks/Group/EditSchema
-msgid "restrictedBlockTitle"
-msgstr ""
-
 #. Default: "Section block"
 #: components/manage/Blocks/Group/EditSchema
 msgid "sectionBlock"
