@@ -85,7 +85,8 @@ const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
   const maxChars = parseInt(data.maxChars) || 0;
   const maxCharsOverflowPercent = parseInt(data.maxCharsOverflowPercent) || 0;
   const { ignoreSpaces } = data;
-  const charCount = countTextInBlocks(data?.data, ignoreSpaces, maxChars);
+  const charCount =
+    data.charCount ?? countTextInBlocks(data?.data, ignoreSpaces, maxChars);
 
   const overflowLimit =
     maxCharsOverflowPercent > 0
