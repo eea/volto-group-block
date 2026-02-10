@@ -56,7 +56,7 @@ const countTextInEachBlock =
       : countCharsWithSpaces(foundText);
   };
 
-const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
+export const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
   const { countTextIn, skipBlocksInGroups = [] } =
     config.blocks?.blocksConfig?.group || {};
   // use obj ref to update value - if you send number it will not be updated
@@ -82,12 +82,20 @@ const countTextInBlocks = (blocksObject, ignoreSpaces, maxChars) => {
 };
 
 const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
-  const { maxChars, ignoreSpaces } = data;
+  const maxChars = parseInt(data.maxChars) || 0;
+  const maxCharsOverflowPercent = parseInt(data.maxCharsOverflowPercent) || 0;
+  const { ignoreSpaces } = data;
   const charCount = countTextInBlocks(data?.data, ignoreSpaces, maxChars);
+
+  const overflowLimit =
+    maxCharsOverflowPercent > 0
+      ? Math.ceil((maxChars * (100 + maxCharsOverflowPercent)) / 100)
+      : maxChars;
+
   const counterClass =
     charCount < Math.ceil(maxChars / 1.05)
       ? 'info'
-      : charCount < maxChars
+      : charCount <= overflowLimit
       ? 'warning'
       : 'danger';
 

@@ -11,6 +11,7 @@ const Schema = {
         'allowedBlocks',
         'as',
         'maxChars',
+        'maxCharsOverflowPercent',
         'ignoreSpaces',
         'readOnlySettings',
         'disableInnerButtons',
@@ -65,6 +66,13 @@ const Schema = {
     maxChars: {
       title: 'Maximum Characters',
       description: 'The maximum number of characters.',
+      type: 'integer',
+      factory: 'Integer',
+    },
+    maxCharsOverflowPercent: {
+      title: 'Maximum Characters Overflow Percent',
+      description:
+        'The percentage of characters that can overflow the maximum characters limit before showing a warning: 0-100',
       type: 'integer',
       factory: 'Integer',
     },
