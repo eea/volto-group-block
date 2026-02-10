@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 import EditSchema from './EditSchema';
 
-import CounterComponent from './CounterComponent';
+import CounterComponent, { countTextInBlocks } from './CounterComponent';
 import './editor.less';
 import { defineMessages, injectIntl } from 'react-intl';
 import { compose } from 'redux';
@@ -115,20 +115,29 @@ const Edit = (props) => {
     });
     const selectedIndex =
       data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
-    onChangeBlock(block, {
-      ...data,
-      data: {
-        ...data?.data,
-        ...newBlockData,
-        blocks_layout: {
-          items: [
-            ...data.data.blocks_layout.items.slice(0, selectedIndex),
-            ...pastedBlocks,
-            ...data.data.blocks_layout.items.slice(selectedIndex),
-          ],
-        },
+    const newChildData = {
+      ...data?.data,
+      ...newBlockData,
+      blocks_layout: {
+        items: [
+          ...data.data.blocks_layout.items.slice(0, selectedIndex),
+          ...pastedBlocks,
+          ...data.data.blocks_layout.items.slice(selectedIndex),
+        ],
       },
-    });
+    };
+    const newData = {
+      ...data,
+      data: newChildData,
+    };
+    if (data.maxChars) {
+      newData.charCount = countTextInBlocks(
+        newChildData,
+        data.ignoreSpaces,
+        data.maxChars,
+      );
+    }
+    onChangeBlock(block, newData);
   };
 
   React.useEffect(() => {
@@ -137,10 +146,14 @@ const Edit = (props) => {
       childBlocksForm.blocks_layout.items[0] !== selectedBlock
     ) {
       setSelectedBlock(childBlocksForm.blocks_layout.items[0]);
-      onChangeBlock(block, {
+      const newData = {
         ...data,
         data: childBlocksForm,
-      });
+      };
+      if (data.maxChars) {
+        newData.charCount = 0;
+      }
+      onChangeBlock(block, newData);
     }
   }, [onChangeBlock, childBlocksForm, selectedBlock, block, data, data_blocks]);
 
@@ -218,10 +231,24 @@ const Edit = (props) => {
             title={props.intl.formatMessage(messages.sectionGroupSettings)}
             formData={data}
             onChangeField={(id, value) => {
-              props.onChangeBlock(props.block, {
+              const newData = {
                 ...props.data,
                 [id]: value,
-              });
+              };
+              const effectiveMaxChars =
+                id === 'maxChars' ? value : props.data.maxChars;
+              const effectiveIgnoreSpaces =
+                id === 'ignoreSpaces' ? value : props.data.ignoreSpaces;
+              if (effectiveMaxChars) {
+                newData.charCount = countTextInBlocks(
+                  props.data?.data,
+                  effectiveIgnoreSpaces,
+                  effectiveMaxChars,
+                );
+              } else {
+                delete newData.charCount;
+              }
+              props.onChangeBlock(props.block, newData);
             }}
           />
         )}

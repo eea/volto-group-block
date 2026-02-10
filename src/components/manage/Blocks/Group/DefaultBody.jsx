@@ -1,6 +1,7 @@
 import { Button } from 'semantic-ui-react';
 import { BlocksForm, Icon, RenderBlocks } from '@plone/volto/components';
 import EditBlockWrapper from './EditBlockWrapper';
+import { countTextInBlocks } from './CounterComponent';
 import { useLocation } from 'react-router-dom';
 
 import helpSVG from '@plone/volto/icons/help.svg';
@@ -48,21 +49,38 @@ const GroupBlockDefaultBody = (props) => {
         onSelectBlock(id, isMultipleSelection, e, selectedBlock);
       }}
       onChangeFormData={(newFormData) => {
-        onChangeBlock(block, {
+        const newData = {
           ...data,
           data: newFormData,
-        });
+        };
+        if (data.maxChars) {
+          newData.charCount = countTextInBlocks(
+            newFormData,
+            data.ignoreSpaces,
+            data.maxChars,
+          );
+        }
+        onChangeBlock(block, newData);
       }}
       onChangeField={(id, value) => {
         if (['blocks', 'blocks_layout'].indexOf(id) > -1) {
           blockState[id] = value;
-          onChangeBlock(block, {
+          const newChildData = {
+            ...data.data,
+            ...blockState,
+          };
+          const newData = {
             ...data,
-            data: {
-              ...data.data,
-              ...blockState,
-            },
-          });
+            data: newChildData,
+          };
+          if (data.maxChars) {
+            newData.charCount = countTextInBlocks(
+              newChildData,
+              data.ignoreSpaces,
+              data.maxChars,
+            );
+          }
+          onChangeBlock(block, newData);
         } else {
           onChangeField(id, value);
         }
