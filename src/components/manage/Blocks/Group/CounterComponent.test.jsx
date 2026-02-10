@@ -231,4 +231,119 @@ describe('CounterComponent', () => {
     expect(setSidebarTab).toHaveBeenCalledWith(1);
     expect(setSelectedBlock).toHaveBeenCalled();
   });
+
+  it('should render warning class when chars are within overflow zone (maxCharsOverflowPercent=10)', () => {
+    const { container, getByText } = render(
+      <CounterComponent
+        data={{
+          maxChars: 100,
+          maxCharsOverflowPercent: 10,
+          data: {
+            blocks: {
+              block1: { '@type': 'text', plaintext: 'a'.repeat(105) },
+            },
+            blocks_layout: {
+              items: ['block1'],
+            },
+          },
+        }}
+        setSidebarTab={setSidebarTab}
+        setSelectedBlock={setSelectedBlock}
+      />,
+    );
+    expect(getByText('5 characters over the limit')).toBeInTheDocument();
+    expect(container.querySelector('.counter.warning')).toBeInTheDocument();
+  });
+
+  it('should render danger class when chars exceed overflow zone (maxCharsOverflowPercent=10)', () => {
+    const { container, getByText } = render(
+      <CounterComponent
+        data={{
+          maxChars: 100,
+          maxCharsOverflowPercent: 10,
+          data: {
+            blocks: {
+              block1: { '@type': 'text', plaintext: 'a'.repeat(111) },
+            },
+            blocks_layout: {
+              items: ['block1'],
+            },
+          },
+        }}
+        setSidebarTab={setSidebarTab}
+        setSelectedBlock={setSelectedBlock}
+      />,
+    );
+    expect(getByText('11 characters over the limit')).toBeInTheDocument();
+    expect(container.querySelector('.counter.danger')).toBeInTheDocument();
+  });
+
+  it('should render warning class when chars equal maxChars with no overflow percent', () => {
+    const { container, getByText } = render(
+      <CounterComponent
+        data={{
+          maxChars: 100,
+          data: {
+            blocks: {
+              block1: { '@type': 'text', plaintext: 'a'.repeat(100) },
+            },
+            blocks_layout: {
+              items: ['block1'],
+            },
+          },
+        }}
+        setSidebarTab={setSidebarTab}
+        setSelectedBlock={setSelectedBlock}
+      />,
+    );
+    expect(getByText('0 characters remaining out of 100')).toBeInTheDocument();
+    expect(container.querySelector('.counter.warning')).toBeInTheDocument();
+  });
+
+  it('should render danger class when negative overflow percent falls back to maxChars', () => {
+    const { container, getByText } = render(
+      <CounterComponent
+        data={{
+          maxChars: 100,
+          maxCharsOverflowPercent: -5,
+          data: {
+            blocks: {
+              block1: { '@type': 'text', plaintext: 'a'.repeat(104) },
+            },
+            blocks_layout: {
+              items: ['block1'],
+            },
+          },
+        }}
+        setSidebarTab={setSidebarTab}
+        setSelectedBlock={setSelectedBlock}
+      />,
+    );
+    expect(getByText('4 characters over the limit')).toBeInTheDocument();
+    expect(container.querySelector('.counter.danger')).toBeInTheDocument();
+  });
+
+  it('should use persisted charCount from data instead of recomputing', () => {
+    const { container, getByText } = render(
+      <CounterComponent
+        data={{
+          maxChars: 100,
+          charCount: 42,
+          data: {
+            blocks: {
+              block1: { '@type': 'text', plaintext: 'a'.repeat(90) },
+            },
+            blocks_layout: {
+              items: ['block1'],
+            },
+          },
+        }}
+        setSidebarTab={setSidebarTab}
+        setSelectedBlock={setSelectedBlock}
+      />,
+    );
+    // Should use charCount=42 from data, not 90 from blocks
+    expect(getByText('58 characters remaining out of 100')).toBeInTheDocument();
+    expect(container.querySelector('.counter.info')).toBeInTheDocument();
+  });
 });
