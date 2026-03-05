@@ -42,6 +42,8 @@ const GroupBlockDefaultBody = (props) => {
       allowedBlocks={data.allowedBlocks}
       title={data.placeholder}
       description={instructions}
+      isMainForm={false}
+      stopPropagation={selectedBlock}
       onSelectBlock={(id, l, e) => {
         const isMultipleSelection = e
           ? e.shiftKey || e.ctrlKey || e.metaKey
