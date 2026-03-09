@@ -31,6 +31,8 @@
 
 Go to http://localhost:3000
 
+`make start` now defaults to Volto 18. To run the same setup against Volto 17, use `make VOLTO_VERSION=17 start`.
+
 ### Add volto-group-block to your Volto project
 
 1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone

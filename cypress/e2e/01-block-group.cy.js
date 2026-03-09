@@ -65,11 +65,17 @@ describe('Blocks Tests', () => {
 
     // add the content type
     cy.get('#toolbar-add').click();
-    cy.get('#field-title').click().type('Test Content Type');
-    cy.get('.actions button[aria-label="Save"]').click();
+    cy.get('#field-title:visible').first().click().type('Test Content Type');
+    cy.get('#field-description:visible')
+      .first()
+      .click()
+      .type('Test Content Type');
+    cy.get('.actions button[aria-label="Save"]').click({ force: true });
 
     // change the layout
-    cy.get('.ui.dropdown.actions-test_content_type').click();
+    cy.get('.ui.dropdown.actions-test_content_type', { timeout: 20000 })
+      .should('be.visible')
+      .click({ force: true });
     cy.get('.item.layout-test_content_type').click();
     cy.contains('Enable editable Blocks').click();
     cy.getSlate().click();
@@ -81,13 +87,18 @@ describe('Blocks Tests', () => {
       .contains('Section (Group)')
       .click({ force: true });
     cy.contains('Section').click();
+    cy.getIfExists('.sidebar-container a.item', () => {
+      cy.contains('.sidebar-container a.item', 'Settings').click();
+    });
 
-    cy.get('.sidebar-container #field-placeholder')
+    cy.get('.sidebar-container #field-placeholder:visible')
+      .first()
       .click()
       .type('Test Helper Text');
     cy.get(
-      '.sidebar-container .field-wrapper-instructions div[role="textbox"] p',
+      '.sidebar-container .field-wrapper-instructions div[role="textbox"] p:visible',
     )
+      .first()
       .click()
       .type('Description Blocks');
     cy.get(
@@ -105,7 +116,7 @@ describe('Blocks Tests', () => {
     cy.contains('Home').click();
     cy.get('#toolbar-add').click();
     cy.get('#toolbar-add-test_content_type').click();
-    cy.get('#field-title').click().type('Test Content Type');
+    cy.get('#field-title:visible').first().click().type('Test Content Type');
     cy.get('.block-editor-group div[role="textbox"]')
       .click()
       .type('/description{enter}');

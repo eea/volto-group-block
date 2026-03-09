@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
 import EditBlockWrapper from './EditBlockWrapper';
 import configureStore from 'redux-mock-store';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 const mockDragInfo = {
   innerRef: {

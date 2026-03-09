@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
 import DefaultBody from './DefaultBody';
 import configureStore from 'redux-mock-store';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

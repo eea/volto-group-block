@@ -12,6 +12,8 @@
     make start
     ```
 
+   `make start` defaults to Volto 18. Use `make VOLTO_VERSION=17 start` to test the Volto 17 dev environment.
+
 1. Wait for `Volto started at 0.0.0.0:3000` meesage
 
 1. Go to http://localhost:3000
@@ -92,6 +94,8 @@ Start:
   ```
 
 This will build and start with Docker a clean `Plone backend` and `Volto Frontend` with `volto-group-block` block installed.
+
+Use `make VOLTO_VERSION=17 start` if you need to reproduce the Volto 17 setup locally.
 
 Open Cypress Interface:
 

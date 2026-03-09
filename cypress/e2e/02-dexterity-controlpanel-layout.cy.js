@@ -12,16 +12,21 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
       'book',
     );
 
-    cy.visit('/controlpanel/dexterity-types/book/layout');
+    cy.navigate('/controlpanel/dexterity-types/book/layout');
     cy.get('#page-controlpanel-layout').contains(
       'Can not edit Layout for book',
     );
+    cy.wait(1000);
     cy.get('#page-controlpanel-layout button').click({ force: true });
 
     // Wait a bit for draftjs to load, without this the title block
     // custom placeholder is missing and cypress gives a timeout error
     cy.wait(1000);
-    cy.get('input[id="field-placeholder"]').type('Book title');
+    cy.get('.block.title').first().click();
+    cy.getIfExists('.sidebar-container a.item', () => {
+      cy.contains('.sidebar-container a.item', 'Settings').click();
+    });
+    cy.get('input[id="field-placeholder"]:visible').first().type('Book title');
     cy.get('label[for="field-required"]').click();
     cy.get('label[for="field-fixed"]').click();
 
@@ -34,13 +39,18 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
       .click({ force: true });
 
     cy.get('legend').contains('Section').click();
-    cy.get('#sidebar-settings .field-wrapper-title input').type(
+    cy.getIfExists('.sidebar-container a.item', () => {
+      cy.contains('.sidebar-container a.item', 'Settings').click();
+    });
+    cy.get('#sidebar-settings .field-wrapper-title input:visible').first().type(
       'Intro section',
     );
-    cy.get('#sidebar-settings .field-wrapper-placeholder input').type(
-      'Highlighted description',
-    );
-    cy.get('#sidebar-settings .field-wrapper-maxChars').type('250');
+    cy.get('#sidebar-settings .field-wrapper-placeholder input:visible')
+      .first()
+      .type('Highlighted description');
+    cy.get('#sidebar-settings .field-wrapper-maxChars:visible')
+      .first()
+      .type('250');
     cy.get(
       '#sidebar-settings .field-wrapper-allowedBlocks .react-select__value-container',
     )
