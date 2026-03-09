@@ -21,16 +21,6 @@ msgstr "Abschnitt (Gruppe)"
 msgid "SectionGroupSettings"
 msgstr "Abschnitt (Gruppe) Einstellungen"
 
-#. Default: "Unknown Block {block}"
-#: components/manage/Blocks/Group/EditBlockWrapper
-msgid "Unknown Block"
-msgstr "Unbekannter Block {block}"
-
-#. Default: "Add block"
-#: components/manage/Blocks/Group/EditBlockWrapper
-msgid "addBlock"
-msgstr "Block hinzufügen"
-
 #. Default: "Select HTML5 element to be used for this block"
 #: components/manage/Blocks/Group/EditSchema
 msgid "asPropertyDescription"
@@ -41,20 +31,10 @@ msgstr "Wählen Sie das HTML5-Element, das für diesen Block verwendet werden so
 msgid "asPropertyTitle"
 msgstr ""
 
-#. Default: "delete"
-#: components/manage/Blocks/Group/EditBlockWrapper
-msgid "delete"
-msgstr "Löschen"
-
 #. Default: "Default"
 #: components/manage/Blocks/Group/EditSchema
 msgid "fieldsetDefaultTitle"
 msgstr "Standard"
-
-#. Default: "Remove block"
-#: components/manage/Blocks/Group/EditBlockWrapper
-msgid "removeBlock"
-msgstr "Block entfernen"
 
 #. Default: "Section block"
 #: components/manage/Blocks/Group/EditSchema

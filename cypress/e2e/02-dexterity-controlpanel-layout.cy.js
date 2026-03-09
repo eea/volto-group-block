@@ -32,11 +32,12 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
 
     cy.getSlate().click();
 
-    cy.get('.ui.basic.icon.button.block-add-button:visible').click();
-    cy.get('.blocks-chooser .title').contains('Common').click();
-    cy.get('.content.active.common .button.group')
-      .contains('Section (Group)')
-      .click({ force: true });
+    // Add group block via slash command
+    cy.get('.block-editor-slate [contenteditable=true]')
+      .last()
+      .focus()
+      .click()
+      .type('/group{enter}');
 
     cy.get('legend').contains('Section').click();
     cy.getIfExists('.sidebar-container a.item', () => {
@@ -89,14 +90,15 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
         ).click();
       },
     );
-    cy.get('.block-editor-group .blocks-form .block-editor-slate').click();
 
-    cy.get('.ui.basic.icon.button.group-block-add-button:visible').click();
-    cy.get('.blocks-chooser .title').contains('Media').click();
-    cy.get('.content.active.media .button.image')
-      .contains('Image')
-      .should('be.visible')
-      .click();
+    // Add image block inside group via slash command
+    cy.get('.block-editor-group .blocks-form .block-editor-slate').click();
+    cy.get('.block-editor-group [contenteditable=true]')
+      .last()
+      .focus()
+      .click()
+      .type('/image{enter}');
+
     cy.wait(1000);
     cy.get('.block.image')
       .last()

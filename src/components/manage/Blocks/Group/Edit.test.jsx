@@ -90,6 +90,22 @@ describe('Edit', () => {
     expect(getByRole('presentation')).toBeInTheDocument();
   });
 
+  it('adds a root modifier when inner buttons are disabled', () => {
+    const { getByRole } = render(
+      <Provider store={store}>
+        <Edit
+          {...props}
+          data={{
+            ...props.data,
+            disableInnerButtons: true,
+          }}
+        />
+      </Provider>,
+    );
+
+    expect(getByRole('presentation')).toHaveClass('disable-inner-buttons');
+  });
+
   it('should call ArrowUp keydown', () => {
     const mockOnFocusPreviousBlock = jest.fn();
     const { getByRole } = render(

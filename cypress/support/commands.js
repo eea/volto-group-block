@@ -167,6 +167,7 @@ Cypress.Commands.add('removeContentType', (name) => {
       },
       auth: auth,
       body: {},
+      failOnStatusCode: false,
     })
     .then(() => console.log(`${name} content-type removed.`));
 });
@@ -238,6 +239,7 @@ Cypress.Commands.add('removeContent', (path) => {
       },
       auth: auth,
       body: {},
+      failOnStatusCode: false,
     })
     .then(() => console.log(`${path} removed`));
 });
