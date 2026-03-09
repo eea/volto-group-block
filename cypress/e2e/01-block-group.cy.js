@@ -66,10 +66,7 @@ describe('Blocks Tests', () => {
     // add the content type
     cy.get('#toolbar-add').click();
     cy.get('#field-title:visible').first().click().type('Book');
-    cy.get('#field-description:visible')
-      .first()
-      .click()
-      .type('Book');
+    cy.get('#field-description:visible').first().click().type('Book');
     cy.get('.actions button[aria-label="Save"]').click({ force: true });
 
     // change the layout

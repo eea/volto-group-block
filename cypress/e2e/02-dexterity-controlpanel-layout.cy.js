@@ -42,11 +42,14 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
     cy.getIfExists('.sidebar-container a.item', () => {
       cy.contains('.sidebar-container a.item', 'Settings').click();
     });
-    cy.getIfExists('.sidebar-container .field-wrapper-title input:visible', () => {
-      cy.get('.sidebar-container .field-wrapper-title input:visible')
-        .first()
-        .type('Intro section');
-    });
+    cy.getIfExists(
+      '.sidebar-container .field-wrapper-title input:visible',
+      () => {
+        cy.get('.sidebar-container .field-wrapper-title input:visible')
+          .first()
+          .type('Intro section');
+      },
+    );
     cy.getIfExists(
       '.sidebar-container .field-wrapper-placeholder input:visible',
       () => {
@@ -73,12 +76,9 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
           .within(() => {
             cy.get('.react-select__control').click();
           });
-        cy.get(
-          '.sidebar-container .field-wrapper-allowedBlocks:visible input:visible',
-        )
-          .first()
-          .type('Image');
-        cy.contains('.react-select__option', 'Image').click();
+        cy.contains('.react-select__option', 'Image')
+          .should('be.visible')
+          .click();
       },
     );
     cy.getIfExists(
