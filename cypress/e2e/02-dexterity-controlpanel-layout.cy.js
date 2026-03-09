@@ -100,11 +100,21 @@ describe('ControlPanel: Dexterity Content-Types Layout', () => {
     cy.wait(1000);
     cy.get('.block.image')
       .last()
-      .within(() => {
-        cy.get('button[aria-label="Enter a URL to an image"]')
-          .should('be.visible')
-          .click();
-        cy.get('input[type="text"]:visible, .ui.input input:visible')
+      .then(($imageBlock) => {
+        const hasUrlButton =
+          $imageBlock.find('button[aria-label="Enter a URL to an image"]')
+            .length > 0;
+
+        if (hasUrlButton) {
+          cy.wrap($imageBlock)
+            .find('button[aria-label="Enter a URL to an image"]')
+            .should('be.visible')
+            .click();
+        }
+
+        cy.wrap($imageBlock)
+          .find('input[type="text"], .ui.input input')
+          .filter(':visible')
           .first()
           .should('be.visible')
           .clear()

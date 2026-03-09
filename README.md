@@ -31,7 +31,10 @@
 
 Go to http://localhost:3000
 
-`make start` now defaults to Volto 18. To run the same setup against Volto 17, use `make VOLTO_VERSION=17 start`.
+`make start` now defaults to Volto 18. To run the same setup against Volto 17, use:
+
+      VOLTO_VERSION=17 make
+      VOLTO_VERSION=17 make start
 
 ### Add volto-group-block to your Volto project
 
@@ -61,8 +64,6 @@ Go to http://localhost:3000
    uvx cookieplone project
    cd project-title
    ```
-
-   `@plone/volto-generator` is deprecated in Volto 18 and should not be used for new projects.
 
 1. Install or update dependencies, then start the project:
 
