@@ -28,21 +28,20 @@
 
 ### Or add @eeacms/volto-group-block to your Volto project
 
-Before starting make sure your development environment is properly set. See [Volto Developer Documentation](https://docs.voltocms.com/getting-started/install/)
+Before starting make sure your development environment is properly set. See the official Plone documentation for [creating a project with Cookieplone](https://6.docs.plone.org/install/create-project-cookieplone.html) and [installing an add-on in development mode in Volto 18 and 19](https://6.docs.plone.org/volto/development/addons/install-an-add-on-in-development-mode-volto-18.html).
 
-1.  Make sure you have installed `yo`, `@plone/generator-volto` and `mrs-developer`
+For new Volto 18+ projects, use Cookieplone. The official Plone documentation deprecated `@plone/volto-generator` in Volto 18, and Cookieplone includes `mrs-developer` by default.
 
-        npm install -g yo @plone/generator-volto mrs-developer
+1.  Create a new Volto project with Cookieplone
 
-1.  Create new volto app
-
-        yo @plone/volto my-volto-project --addon @eeacms/volto-group-block --skip-install
-        cd my-volto-project
+        uvx cookieplone project
+        cd project-title
 
 1.  Add the following to `mrs.developer.json`:
 
         {
             "volto-group-block": {
+                "output": "packages",
                 "url": "https://github.com/eea/volto-group-block.git",
                 "package": "@eeacms/volto-group-block",
                 "branch": "develop",
@@ -50,28 +49,31 @@ Before starting make sure your development environment is properly set. See [Vol
             }
         }
 
-1.  Install
+1.  Add `@eeacms/volto-group-block` to the `addons` key in your project `package.json`
 
-        make develop
-        yarn
+1.  Install or refresh the project setup
 
-1.  Start backend
+        make install
 
-        docker run --pull always -it --rm --name plone -p 8080:8080 -e SITE=Plone plone/plone-backend
+1.  Start backend in one terminal
 
-    ...wait for backend to setup and start - `Ready to handle requests`:
+        make backend-start
+
+    ...wait for backend to setup and start, ending with `Ready to handle requests`
 
     ...you can also check http://localhost:8080/Plone
 
-1.  Start frontend
+1.  Start frontend in a second terminal
 
-        yarn start
+        make frontend-start
 
 1.  Go to http://localhost:3000
 
 1.  Happy hacking!
 
-        cd src/addons/volto-group-block/
+        cd packages/volto-group-block
+
+For legacy Volto 17 projects, keep using the yarn-based workflow from the Volto 17 documentation, but do not use `@plone/volto-generator` for new projects.
 
 ## Cypress
 
@@ -83,7 +85,7 @@ project where you added `volto-group-block` to `mrs.developer.json`
 Go to:
 
   ```BASH
-  cd src/addons/volto-group-block/
+  cd packages/volto-group-block/
   ```
 
 Start:

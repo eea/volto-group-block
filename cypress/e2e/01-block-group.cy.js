@@ -128,11 +128,10 @@ describe('Blocks Tests', () => {
     cy.get('.blocks-chooser .field.searchbox div.ui.input input')
       .click()
       .focus()
-      .type('Description{enter}');
-    cy.get(
-      '.blocks-chooser .accordion div[aria-label="Unfold Text blocks"]',
-    ).click();
-    cy.get('.ui.basic.icon.button.description').click();
+      .type('Description');
+    cy.contains('.blocks-chooser button', 'Description').click({
+      force: true,
+    });
     cy.get('button[title="Remove block"]').click();
 
     // delete the content type

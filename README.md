@@ -55,20 +55,29 @@ Go to http://localhost:3000
    }
    ```
 
-* If not, create one:
+* If not, create one with Cookieplone, as recommended by the official Plone documentation for Volto 18+:
 
    ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-group-block
-   cd my-volto-project
+   uvx cookieplone project
+   cd project-title
    ```
 
-1. Install new add-ons and restart Volto:
+   `@plone/volto-generator` is deprecated in Volto 18 and should not be used for new projects.
+
+1. Install or update dependencies, then start the project:
 
    ```
-   yarn
-   yarn start
+   make install
    ```
+
+   For a Cookieplone project, start the backend and frontend in separate terminals:
+
+   ```
+   make backend-start
+   make frontend-start
+   ```
+
+   For a legacy Volto 17 project, install the package with `yarn` and restart the frontend as usual.
 
 1. Go to http://localhost:3000
 
