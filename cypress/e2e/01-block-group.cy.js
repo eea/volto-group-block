@@ -52,7 +52,7 @@ describe('Blocks Tests', () => {
     cy.contains('test2');
   });
 
-  it('Add Block: Make content type and add group block to layout', () => {
+  it('Add Block: Make Book content type and add group block to layout', () => {
     cy.clearSlateTitle();
     cy.getSlateTitle().type('My Add-on Page');
 
@@ -65,18 +65,18 @@ describe('Blocks Tests', () => {
 
     // add the content type
     cy.get('#toolbar-add').click();
-    cy.get('#field-title:visible').first().click().type('Test Content Type');
+    cy.get('#field-title:visible').first().click().type('Book');
     cy.get('#field-description:visible')
       .first()
       .click()
-      .type('Test Content Type');
+      .type('Book');
     cy.get('.actions button[aria-label="Save"]').click({ force: true });
 
     // change the layout
-    cy.get('.ui.dropdown.actions-test_content_type', { timeout: 20000 })
+    cy.get('.ui.dropdown.actions-book', { timeout: 20000 })
       .should('be.visible')
       .click({ force: true });
-    cy.get('.item.layout-test_content_type').click();
+    cy.get('.item.layout-book').click();
     cy.contains('Enable editable Blocks').click();
     cy.getSlate().click();
 
@@ -115,9 +115,9 @@ describe('Blocks Tests', () => {
     cy.get('a[href="/controlpanel').click();
     cy.contains('Home').click();
     cy.get('#toolbar-add').click();
-    cy.get('#toolbar-add-test_content_type').click();
+    cy.get('#toolbar-add-book').click();
     cy.clearSlateTitle();
-    cy.getSlateTitle().type('Test Content Type');
+    cy.getSlateTitle().type('My First Book');
     cy.get('.block-editor-group div[role="textbox"]')
       .click()
       .type('/description{enter}');
@@ -141,8 +141,8 @@ describe('Blocks Tests', () => {
     cy.get('a[href="/controlpanel"]').click();
     cy.get('a[href="/controlpanel/dexterity-types"]').click();
 
-    cy.get('.ui.dropdown.actions-test_content_type').click();
-    cy.get('.item.delete-test_content_type').click();
+    cy.get('.ui.dropdown.actions-book').click();
+    cy.get('.item.delete-book').click();
     cy.get('button.ui.primary.button').should('contain', 'Yes').click();
   });
 });
