@@ -116,7 +116,8 @@ describe('Blocks Tests', () => {
     cy.contains('Home').click();
     cy.get('#toolbar-add').click();
     cy.get('#toolbar-add-test_content_type').click();
-    cy.get('#field-title:visible').first().click().type('Test Content Type');
+    cy.clearSlateTitle();
+    cy.getSlateTitle().type('Test Content Type');
     cy.get('.block-editor-group div[role="textbox"]')
       .click()
       .type('/description{enter}');
