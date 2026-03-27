@@ -20,6 +20,18 @@
 
 ![Group blocks and restrict available blocks](https://raw.githubusercontent.com/eea/volto-group-block/master/docs/volto-group-block.gif)
 
+## Upgrade
+
+### Upgrading to 10.x
+
+> This version requires `Volto >= 17.18` or `Volto 18+`. It removes the custom `EditBlockWrapper` and uses Volto's built-in block chrome provided by `BlocksForm`.
+
+#### Breaking changes
+
+- **Removed `EditBlockWrapper.jsx`.** Any code importing `EditBlockWrapper` from `@eeacms/volto-group-block` will break. Use Volto's built-in `EditBlockWrapper` from `@plone/volto/components/manage/Blocks/Block/EditBlockWrapper` if you need a custom wrapper.
+- **Removed the "Section help" button.** The `?` icon that appeared in the inner block toolbar and opened the sidebar to display editing instructions has been removed. The `instructions` field is still available in the group block schema and still rendered in the sidebar panel, but there is no longer a per-block shortcut button to reveal it.
+- **`disableInnerButtons`** is now implemented via a CSS class (`.disable-inner-buttons`) instead of a JS-level `disabled` prop on the removed wrapper.
+
 ## Getting started
 
 ### Try volto-group-block with Docker
