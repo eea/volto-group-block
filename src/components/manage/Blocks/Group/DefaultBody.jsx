@@ -1,10 +1,6 @@
-import { Button } from 'semantic-ui-react';
-import { BlocksForm, Icon, RenderBlocks } from '@plone/volto/components';
-import EditBlockWrapper from './EditBlockWrapper';
+import { BlocksForm, RenderBlocks } from '@plone/volto/components';
 import { countTextInBlocks } from './CounterComponent';
 import { useLocation } from 'react-router-dom';
-
-import helpSVG from '@plone/volto/icons/help.svg';
 
 const GroupBlockDefaultBody = (props) => {
   const location = useLocation();
@@ -17,10 +13,8 @@ const GroupBlockDefaultBody = (props) => {
     selected,
     selectedBlock,
     onSelectBlock,
-    setSelectedBlock,
     manage,
     childBlocksForm,
-    multiSelected,
     formDescription,
     isEditMode,
   } = props;
@@ -42,6 +36,8 @@ const GroupBlockDefaultBody = (props) => {
       allowedBlocks={data.allowedBlocks}
       title={data.placeholder}
       description={instructions}
+      isMainForm={false}
+      stopPropagation={selectedBlock}
       onSelectBlock={(id, l, e) => {
         const isMultipleSelection = e
           ? e.shiftKey || e.ctrlKey || e.metaKey
@@ -86,38 +82,7 @@ const GroupBlockDefaultBody = (props) => {
         }
       }}
       pathname={pathname}
-    >
-      {({ draginfo }, editBlock, blockProps) => (
-        <EditBlockWrapper
-          draginfo={draginfo}
-          blockProps={blockProps}
-          disabled={data.disableInnerButtons}
-          extraControls={
-            <>
-              {instructions && (
-                <>
-                  <Button
-                    icon
-                    basic
-                    title="Section help"
-                    onClick={() => {
-                      setSelectedBlock();
-                      const tab = manage ? 0 : 1;
-                      props.setSidebarTab(tab);
-                    }}
-                  >
-                    <Icon name={helpSVG} className="" size="19px" />
-                  </Button>
-                </>
-              )}
-            </>
-          }
-          multiSelected={multiSelected.includes(blockProps.block)}
-        >
-          {editBlock}
-        </EditBlockWrapper>
-      )}
-    </BlocksForm>
+    />
   ) : (
     <RenderBlocks
       location={location}

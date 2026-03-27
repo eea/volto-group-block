@@ -167,7 +167,9 @@ const Edit = (props) => {
     <fieldset
       role="presentation"
       id={props.data.id}
-      className={cx('section-block', props.data.className)}
+      className={cx('section-block', props.data.className, {
+        'disable-inner-buttons': data.disableInnerButtons,
+      })}
       onKeyDown={(e) => {
         handleKeyDown(e, props.index, props.block, props.blockNode.current);
       }}

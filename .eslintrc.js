@@ -3,6 +3,11 @@ const path = require('path');
 const projectRootPath = fs.realpathSync(__dirname + '/../../../');
 
 let voltoPath = path.join(projectRootPath, 'node_modules/@plone/volto');
+const voltoSlatePath = fs.existsSync(
+  path.join(projectRootPath, 'node_modules/@plone/volto-slate/src'),
+)
+  ? '@plone/volto-slate/src'
+  : '@plone/volto/packages/volto-slate/src';
 let configFile;
 if (fs.existsSync(`${projectRootPath}/tsconfig.json`))
   configFile = `${projectRootPath}/tsconfig.json`;
@@ -34,7 +39,7 @@ const defaultConfig = {
       alias: {
         map: [
           ['@plone/volto', '@plone/volto/src'],
-          ['@plone/volto-slate', '@plone/volto/packages/volto-slate/src'],
+          ['@plone/volto-slate', voltoSlatePath],
           ...addonAliases,
           ['@package', `${__dirname}/src`],
           ['@root', `${__dirname}/src`],
@@ -54,7 +59,7 @@ const defaultConfig = {
         allowReferrer: true,
       },
     ],
-  }
+  },
 };
 
 const config = addonExtenders.reduce(

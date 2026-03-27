@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
 import thunk from 'redux-thunk';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 const mockStore = configureStore([thunk]);
 const store = mockStore({
@@ -88,6 +88,22 @@ describe('Edit', () => {
       </Provider>,
     );
     expect(getByRole('presentation')).toBeInTheDocument();
+  });
+
+  it('adds a root modifier when inner buttons are disabled', () => {
+    const { getByRole } = render(
+      <Provider store={store}>
+        <Edit
+          {...props}
+          data={{
+            ...props.data,
+            disableInnerButtons: true,
+          }}
+        />
+      </Provider>,
+    );
+
+    expect(getByRole('presentation')).toHaveClass('disable-inner-buttons');
   });
 
   it('should call ArrowUp keydown', () => {

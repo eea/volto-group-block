@@ -2,7 +2,7 @@ import React from 'react';
 import View from './View';
 import { render, screen } from '@testing-library/react';
 import { RenderBlocks } from '@plone/volto/components';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
 
 jest.mock('@plone/volto/components', () => ({
   RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
