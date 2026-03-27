@@ -13,14 +13,12 @@ describe('Blocks Tests', () => {
 
     cy.getSlate().click();
 
-    // Add block
-    cy.get('.ui.basic.icon.button.block-add-button').first().click();
-    cy.get('.blocks-chooser .title').contains('Common').click();
-    cy.get('.content.active.common .button.group')
-      .contains('Section (Group)')
-      .click({ force: true });
-
-    cy.contains('Block').click();
+    // Add group block via slash command
+    cy.get('.block-editor-slate [contenteditable=true]')
+      .last()
+      .focus()
+      .click()
+      .type('/group{enter}');
 
     cy.get('.block-editor-group [contenteditable=true]')
       .focus()
@@ -37,12 +35,6 @@ describe('Blocks Tests', () => {
       .click()
       .type('test3');
 
-    cy.get('.block-toolbar svg')
-      .first()
-      .trigger('mousedown', { button: 0 })
-      .trigger('mousemove', 10, -40, { force: true })
-      .trigger('mouseup', 10, -40, { force: true });
-
     // Save
     cy.get('#toolbar-save').click();
     cy.url().should('eq', Cypress.config().baseUrl + '/cypress/my-page');
@@ -52,42 +44,48 @@ describe('Blocks Tests', () => {
     cy.contains('test2');
   });
 
-  it('Add Block: Make content type and add group block to layout', () => {
+  it('Add Block: Make Book content type and add group block to layout', () => {
     cy.clearSlateTitle();
     cy.getSlateTitle().type('My Add-on Page');
 
     cy.get('.documentFirstHeading').contains('My Add-on Page');
 
     cy.get('#toolbar-save').click();
-    cy.get('.user').click();
-    cy.get('a[href="/controlpanel"]').click();
-    cy.get('a[href="/controlpanel/dexterity-types"]').click();
 
-    // add the content type
-    cy.get('#toolbar-add').click();
-    cy.get('#field-title').click().type('Test Content Type');
-    cy.get('.actions button[aria-label="Save"]').click();
+    // add the content type via API for reliability
+    cy.removeContentType('book');
+    cy.addContentType('book');
+
+    cy.visit('/controlpanel/dexterity-types');
 
     // change the layout
-    cy.get('.ui.dropdown.actions-test_content_type').click();
-    cy.get('.item.layout-test_content_type').click();
+    cy.get('.ui.dropdown.actions-book', { timeout: 20000 })
+      .should('be.visible')
+      .click({ force: true });
+    cy.get('.item.layout-book').click({ force: true });
     cy.contains('Enable editable Blocks').click();
     cy.getSlate().click();
 
-    // Add block
-    cy.get('.ui.basic.icon.button.block-add-button').first().click();
-    cy.get('.blocks-chooser .title').contains('Common').click();
-    cy.get('.content.active.common .button.group')
-      .contains('Section (Group)')
-      .click({ force: true });
-    cy.contains('Section').click();
+    // Add group block via slash command
+    cy.get('.block-editor-slate [contenteditable=true]')
+      .last()
+      .focus()
+      .click()
+      .type('/group{enter}');
 
-    cy.get('.sidebar-container #field-placeholder')
+    cy.contains('Section').click();
+    cy.getIfExists('.sidebar-container a.item', () => {
+      cy.contains('.sidebar-container a.item', 'Settings').click();
+    });
+
+    cy.get('.sidebar-container #field-placeholder:visible')
+      .first()
       .click()
       .type('Test Helper Text');
     cy.get(
-      '.sidebar-container .field-wrapper-instructions div[role="textbox"] p',
+      '.sidebar-container .field-wrapper-instructions div[role="textbox"] p:visible',
     )
+      .first()
       .click()
       .type('Description Blocks');
     cy.get(
@@ -104,33 +102,18 @@ describe('Blocks Tests', () => {
     cy.get('a[href="/controlpanel').click();
     cy.contains('Home').click();
     cy.get('#toolbar-add').click();
-    cy.get('#toolbar-add-test_content_type').click();
-    cy.get('#field-title').click().type('Test Content Type');
+    cy.get('#toolbar-add-book').click();
+    cy.clearSlateTitle();
+    cy.getSlateTitle().type('My First Book');
     cy.get('.block-editor-group div[role="textbox"]')
       .click()
       .type('/description{enter}');
-    cy.get('.block-editor-group .block-editor-slate').click();
-    cy.get(
-      '.block-editor-slate .block-toolbar button[title="Add block"]',
-    ).click();
-    cy.get('.blocks-chooser .field.searchbox div.ui.input input')
-      .click()
-      .focus()
-      .type('Description{enter}');
-    cy.get(
-      '.blocks-chooser .accordion div[aria-label="Unfold Text blocks"]',
-    ).click();
-    cy.get('.ui.basic.icon.button.description').click();
-    cy.get('button[title="Remove block"]').click();
+
+    // Save and verify
+    cy.get('#toolbar-save').click();
+    cy.contains('My First Book');
 
     // delete the content type
-    cy.get('#toolbar-save').click();
-    cy.get('.user').click();
-    cy.get('a[href="/controlpanel"]').click();
-    cy.get('a[href="/controlpanel/dexterity-types"]').click();
-
-    cy.get('.ui.dropdown.actions-test_content_type').click();
-    cy.get('.item.delete-test_content_type').click();
-    cy.get('button.ui.primary.button').should('contain', 'Yes').click();
+    cy.removeContentType('book');
   });
 });

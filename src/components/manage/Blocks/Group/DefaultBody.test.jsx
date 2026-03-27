@@ -3,7 +3,9 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
 import DefaultBody from './DefaultBody';
 import configureStore from 'redux-mock-store';
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
+
+const mockBlocksForm = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -15,7 +17,10 @@ jest.mock('react-router-dom', () => ({
 }));
 
 jest.mock('@plone/volto/components', () => ({
-  BlocksForm: jest.fn(() => <div className="blocks-form">RenderBlocks</div>),
+  BlocksForm: jest.fn((props) => {
+    mockBlocksForm(props);
+    return <div className="blocks-form">RenderBlocks</div>;
+  }),
   RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
 }));
 
@@ -28,6 +33,10 @@ const store = mockStore({
 });
 
 describe('DefaultBody', () => {
+  beforeEach(() => {
+    mockBlocksForm.mockClear();
+  });
+
   it('renders children', () => {
     const props = {
       data: {
@@ -55,14 +64,26 @@ describe('DefaultBody Edit', () => {
         variation: {},
         allowedBlocks: ['listing'],
       },
+      childBlocksForm: {
+        blocks: {
+          a: {
+            '@type': 'slate',
+          },
+        },
+        blocks_layout: {
+          items: ['a'],
+        },
+      },
       metadata: {},
       properties: {},
       variation: {},
       onSelectBlock: jest.fn(),
-      onDeleteBlock: jest.fn(),
-      onMutateBlock: jest.fn(),
-      onInsertBlock: jest.fn(),
+      onChangeBlock: jest.fn(),
+      onChangeField: jest.fn(),
+      selectedBlock: 'a',
       selected: true,
+      manage: true,
+      pathname: '/',
     };
 
     const { getByText } = render(
@@ -71,5 +92,7 @@ describe('DefaultBody Edit', () => {
       </Provider>,
     );
     expect(getByText('RenderBlocks')).toBeInTheDocument();
+    expect(mockBlocksForm).toHaveBeenCalledTimes(1);
+    expect(mockBlocksForm.mock.calls[0][0].children).toBeUndefined();
   });
 });

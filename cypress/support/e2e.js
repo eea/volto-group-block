@@ -23,6 +23,7 @@ import '@cypress/code-coverage/support';
 
 export const slateBeforeEach = (contentType = 'Document') => {
   cy.autologin();
+  cy.removeContent('cypress');
   cy.createContent({
     contentType: 'Document',
     contentId: 'cypress',
@@ -59,6 +60,8 @@ export const slateJsonAfterEach = (contentType = 'slate') => {
 
 export const slateLayoutBeforeEach = (contentType = 'book') => {
   cy.autologin();
+  cy.removeContentType(contentType);
+  cy.removeContent('cypress');
   cy.addContentType(contentType);
   cy.createContent({
     contentType: 'Document',
