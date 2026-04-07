@@ -1,4 +1,4 @@
-import { getBlocks } from '@plone/volto/helpers';
+import { getBlocks } from '@plone/volto/helpers/Blocks/Blocks';
 import {
   GroupBlockEdit,
   GroupBlockView,

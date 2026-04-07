@@ -1,7 +1,7 @@
 import React from 'react';
 import View from './View';
 import { render, screen } from '@testing-library/react';
-import { RenderBlocks } from '@plone/volto/components';
+import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 import '@testing-library/jest-dom';
 
 jest.mock('@plone/volto/components', () => ({

@@ -1,19 +1,20 @@
 import React, { useState, useCallback } from 'react';
 import cx from 'classnames';
-import { isEmpty, without } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import without from 'lodash/without';
 import {
   emptyBlocksForm,
-  withBlockExtensions,
   getBlocksLayoutFieldname,
-} from '@plone/volto/helpers';
+} from '@plone/volto/helpers/Blocks/Blocks';
+import { withBlockExtensions } from '@plone/volto/helpers//Extensions';
 import BodyComponent from './Body';
 
 import config from '@plone/volto/registry';
+import SidebarPortal from '@plone/volto/components/manage/Sidebar/SidebarPortal';
 import {
-  SidebarPortal,
   BlockDataForm,
   BlocksToolbar,
-} from '@plone/volto/components';
+} from '@plone/volto/components/manage/Form';
 import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 import EditSchema from './EditSchema';

@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import isString from 'lodash/isString';
 import isArray from 'lodash/isArray';
-import { Icon } from '@plone/volto/components';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
 import config from '@plone/volto/registry';
 import { visitBlocks } from '@plone/volto/helpers/Blocks/Blocks';
 import { serializeNodesToText } from '@plone/volto-slate/editor/render';
@@ -47,8 +47,8 @@ const countTextInEachBlock =
         ? isString(blockData?.plaintext)
           ? blockData?.plaintext
           : isArray(blockData?.value) && blockData?.value !== null
-          ? serializeNodesToText(blockData?.value)
-          : ''
+            ? serializeNodesToText(blockData?.value)
+            : ''
         : '';
 
     groupCharCount.value += ignoreSpaces
@@ -97,8 +97,8 @@ const CounterComponent = ({ data, setSidebarTab, setSelectedBlock }) => {
     charCount < Math.ceil(maxChars / 1.05)
       ? 'info'
       : charCount <= overflowLimit
-      ? 'warning'
-      : 'danger';
+        ? 'warning'
+        : 'danger';
 
   return (
     <p
