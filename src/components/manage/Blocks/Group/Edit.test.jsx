@@ -15,14 +15,20 @@ const store = mockStore({
 });
 const mockBlocksForm = jest.fn();
 
-jest.mock('@plone/volto/components/manage/Form', () => ({
-  BlocksToolbar: () => <div>BlocksToolbar</div>,
-  BlockDataForm: () => <div>BlockDataForm</div>,
-  BlocksForm: jest.fn((props) => {
+jest.mock('@plone/volto/components/manage/Form/BlocksToolbar', () => {
+  return () => <div>BlocksToolbar</div>;
+});
+
+jest.mock('@plone/volto/components/manage/Form/BlockDataForm', () => {
+  return () => <div>BlockDataForm</div>;
+});
+
+jest.mock('@plone/volto/components/manage/Blocks/Block/BlocksForm', () => {
+  return jest.fn((props) => {
     mockBlocksForm(props);
     return <div className="blocks-form">RenderBlocks</div>;
-  }),
-}));
+  });
+});
 
 jest.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => () => (
   <div>SidebarPortal</div>
