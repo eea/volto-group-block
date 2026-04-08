@@ -4,12 +4,11 @@ import { render, screen } from '@testing-library/react';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components', () => ({
-  RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
-  BodyComponent: () => <div>BodyComponent</div>,
-}));
+jest.mock('@plone/volto/components/theme/View/RenderBlocks', () =>
+  jest.fn(() => <div>RenderBlocks</div>),
+);
 
-jest.mock('@plone/volto/helpers', () => ({
+jest.mock('@plone/volto/helpers/Extensions', () => ({
   withBlockExtensions: jest.fn((Component) => Component),
 }));
 

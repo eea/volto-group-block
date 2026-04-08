@@ -16,13 +16,16 @@ jest.mock('react-router-dom', () => ({
   }),
 }));
 
-jest.mock('@plone/volto/components', () => ({
+jest.mock('@plone/volto/components/manage/Form', () => ({
   BlocksForm: jest.fn((props) => {
     mockBlocksForm(props);
     return <div className="blocks-form">RenderBlocks</div>;
   }),
-  RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
 }));
+
+jest.mock('@plone/volto/components/theme/View/RenderBlocks', () =>
+  jest.fn(() => <div>RenderBlocks</div>),
+);
 
 const mockStore = configureStore();
 const store = mockStore({

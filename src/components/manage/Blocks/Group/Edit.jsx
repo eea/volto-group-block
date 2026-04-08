@@ -11,10 +11,8 @@ import BodyComponent from './Body';
 
 import config from '@plone/volto/registry';
 import SidebarPortal from '@plone/volto/components/manage/Sidebar/SidebarPortal';
-import {
-  BlockDataForm,
-  BlocksToolbar,
-} from '@plone/volto/components/manage/Form';
+import BlockDataForm from '@plone/volto/components/manage/Form/BlockDataForm';
+import BlocksToolbar from '@plone/volto/components/manage/Form/BlocksToolbar';
 import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 import EditSchema from './EditSchema';

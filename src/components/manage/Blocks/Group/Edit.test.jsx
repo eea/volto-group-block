@@ -13,20 +13,31 @@ const store = mockStore({
     messages: {},
   },
 });
+const mockBlocksForm = jest.fn();
 
-jest.mock('@plone/volto/components', () => ({
-  BlocksForm: jest.fn(() => <div className="blocks-form">RenderBlocks</div>),
-  Icon: () => <div>Icon</div>,
-  SidebarPortal: () => <div>SidebarPortal</div>,
+jest.mock('@plone/volto/components/manage/Form', () => ({
   BlocksToolbar: () => <div>BlocksToolbar</div>,
   BlockDataForm: () => <div>BlockDataForm</div>,
-  RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
+  BlocksForm: jest.fn((props) => {
+    mockBlocksForm(props);
+    return <div className="blocks-form">RenderBlocks</div>;
+  }),
 }));
 
-jest.mock('@plone/volto/helpers', () => ({
+jest.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => () => (
+  <div>SidebarPortal</div>
+));
+
+jest.mock('@plone/volto/helpers/Blocks/Blocks', () => ({
+  emptyBlocksForm: jest.fn(() => ({
+    blocks: {},
+    blocks_layout: { items: [] },
+  })),
+  getBlocksLayoutFieldname: jest.fn(() => 'blocks_layout'),
+}));
+
+jest.mock('@plone/volto/helpers/Extensions', () => ({
   withBlockExtensions: jest.fn((Component) => Component),
-  emptyBlocksForm: jest.fn(),
-  getBlocksLayoutFieldname: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({

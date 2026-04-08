@@ -1,4 +1,4 @@
-import { BlocksForm } from '@plone/volto/components/manage/Form';
+import BlocksForm from '@plone/volto/components/manage/Blocks/Block/BlocksForm';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 import { countTextInBlocks } from './CounterComponent';
 import { useLocation } from 'react-router-dom';
