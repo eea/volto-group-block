@@ -1,15 +1,17 @@
 import React from 'react';
 import View from './View';
 import { render, screen } from '@testing-library/react';
-import { RenderBlocks } from '@plone/volto/components';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/components', () => ({
-  RenderBlocks: jest.fn(() => <div>RenderBlocks</div>),
-  BodyComponent: () => <div>BodyComponent</div>,
+const mockGroupBlockDefaultBody = jest.fn(() => (
+  <div>GroupBlockDefaultBody</div>
+));
+
+jest.mock('@eeacms/volto-group-block/components', () => ({
+  GroupBlockDefaultBody: (props) => mockGroupBlockDefaultBody(props),
 }));
 
-jest.mock('@plone/volto/helpers', () => ({
+jest.mock('@plone/volto/helpers/Extensions', () => ({
   withBlockExtensions: jest.fn((Component) => Component),
 }));
 
@@ -23,6 +25,10 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('View', () => {
+  beforeEach(() => {
+    mockGroupBlockDefaultBody.mockClear();
+  });
+
   it('should render without crashing', () => {
     const props = {
       data: {},
@@ -31,7 +37,7 @@ describe('View', () => {
       variation: {},
     };
     render(<View {...props} />);
-    expect(screen.getByText('RenderBlocks')).toBeInTheDocument();
+    expect(screen.getByText('GroupBlockDefaultBody')).toBeInTheDocument();
   });
 
   it('renders with default tag and without crashing', () => {
@@ -62,7 +68,7 @@ describe('View', () => {
     expect(container.querySelector('#test-title')).toBeInTheDocument();
   });
 
-  it('renders RenderBlocks with correct props', () => {
+  it('renders GroupBlockDefaultBody with correct props', () => {
     const props = {
       data: {
         as: 'section',
@@ -79,13 +85,14 @@ describe('View', () => {
       },
     };
     render(<View {...props} />);
-    expect(RenderBlocks).toHaveBeenCalledWith(
+    expect(mockGroupBlockDefaultBody).toHaveBeenCalled();
+    const bodyProps = mockGroupBlockDefaultBody.mock.calls.at(-1)[0];
+    expect(bodyProps).toEqual(
       expect.objectContaining({
         metadata: props.metadata,
-        content: props.data.data,
+        data: props.data,
         location: props.location,
       }),
-      {},
     );
   });
 });
