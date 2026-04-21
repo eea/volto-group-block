@@ -8,6 +8,8 @@ import {
 import codeSVG from '@plone/volto/icons/row.svg';
 import { defineMessages } from 'react-intl';
 
+import { cloneData } from './utils';
+
 defineMessages({
   sectionGroup: {
     id: 'Section (Group)',
@@ -64,6 +66,7 @@ const applyConfig = (config) => {
     schema: schema,
     restricted: false,
     mostUsed: false,
+    cloneData,
     blockHasOwnFocusManagement: true,
     sidebarTab: 1,
     security: {
