@@ -20,9 +20,11 @@ jest.mock(
   '@eeacms/volto-group-block/components',
   () => {
     const React = require('react');
+    // Use the already-mocked BlocksForm so the test sees div.blocks-form
+    const BlocksForm =
+      require('@plone/volto/components/manage/Blocks/Block/BlocksForm').default;
     return {
-      GroupBlockDefaultBody: ({ children }) =>
-        React.createElement('div', null, children),
+      GroupBlockDefaultBody: (props) => React.createElement(BlocksForm, props),
     };
   },
   { virtual: true },
