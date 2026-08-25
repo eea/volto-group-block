@@ -18,6 +18,9 @@
     "type": "git",
     "url": "git@github.com:eea/volto-group-block.git"
   },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
@@ -26,8 +29,7 @@
     "dotenv": "^16.3.2",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "md5": "^2.3.0",
-    "uuid": "^8.3.2"
+    "md5": "^2.3.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [
