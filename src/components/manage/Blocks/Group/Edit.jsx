@@ -197,7 +197,7 @@ const Edit = (props) => {
       />
       {selected ? (
         <BlocksToolbar
-          selectedBlock={Object.keys(selectedBlock || {})[0]}
+          selectedBlock={selectedBlock}
           selectedBlocks={multiSelected}
           onSetSelectedBlocks={(blockIds) => {
             setMultiSelected(blockIds);
