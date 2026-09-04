@@ -4,9 +4,7 @@ import View from './View';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-const mockGroupBlockDefaultBody = vi.fn(() => (
-  <div>GroupBlockDefaultBody</div>
-));
+const mockGroupBlockDefaultBody = vi.fn(() => <div>GroupBlockDefaultBody</div>);
 
 vi.mock('@eeacms/volto-group-block/components', () => ({
   GroupBlockDefaultBody: (props) => mockGroupBlockDefaultBody(props),
