@@ -1,22 +1,23 @@
+import { vi } from 'vitest';
 import React from 'react';
 import View from './View';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-const mockGroupBlockDefaultBody = jest.fn(() => (
+const mockGroupBlockDefaultBody = vi.fn(() => (
   <div>GroupBlockDefaultBody</div>
 ));
 
-jest.mock('@eeacms/volto-group-block/components', () => ({
+vi.mock('@eeacms/volto-group-block/components', () => ({
   GroupBlockDefaultBody: (props) => mockGroupBlockDefaultBody(props),
 }));
 
-jest.mock('@plone/volto/helpers/Extensions', () => ({
-  withBlockExtensions: jest.fn((Component) => Component),
+vi.mock('@plone/volto/helpers/Extensions', () => ({
+  withBlockExtensions: vi.fn((Component) => Component),
 }));
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({
     pathname: '/',
     hash: '',

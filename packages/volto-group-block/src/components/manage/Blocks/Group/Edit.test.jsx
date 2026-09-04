@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { default as Edit } from './Edit';
 import configureStore from 'redux-mock-store';
@@ -13,41 +14,43 @@ const store = mockStore({
     messages: {},
   },
 });
-const mockBlocksForm = jest.fn();
+const mockBlocksForm = vi.fn();
 
-jest.mock('@plone/volto/components/manage/Form/BlocksToolbar', () => {
-  return () => <div>BlocksToolbar</div>;
+vi.mock('@plone/volto/components/manage/Form/BlocksToolbar', () => {
+  return { default: () => <div>BlocksToolbar</div> };
 });
 
-jest.mock('@plone/volto/components/manage/Form/BlockDataForm', () => {
-  return () => <div>BlockDataForm</div>;
+vi.mock('@plone/volto/components/manage/Form/BlockDataForm', () => {
+  return { default: () => <div>BlockDataForm</div> };
 });
 
-jest.mock('@plone/volto/components/manage/Blocks/Block/BlocksForm', () => {
-  return jest.fn((props) => {
-    mockBlocksForm(props);
-    return <div className="blocks-form">RenderBlocks</div>;
-  });
+vi.mock('@plone/volto/components/manage/Blocks/Block/BlocksForm', () => {
+  return {
+    default: vi.fn((props) => {
+      mockBlocksForm(props);
+      return <div className="blocks-form">RenderBlocks</div>;
+    }),
+  };
 });
 
-jest.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => () => (
-  <div>SidebarPortal</div>
-));
+vi.mock('@plone/volto/components/manage/Sidebar/SidebarPortal', () => ({
+  default: () => <div>SidebarPortal</div>,
+}));
 
-jest.mock('@plone/volto/helpers/Blocks/Blocks', () => ({
-  emptyBlocksForm: jest.fn(() => ({
+vi.mock('@plone/volto/helpers/Blocks/Blocks', () => ({
+  emptyBlocksForm: vi.fn(() => ({
     blocks: {},
     blocks_layout: { items: [] },
   })),
-  getBlocksLayoutFieldname: jest.fn(() => 'blocks_layout'),
+  getBlocksLayoutFieldname: vi.fn(() => 'blocks_layout'),
 }));
 
-jest.mock('@plone/volto/helpers/Extensions', () => ({
-  withBlockExtensions: jest.fn((Component) => Component),
+vi.mock('@plone/volto/helpers/Extensions', () => ({
+  withBlockExtensions: vi.fn((Component) => Component),
 }));
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({
     pathname: '/',
     hash: '',
@@ -56,8 +59,8 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('Edit', () => {
-  const onChangeBlock = jest.fn();
-  const onChangeField = jest.fn();
+  const onChangeBlock = vi.fn();
+  const onChangeField = vi.fn();
   const mockBlockNode = { current: {} };
   const props = {
     block: 'testBlock',
@@ -124,7 +127,7 @@ describe('Edit', () => {
   });
 
   it('should call ArrowUp keydown', () => {
-    const mockOnFocusPreviousBlock = jest.fn();
+    const mockOnFocusPreviousBlock = vi.fn();
     const { getByRole } = render(
       <Provider store={store}>
         <Edit
@@ -163,10 +166,10 @@ describe('Edit', () => {
       manage: true,
       variation: {},
     };
-    const mockOnFocusPreviousBlock = jest.fn();
-    const mockOnFocusNextBlock = jest.fn();
-    const mockOnAddBlock = jest.fn();
-    const mockSidebarTab = jest.fn();
+    const mockOnFocusPreviousBlock = vi.fn();
+    const mockOnFocusNextBlock = vi.fn();
+    const mockOnAddBlock = vi.fn();
+    const mockSidebarTab = vi.fn();
 
     const { container } = render(
       <Provider store={store}>
@@ -226,10 +229,10 @@ describe('Edit', () => {
       manage: true,
       variation: {},
     };
-    const mockOnFocusPreviousBlock = jest.fn();
-    const mockOnFocusNextBlock = jest.fn();
-    const mockOnAddBlock = jest.fn();
-    const mockSidebarTab = jest.fn();
+    const mockOnFocusPreviousBlock = vi.fn();
+    const mockOnFocusNextBlock = vi.fn();
+    const mockOnAddBlock = vi.fn();
+    const mockSidebarTab = vi.fn();
     const { container } = render(
       <Provider store={store}>
         <Edit
