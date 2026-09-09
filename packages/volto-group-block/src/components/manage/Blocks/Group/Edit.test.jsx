@@ -15,9 +15,27 @@ const store = mockStore({
   },
 });
 const mockBlocksForm = vi.fn();
+const mockBlocksToolbar = vi.fn();
+
+vi.mock(
+  '@eeacms/volto-group-block/components',
+  async () => {
+    const React = (await import('react')).default;
+    // Use the already-mocked BlocksForm so the test sees div.blocks-form
+    const BlocksForm = (await import('@plone/volto/components/manage/Blocks/Block/BlocksForm')).default;
+    return {
+      GroupBlockDefaultBody: (props) => React.createElement(BlocksForm, props),
+    };
+  },
+  { virtual: true },
+);
 
 vi.mock('@plone/volto/components/manage/Form/BlocksToolbar', () => {
-  return { default: () => <div>BlocksToolbar</div> };
+  return (props) => {
+    mockBlocksToolbar(props);
+    return <div>BlocksToolbar</div>;
+  };
+});
 });
 
 vi.mock('@plone/volto/components/manage/Form/BlockDataForm', () => {
@@ -59,6 +77,10 @@ vi.mock('react-router-dom', async () => ({
 }));
 
 describe('Edit', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const onChangeBlock = vi.fn();
   const onChangeField = vi.fn();
   const mockBlockNode = { current: {} };
@@ -99,6 +121,18 @@ describe('Edit', () => {
     expect(container.querySelector('div.blocks-form')).toBeInTheDocument();
     expect(screen.getByText('BlocksToolbar')).toBeInTheDocument();
     expect(screen.getByText('SidebarPortal')).toBeInTheDocument();
+  });
+
+  it('passes the selected child ID to BlocksToolbar', () => {
+    render(
+      <Provider store={store}>
+        <Edit {...props} />
+      </Provider>,
+    );
+
+    expect(mockBlocksToolbar).toHaveBeenLastCalledWith(
+      expect.objectContaining({ selectedBlock: 'block1' }),
+    );
   });
 
   it('renders without crashing', () => {
