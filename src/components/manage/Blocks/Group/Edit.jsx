@@ -93,12 +93,13 @@ const Edit = (props) => {
           }
         }
         if ((event.ctrlKey || event.metaKey) && !event.shiftKey) {
-          if (multiSelected.includes(id)) {
-            selected = null;
-            newMultiSelected = without(multiSelected, id);
-          } else {
-            newMultiSelected = [...(multiSelected || []), id];
+          const selection = [...multiSelected];
+          if (activeBlock && !selection.includes(activeBlock)) {
+            selection.push(activeBlock);
           }
+          newMultiSelected = selection.includes(id)
+            ? without(selection, id)
+            : [...selection, id];
         }
       }
 
@@ -109,21 +110,10 @@ const Edit = (props) => {
   );
 
   const changeBlockData = (newBlockData) => {
-    let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
-      return !data?.data?.blocks_layout.items.find((x) => x === blockID);
-    });
-    const selectedIndex =
-      data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
+    // The toolbar supplies the complete layout for Paste, Cut and Delete.
     const newChildData = {
       ...data?.data,
       ...newBlockData,
-      blocks_layout: {
-        items: [
-          ...data.data.blocks_layout.items.slice(0, selectedIndex),
-          ...pastedBlocks,
-          ...data.data.blocks_layout.items.slice(selectedIndex),
-        ],
-      },
     };
     const newData = {
       ...data,
