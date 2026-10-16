@@ -22,7 +22,9 @@ vi.mock(
   async () => {
     const React = (await import('react')).default;
     // Use the already-mocked BlocksForm so the test sees div.blocks-form
-    const BlocksForm = (await import('@plone/volto/components/manage/Blocks/Block/BlocksForm')).default;
+    const BlocksForm = (
+      await import('@plone/volto/components/manage/Blocks/Block/BlocksForm')
+    ).default;
     return {
       GroupBlockDefaultBody: (props) => React.createElement(BlocksForm, props),
     };
