@@ -36,7 +36,6 @@ vi.mock('@plone/volto/components/manage/Form/BlocksToolbar', () => {
     return <div>BlocksToolbar</div>;
   };
 });
-});
 
 vi.mock('@plone/volto/components/manage/Form/BlockDataForm', () => {
   return { default: () => <div>BlockDataForm</div> };
