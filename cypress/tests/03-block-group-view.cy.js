@@ -48,8 +48,10 @@ const setGroupTitle = (title) => {
 // wrapper - the element carrying Volto's select-block onClick - to select the
 // group block before opening its settings.
 const selectGroupBlock = () => {
-  cy.get('.block.group').first().click({ force: true });
-  cy.get('.block.group').first().should('have.class', 'selected');
+  // `.block.group` also matches Volto's inner content wrapper
+  // (`ui drag block inner group`), which has no select handler, so exclude it.
+  cy.get('.block.group:not(.inner)').first().click({ force: true });
+  cy.get('.block.group:not(.inner)').first().should('have.class', 'selected');
 };
 
 // Re-enter the edit route directly (see slateBeforeEach) and wait for the block
