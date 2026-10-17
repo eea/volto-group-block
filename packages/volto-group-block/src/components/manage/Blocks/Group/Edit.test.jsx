@@ -33,9 +33,11 @@ vi.mock(
 );
 
 vi.mock('@plone/volto/components/manage/Form/BlocksToolbar', () => {
-  return (props) => {
-    mockBlocksToolbar(props);
-    return <div>BlocksToolbar</div>;
+  return {
+    default: (props) => {
+      mockBlocksToolbar(props);
+      return <div>BlocksToolbar</div>;
+    },
   };
 });
 
