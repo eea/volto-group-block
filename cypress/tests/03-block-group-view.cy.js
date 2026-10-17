@@ -40,6 +40,21 @@ const setGroupTitle = (title) => {
     .type(title);
 };
 
+// Re-enter the edit route directly (see slateBeforeEach) and wait for the block
+// form to hydrate before touching the sidebar: typing into the title field while
+// the persisted value is still being applied lets hydration overwrite it, and the
+// save then persists the old title.
+const reEnterEditMode = (persistedTitle) => {
+  cy.visit('/cypress/my-page/edit');
+  cy.get('.block-editor-group').should('exist');
+  openGroupSettings();
+  cy.get(
+    '.sidebar-container .field-wrapper-title input:visible, .sidebar-container #field-title:visible',
+  )
+    .first()
+    .should('have.value', persistedTitle);
+};
+
 const setGroupHtmlElement = (element) => {
   cy.get('body').then(($body) => {
     if ($body.find('.sidebar-container .field-wrapper-as select:visible').length) {
@@ -93,8 +108,7 @@ describe('Group Block: View Mode Tests', () => {
 
     cy.get('#page-document #intro-section').should('contain', 'Group content');
 
-    cy.visit('/cypress/my-page/edit');
-    openGroupSettings();
+    reEnterEditMode('Intro Section 2026!');
     setGroupTitle('Updated Intro');
 
     saveAndAssertViewUrl();
