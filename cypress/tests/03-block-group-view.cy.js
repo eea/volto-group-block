@@ -40,6 +40,36 @@ const setGroupTitle = (title) => {
     .type(title);
 };
 
+// Volto renders a block's settings form only while that block is selected:
+// the group's SidebarPortal renders nothing when `selected` is false. After a
+// direct cy.visit('/edit') Volto auto-selects the first block (the title),
+// so the group block is not selected and the legend click in
+// openGroupSettings only switches the sidebar tab. Click the Volto block
+// wrapper - the element carrying Volto's select-block onClick - to select the
+// group block before opening its settings.
+const selectGroupBlock = () => {
+  // `.block.group` also matches Volto's inner content wrapper
+  // (`ui drag block inner group`), which has no select handler, so exclude it.
+  cy.get('.block.group:not(.inner)').first().click({ force: true });
+  cy.get('.block.group:not(.inner)').first().should('have.class', 'selected');
+};
+
+// Re-enter the edit route directly (see slateBeforeEach) and wait for the block
+// form to hydrate before touching the sidebar: typing into the title field while
+// the persisted value is still being applied lets hydration overwrite it, and the
+// save then persists the old title.
+const reEnterEditMode = (persistedTitle) => {
+  cy.visit('/cypress/my-page/edit');
+  cy.get('.block-editor-group').should('exist');
+  selectGroupBlock();
+  openGroupSettings();
+  cy.get(
+    '.sidebar-container .field-wrapper-title input:visible, .sidebar-container #field-title:visible',
+  )
+    .first()
+    .should('have.value', persistedTitle);
+};
+
 const setGroupHtmlElement = (element) => {
   cy.get('body').then(($body) => {
     if ($body.find('.sidebar-container .field-wrapper-as select:visible').length) {
@@ -93,8 +123,7 @@ describe('Group Block: View Mode Tests', () => {
 
     cy.get('#page-document #intro-section').should('contain', 'Group content');
 
-    cy.visit('/cypress/my-page/edit');
-    openGroupSettings();
+    reEnterEditMode('Intro Section 2026!');
     setGroupTitle('Updated Intro');
 
     saveAndAssertViewUrl();

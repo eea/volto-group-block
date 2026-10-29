@@ -1,0 +1,7 @@
+{
+  "title": "Group Block",
+  "frontend_addon_name": "volto-group-block",
+  "description": "volto-group-block: Volto block to be used to group other blocks",
+  "volto_version": "19.3.0",
+  "__template__": "frontend_addon"
+}

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-intl-redux';
@@ -5,10 +6,10 @@ import DefaultBody from './DefaultBody';
 import configureStore from 'redux-mock-store';
 import '@testing-library/jest-dom';
 
-const mockBlocksForm = jest.fn();
+const mockBlocksForm = vi.fn();
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({
     pathname: '/',
     hash: '',
@@ -16,16 +17,18 @@ jest.mock('react-router-dom', () => ({
   }),
 }));
 
-jest.mock('@plone/volto/components/manage/Blocks/Block/BlocksForm', () => {
-  return jest.fn((props) => {
-    mockBlocksForm(props);
-    return <div className="blocks-form">RenderBlocks</div>;
-  });
+vi.mock('@plone/volto/components/manage/Blocks/Block/BlocksForm', () => {
+  return {
+    default: vi.fn((props) => {
+      mockBlocksForm(props);
+      return <div className="blocks-form">RenderBlocks</div>;
+    }),
+  };
 });
 
-jest.mock('@plone/volto/components/theme/View/RenderBlocks', () =>
-  jest.fn(() => <div>RenderBlocks</div>),
-);
+vi.mock('@plone/volto/components/theme/View/RenderBlocks', () => ({
+  default: vi.fn(() => <div>RenderBlocks</div>),
+}));
 
 const mockStore = configureStore();
 const store = mockStore({
@@ -80,9 +83,9 @@ describe('DefaultBody Edit', () => {
       metadata: {},
       properties: {},
       variation: {},
-      onSelectBlock: jest.fn(),
-      onChangeBlock: jest.fn(),
-      onChangeField: jest.fn(),
+      onSelectBlock: vi.fn(),
+      onChangeBlock: vi.fn(),
+      onChangeField: vi.fn(),
       selectedBlock: 'a',
       selected: true,
       manage: true,
