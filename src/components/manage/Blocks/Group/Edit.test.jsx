@@ -278,4 +278,53 @@ describe('Edit', () => {
 
     fireEvent.click(container.querySelector('.section-block legend'));
   });
+
+  it('uses the toolbar layout so deleted blocks do not come back', () => {
+    const data = {
+      data: {
+        blocks: { block1: { '@type': 'slate' }, block2: { '@type': 'slate' } },
+        blocks_layout: { items: ['block1', 'block2'] },
+      },
+    };
+    render(
+      <Provider store={store}>
+        <Edit {...props} data={data} />
+      </Provider>,
+    );
+    onChangeBlock.mockClear();
+
+    mockBlocksToolbar.mock.calls.at(-1)[0].onChangeBlocks({
+      blocks: { block2: { '@type': 'slate' } },
+      blocks_layout: { items: ['block2'] },
+    });
+
+    expect(onChangeBlock).toHaveBeenCalledTimes(1);
+    expect(onChangeBlock.mock.calls[0][1].data.blocks_layout.items).toEqual([
+      'block2',
+    ]);
+  });
+
+  it('fills a group emptied from the toolbar in the same change', () => {
+    const { emptyBlocksForm } = require('@plone/volto/helpers/Blocks/Blocks');
+    emptyBlocksForm.mockReturnValue({
+      blocks: { empty: { '@type': 'slate' } },
+      blocks_layout: { items: ['empty'] },
+    });
+    render(
+      <Provider store={store}>
+        <Edit {...props} />
+      </Provider>,
+    );
+    onChangeBlock.mockClear();
+
+    mockBlocksToolbar.mock.calls.at(-1)[0].onChangeBlocks({
+      blocks: {},
+      blocks_layout: { items: [] },
+    });
+
+    expect(onChangeBlock).toHaveBeenCalledTimes(1);
+    expect(onChangeBlock.mock.calls[0][1].data.blocks_layout.items).toEqual([
+      'empty',
+    ]);
+  });
 });

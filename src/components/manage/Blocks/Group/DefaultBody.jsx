@@ -1,6 +1,7 @@
 import BlocksForm from '@plone/volto/components/manage/Blocks/Block/BlocksForm';
 import RenderBlocks from '@plone/volto/components/theme/View/RenderBlocks';
 import { countTextInBlocks } from './CounterComponent';
+import { fillEmptyGroup } from './utils';
 import { useLocation } from 'react-router-dom';
 
 const GroupBlockDefaultBody = (props) => {
@@ -45,7 +46,8 @@ const GroupBlockDefaultBody = (props) => {
           : false;
         onSelectBlock(id, isMultipleSelection, e, selectedBlock);
       }}
-      onChangeFormData={(newFormData) => {
+      onChangeFormData={(formData) => {
+        const newFormData = fillEmptyGroup(formData);
         const newData = {
           ...data,
           data: newFormData,
@@ -62,10 +64,10 @@ const GroupBlockDefaultBody = (props) => {
       onChangeField={(id, value) => {
         if (['blocks', 'blocks_layout'].indexOf(id) > -1) {
           blockState[id] = value;
-          const newChildData = {
+          const newChildData = fillEmptyGroup({
             ...data.data,
             ...blockState,
-          };
+          });
           const newData = {
             ...data,
             data: newChildData,
