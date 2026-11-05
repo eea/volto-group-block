@@ -18,6 +18,7 @@ import { Segment } from 'semantic-ui-react';
 import EditSchema from './EditSchema';
 
 import CounterComponent, { countTextInBlocks } from './CounterComponent';
+import { fillEmptyGroup } from './utils';
 import './editor.less';
 import { defineMessages, injectIntl } from 'react-intl';
 import { compose } from 'redux';
@@ -108,23 +109,13 @@ const Edit = (props) => {
     [data.data, multiSelected],
   );
 
+  // BlocksToolbar already computes the new blocks_layout (paste position,
+  // removed blocks on delete/cut), use it as is
   const changeBlockData = (newBlockData) => {
-    let pastedBlocks = newBlockData.blocks_layout.items.filter((blockID) => {
-      return !data?.data?.blocks_layout.items.find((x) => x === blockID);
-    });
-    const selectedIndex =
-      data.data.blocks_layout.items.indexOf(selectedBlock) + 1;
-    const newChildData = {
+    const newChildData = fillEmptyGroup({
       ...data?.data,
       ...newBlockData,
-      blocks_layout: {
-        items: [
-          ...data.data.blocks_layout.items.slice(0, selectedIndex),
-          ...pastedBlocks,
-          ...data.data.blocks_layout.items.slice(selectedIndex),
-        ],
-      },
-    };
+    });
     const newData = {
       ...data,
       data: newChildData,
