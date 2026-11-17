@@ -1,6 +1,7 @@
 {
   "name": "@eeacms/volto-group-block-dev",
-  "version": "1.0.0-alpha.0",
+  "private": true,
+  "version": "11.0.0",
   "description": "volto-group-block: Volto block to be used to group other blocks",
   "author": "European Environment Agency: IDM2 A-Team",
   "homepage": "https://github.com/eea/volto-group-block",
