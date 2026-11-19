@@ -1,9 +1,19 @@
+import { vi } from 'vitest';
 import React from 'react';
 import { render } from '@testing-library/react';
 import CounterComponent from './CounterComponent';
 import '@testing-library/jest-dom';
 
-jest.mock('@plone/volto/registry', () => ({
+vi.mock('@plone/volto/registry', () => ({
+  default: {
+    blocks: {
+      blocksConfig: {
+        group: {
+          countTextIn: ['text'],
+        },
+      },
+    },
+  },
   blocks: {
     blocksConfig: {
       group: {
@@ -13,15 +23,15 @@ jest.mock('@plone/volto/registry', () => ({
   },
 }));
 
-jest.mock('@plone/volto-slate/editor/render', () => ({
-  serializeNodesToText: jest.fn((nodes) =>
+vi.mock('@plone/volto-slate/editor/render', () => ({
+  serializeNodesToText: vi.fn((nodes) =>
     nodes.map((node) => node.text).join(' '),
   ),
 }));
 
 describe('CounterComponent', () => {
-  const setSidebarTab = jest.fn();
-  const setSelectedBlock = jest.fn();
+  const setSidebarTab = vi.fn();
+  const setSelectedBlock = vi.fn();
 
   it('should render info class when character count is less than 95% of maxChars', () => {
     const { container, getByText } = render(
